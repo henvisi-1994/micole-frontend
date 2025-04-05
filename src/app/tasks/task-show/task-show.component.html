@@ -1,0 +1,279 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+      <app-task-card
+        [task]="task"
+        (onModal)="openModal($event)"
+        (onModalExcel)="openModalExcel()"
+      >
+      </app-task-card>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div
+    class="col-12 col-md-8 col-lg-6 ml-auto mr-auto"
+    *ngIf="task.type === 'NORMAL'"
+  >
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-file fa-2x"></i>
+        </div>
+        <h4 class="card-title">Adjuntos</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="task.attachments.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let attachment of task.attachments; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#attachment{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="attachment{{ i }}"
+                >
+                  {{ attachment.name }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="attachment{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="attachment{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="card-body">
+                <p class="flex-fill mt-2">
+                  Descripción: {{ attachment.description }}
+                </p>
+                <div class="d-flex flex-row flex-nowrap mt-2">
+                  <i
+                    class="fa align-self-center icon-primary fa-lg"
+                    [class]="getIcon(attachment.type)"
+                  ></i>
+                  <a class="col-12" [href]="attachment.url" target="_blank"
+                    >Link
+                  </a>
+                  <i
+                    class="fa fa-trash icon-red fa-1x"
+                    *ngIf="canDelete()"
+                    (click)="onDelete(attachment.id, attachment.name)"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="task.attachments.length === 0">
+          No hay adjuntos para esta tarea
+        </h5>
+      </div>
+    </div>
+  </div>
+  <ng-template [ngIf]="score != null">
+    <div
+      class="col-12 col-md-8 col-lg-6 ml-auto mr-auto"
+      *appHasPermission="['Student']"
+    >
+      <div class="card">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="fa fa-star fa-2x"></i>
+          </div>
+          <h4 class="card-title">Calificación</h4>
+        </div>
+        <div class="card-body">
+          <p class="col-12 mt-2" *ngIf="score.value != null">
+            Calificación: {{ score.value }}
+          </p>
+          <p class="col-12 mt-2" *ngIf="score.value == null">
+            No se ha calificado
+          </p>
+          <p class="col-12 mt-2" *ngIf="score.feedback.length > 0">
+            Retroalimentación: {{ score.feedback }}
+          </p>
+          <a
+            class="col-12 mt-2"
+            *ngIf="score.url != null"
+            class="col-12 mt-2"
+            [href]="score.url"
+            target="_blank"
+            >Link</a
+          >
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div
+    class="col-12 col-md-8 col-lg-6 ml-auto mr-auto"
+    *appHasPermission="['CanCreateTask']"
+  >
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-star fa-2x"></i>
+        </div>
+        <h4 class="card-title">Calificaciones</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion2" role="tablist" *ngIf="task.scores.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let score of task.scores; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading2{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#score{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="score{{ i }}"
+                  [ngClass]="getColor(score)"
+                >
+                  {{ score.student }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="score{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="score{{ i }}"
+              data-parent="#accordion2"
+              style=""
+            >
+              <div class="card-body">
+                <div class="d-flex flex-row flex-nowrap align-items-center">
+                  <ng-template [ngIf]="score.value != null">
+                    <p class="flex-fill mt-2">
+                      Calificación: {{ score.value }}
+                    </p>
+                  </ng-template>
+                  <p class="flex-fill mt-2" *ngIf="score.value == null">
+                    No se ha calificado la tarea
+                  </p>
+                  <i
+                    class="fa fa-edit icon-primary fa-1x"
+                    *appHasPermission="['Teacher','SuperAdmin']"
+                    (click)="openGradeModal(score)"
+                  ></i>
+                </div>
+                <p
+                  class="flex-fill mt-2"
+                  *ngIf="score.value != null && score.feedback.length > 0"
+                >
+                  Retroalimentación: {{ score.feedback }}
+                </p>
+                <div class="flex-fill mt-2" *ngIf="score.url != null">
+                  <i
+                    class="fa align-self-center icon-primary fa-lg"
+                    [class]="
+                      getIcon(
+                        score.url.split('.')[score.url.split('.').length - 1]
+                      )
+                    "
+                  ></i>
+                  <a class="flex-fill ml-2" [href]="score.url" target="_blank"
+                    >Archivo</a
+                  >
+                </div>
+
+                <div
+                  class="flex-fill mt-2"
+                  *ngIf="score.url == null && task.type === 'NORMAL'"
+                >
+                  No se ha subido ningun archivo
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="task.scores.length === 0">
+          No calificaciones para esta tarea
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-upload-file
+  *appHasPermission="['Teacher', 'Student','SuperAdmin']"
+  [modalTitle]="modalTitle"
+  [isUrl]="isUrl"
+  [onlyFile]="onlyFile"
+  (onUpload)="onUpload($event)"
+></app-upload-file>
+
+<app-task-grade
+  *appHasPermission="['Teacher','SuperAdmin']"
+  (onGrade)="onGrade($event)"
+  [currentScore]="currentScore"
+  [modalTitle]="gradeTitle"
+></app-task-grade>
+
+<div
+  class="modal fade"
+  *ngIf="fileForm != null"
+  id="excelModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="fileModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Subir notas masivas</h5>
+        <button
+          mat-button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="fileForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <p class="col-12">Por favor suba el excel con las calificaciones</p>
+            <div class="col-6 ml-auto mr-auto">
+              <input
+                type="file"
+                formControlName="file"
+                [accept]="extensions()"
+                (change)="onFileChange($event)"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!fileForm.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                Subir notas
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

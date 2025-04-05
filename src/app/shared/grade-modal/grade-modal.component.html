@@ -1,0 +1,52 @@
+<div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="gradeModal" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h5 class="modal-title">Notas promedio del curso</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="row" *ngIf="course != undefined">
+        <div class="col-12 col-md-8 col-lg-8">
+          <mat-select placeholder="Seleccionar Perido" class="white-select" ngClass="btn btn-primary btn-round"
+          (selectionChange)="changePeriod($event.value)">
+            <mat-option *ngFor="let period of course.periods" [value]="period.id">
+              {{ period.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+      </div>
+      <div class="row mt-4 ml-2" *ngIf="grades.length == 0">
+        No hay materias asociadas al curso
+      </div>
+      <div class="row mt-4" *ngIf="grades.length > 0">
+        <div class="col-12 mt-2" *ngFor="let grade of grades">
+          <div class="row ml-2">
+            {{grade.name}} - {{grade.grade | number:'1.2-2'}}:
+          </div>
+          <div class="progress progress-line-primary">
+            <div class="progress-bar progress-bar-primary"
+            [ngClass]="{'zero': grade.grade < course.maxGrade / 10,
+            'one': grade.grade < (course.maxGrade / 10) * 2 &&  grade.grade >= course.maxGrade / 10,
+            'two': grade.grade < (course.maxGrade / 10) * 3 && grade.grade >= (course.maxGrade / 10) * 2,
+            'three': grade.grade < (course.maxGrade / 10) * 4 && grade.grade >= (course.maxGrade / 10) * 3,
+            'four': grade.grade < (course.maxGrade / 10) * 5 && grade.grade >=  (course.maxGrade / 10) * 4,
+            'five': grade.grade < (course.maxGrade / 10) * 6 && grade.grade >= (course.maxGrade / 10) * 5,
+            'six': grade.grade < (course.maxGrade / 10) * 7 && grade.grade >= (course.maxGrade / 10) * 6,
+            'seven': grade.grade < (course.maxGrade / 10) * 8 && grade.grade >= (course.maxGrade / 10) * 7,
+            'eigth': grade.grade < (course.maxGrade / 10) * 9  && grade.grade >= (course.maxGrade / 10) * 8,
+            'nine': grade.grade < course.maxGrade && grade.grade >= (course.maxGrade / 10) * 9,
+            'ten': grade.grade >= course.maxGrade}"
+            [matTooltip]="grade.grade" [matTooltipPosition]="'above'"
+            role="progressbar" [attr.aria-valuenow]="grade.grade" aria-valuemin="0" aria-valuemax="100">
+                <span class="sr-only">{{grade.grade | number }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

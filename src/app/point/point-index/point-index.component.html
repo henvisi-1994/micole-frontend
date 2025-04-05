@@ -1,0 +1,23 @@
+<div class="row">
+  <div
+    class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto"
+    *ngIf="userPoint != undefined && userPoint.level != null"
+  >
+    <app-user-point [point]="userPoint"></app-user-point>
+  </div>
+</div>
+<app-table
+  *ngIf="show"
+  title="Puntos"
+  subtitle="Mis puntos"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [showSearch]="false"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [hasActions]="false"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>

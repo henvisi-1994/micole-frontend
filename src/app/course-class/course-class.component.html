@@ -1,0 +1,81 @@
+<div class="row mb-4" *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']">
+  <div class="col-12 text-right">
+    <a class="btn btn-primary" (click)="openModal()">Subir clase</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-youtube-play fa-2x"></i>
+        </div>
+        <h4 class="card-title">Clases</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="classes.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let class of classes; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#class{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="classs{{ i }}"
+                >
+                  {{ class.date }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="class{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="class{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="card-body">
+                <div
+                  class="d-flex flex-row flex-nowrap mt-2 align-items-center"
+                >
+                  <a class="flex-fill" [href]="class.link" target="_blank"
+                    >Link de la clase
+                  </a>
+                  <i
+                    class="fa fa-edit icon-edit mr-2 fa-1x"
+                    (click)="editClass(class)"
+                    *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+                  ></i>
+                  <i
+                    class="fa fa-trash icon-red fa-1x"
+                    (click)="deleteClass(class)"
+                    *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+                  ></i>
+                </div>
+                <p class="flex-fill mt-2">
+                  Descripción: {{ class.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="classes.length === 0">
+          No hay clases subidas para la materia
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<app-add-class-modal
+  [modalTitle]="modalTitle"
+  [courseClass]="classValue"
+  (onUpload)="onUpload($event)"
+></app-add-class-modal>

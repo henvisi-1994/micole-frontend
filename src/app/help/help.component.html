@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">
+      Mi Cole Me Cuida
+    </h3>
+    <p class="card-description mb-0">Aplicativo que te permite informar a la orientadora del colegio acerca de problemas que tengas.</p>
+
+    <h4 class="card-description mt-3" *ngIf="!answered">Tu vida se encuentra en peligro?</h4>
+    <div class="container-help" *ngIf="!answered">
+      <button class="btn btn-danger button-width" (click)="action(true)">SI</button>
+      <button class="btn btn-primary button-width" (click)="action(false)">NO</button>
+    </div>
+
+    <h4 class="card-description mt-3" *ngIf="answered && lifeInDanger">{{message}}</h4>
+    <h4 class="card-description mt-3" *ngIf="answered && !lifeInDanger">Por favor conteste el siguiente formulario.</h4>
+
+  </div>
+</div>
+
+<div class="card" *ngIf="answered && !lifeInDanger">
+<!-- <div class="card"> -->
+  <div class="card-body">
+    <h3 class="card-title">
+      Formulario
+    </h3>
+    <app-help-form (onAction)="createCase($event)"></app-help-form>
+  </div>
+</div>

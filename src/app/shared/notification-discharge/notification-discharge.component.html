@@ -1,0 +1,38 @@
+<div class="modal fade"
+tabindex="-1" role="dialog" aria-labelledby="dischargeModal" aria-hidden="true"
+id="dischargeModal">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Descargos</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" arai-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="dischargeForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('description')}">
+                <textarea
+                  formControlName="description"
+                  matInput rows="6" placeholder="Descripción"></textarea>
+                  <mat-error *ngIf="hasError('description','required')">
+                    La Descripción es requerida
+                  </mat-error>
+                  <mat-error *ngIf="hasError('description','minlength')">
+                    La Descripción tiene que ser mínimo 3 caracteres
+                  </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit"
+            [disabled]="!dischargeForm.valid" class="btn btn-info btn-round">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

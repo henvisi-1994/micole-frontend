@@ -1,0 +1,69 @@
+<div class="modal fade" id="acheivementCopyModal" tabindex="-1" role="dialog" aria-labelledby="acheivementCopyModal" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{copyModalTitle}}</h4>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Busque el curso del cual quiere copiar</h5>
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-xs-12">
+            <mat-form-field>
+              <mat-label>Grado</mat-label>
+              <mat-select [(ngModel)]="grade">
+                <mat-option *ngFor="let grade of parameters.grades" [value]="grade.id">
+                  {{grade.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-9 col-md-8 col-xs-12">
+            <mat-form-field>
+              <mat-label>Año escolar</mat-label>
+              <mat-select [(ngModel)]="year">
+                <mat-option [matTooltip]="year.name" *ngFor="let year of parameters.years" [value]="year.id">
+                  {{year.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-12 col-md-12 col-xs-12 center">
+            <button class="btn btn-primary" (click)="searchCourses()" [disabled]="year.length === 0 || grade.length === 0">Buscar</button>
+          </div>
+        </div>
+        <form [formGroup]="acheivementCopyForm" (ngSubmit)="onSubmit()" *ngIf="courses.length > 0">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Curso" formControlName="course">
+                  <mat-option *ngFor="let c of courses" [value]="c.id">
+                    {{ c.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Periodo" formControlName="period">
+                  <mat-option *ngFor="let p of parameters.periods" [value]="p.id">
+                    {{ p.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit"
+            [disabled]="!acheivementCopyForm.valid" class="btn btn-info">Copiar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

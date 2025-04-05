@@ -1,0 +1,16 @@
+<ng-template [ngIf]="showNewButton">
+  <div class="row mb-5" *appHasPermission="['CanCreateSchool']">
+    <div class="col-12 text-right">
+      <a
+        class="btn btn-primary"
+        [routerLink]="['/', 'dashboard', 'users', 'new']"
+        routerLinkActive="router-link-active"
+      >
+        Crear usuario
+      </a>
+    </div>
+  </div>
+</ng-template>
+<div class="contaienr-fluid">
+  <router-outlet></router-outlet>
+</div>

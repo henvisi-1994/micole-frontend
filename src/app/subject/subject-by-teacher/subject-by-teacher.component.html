@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="material-icons">subject</i>
+        </div>
+        <h4 class="card-title">Materias</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="subjects.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let subject of subjects; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#schoolYear{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="schoolYear{{ i }}"
+                >
+                  {{ subject.franchise }}- {{ getSchoolYear(subject) }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="schoolYear{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="schoolYear{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="card-body">
+                <ng-template [ngIf]="subject.subjects.length > 0">
+                  <div
+                    class="d-flex flex-row flex-nowrap"
+                    *ngFor="let info of subject.subjects"
+                    style="cursor: pointer"
+                    (click)="subjectInfo(info.id, info.courseId)"
+                  >
+                    <div class="m-1 p-1 d-flex flex-column border full-width">
+                      <h5>
+                        {{ info.name }}
+                      </h5>
+                      <p class="mt-1">Descripción: {{ info.description }}</p>
+                      <p class="mt-1">Porcentaje: {{ info.percentage }}%</p>
+                      <p class="mt-1">Curso: {{ info.course }}</p>
+                    </div>
+                    <i class="material-icons align-self-center"
+                      >keyboard_arrow_right</i
+                    >
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="subjects.length === 0">
+          No tienes materias asignadas
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

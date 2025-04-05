@@ -1,0 +1,115 @@
+<div class="logo">
+  <a class="simple-text logo-mini" [routerLink]="['/dashboard']">
+    <div class="logo-img">
+      <img [src]="getSchoolImage()" alt="Mi cole logo" />
+    </div>
+  </a>
+  <a class="simple-text title-size logo-normal pl-2 text-white">
+    {{ getSchoolName() }}
+  </a>
+</div>
+
+<div class="sidebar-wrapper">
+  <div class="user">
+    <div class="photo">
+      <img [src]="getUserImage()" alt="Imagen de perfil" />
+    </div>
+    <div class="user-info">
+      <a
+        data-toggle="collapse"
+        href="#collapseMoreOptions"
+        class="collapsed text-white"
+      >
+        <span>
+          {{ getFullName() }}
+          <b class="carret"></b>
+        </span>
+      </a>
+      <div class="collapse" id="collapseMoreOptions">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" (click)="editProfile()">
+              <span class="sidebar-mini text-white">ED</span>
+              <span class="sidebar-normal text-white">Editar perfil</span>
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            *appHasPermission="['Teacher', 'Student', 'Parent']"
+          >
+            <a class="nav-link" [routerLink]="['/', 'dashboard', 'remainders']">
+              <span class="sidebar-mini text-white">NO</span>
+              <span class="sidebar-normal text-white">Notificaciones</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()">
+              <span class="sidebar-mini text-white">CS</span>
+              <span class="sidebar-normal text-white">Cerrar sesión</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <ul class="nav">
+    <li
+      routerLinkActive="active"
+      *ngFor="let menuItem of menuItems"
+      class="nav-item"
+    >
+      <!-- For a single item -->
+      <a
+        [routerLink]="createRoute(menuItem.path)"
+        *ngIf="menuItem.type == 'link'"
+        class="nav-link text-white"
+      >
+        <i class="material-icons" *ngIf="!menuItem.fav">{{
+          menuItem.icontype
+        }}</i>
+        <i class="fa" [ngClass]="menuItem.icontype" *ngIf="menuItem.fav"></i>
+        <p>{{ menuItem.title }}</p>
+      </a>
+      <!-- For a submenu item -->
+      <a
+        data-toggle="collapse"
+        href="#{{ menuItem.collapse }}"
+        *ngIf="menuItem.type === 'sub'"
+        (click)="updatePS()"
+        class="nav-link text-white"
+      >
+        <i class="material-icons" *ngIf="!menuItem.fav">{{
+          menuItem.icontype
+        }}</i>
+        <i class="fa" [ngClass]="menuItem.icontype" *ngIf="menuItem.fav"></i>
+        <p>{{ menuItem.title }}<b class="caret"></b></p>
+      </a>
+
+      <!-- Display submenu items -->
+      <div
+        id="{{ menuItem.collapse }}"
+        class="collapse"
+        *ngIf="menuItem.type === 'sub'"
+      >
+        <ul class="nav">
+          <li
+            routerLinkActive="active"
+            *ngFor="let childitem of menuItem.children"
+            class="nav-item text-white"
+          >
+            <a
+              [routerLink]="createRoute(menuItem.path, childitem.path)"
+              class="nav-link"
+            >
+              <span class="sidebar-mini text-white">{{ childitem.ab }}</span>
+              <span class="sidebar-normal text-white">{{
+                childitem.title
+              }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

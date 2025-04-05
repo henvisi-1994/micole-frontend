@@ -1,0 +1,19 @@
+<!-- <div> -->
+  <div class="card card-profile">
+    <div class="card-body">
+      <h4 class="card-title">Seguimiento</h4>
+      <div class="mt-2 border" *ngFor="let record of case.records">
+        <p class="card-category left no-space">
+          Fecha: {{ record.createdAt }}
+        </p>
+        <p class="card-category left no-space">
+          Usuario: {{ record.user }}
+        </p>
+        <p class="card-category left no-space">
+          {{ record.text }}
+        </p>
+      </div>
+    </div>
+  </div>
+     
+      

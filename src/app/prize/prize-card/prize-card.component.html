@@ -1,0 +1,55 @@
+<!-- <div> -->
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a href="javascript:void(0)">
+      <img [src]="prize.icon" alt="" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <p class="card-category">Puntos: {{ prize.points }}</p>
+    <p class="card-category">Aliado: {{ prize.ally }}</p>
+    <p class="card-category">
+      Cupones disponibles: {{ prize.availableCoupons }}
+    </p>
+    <h4 class="card-title">
+      {{ prize.name }}
+    </h4>
+    <p class="card-description mb-0">{{ prize.description }}</p>
+    <div class="row mt-1" *appHasPermission="['SuperAdmin']">
+      <div class="col-12 col-lg-6 col-md-6">
+        <button
+          class="btn btn-primary full-width"
+          (click)="changeStatusPrize()"
+        >
+          {{ prize.disabled ? "Habilitar" : "Deshabilitar" }}
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-info full-width" (click)="updatePrize()">
+          Actualizar
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-info full-width" (click)="goToRedemption()">
+          Redenciones
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-primary full-width" (click)="uploadCoupon()">
+          Cupones
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2" *appHasPermission="['Parent', 'Student', 'Teacher']">
+      <!-- {{ userPoint | json }} -->
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *ngIf="userPoint && userPoint.availablePoints >= prize.points"
+      >
+        <button class="btn btn-info full-width" (click)="redemPrize()">
+          Redimir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

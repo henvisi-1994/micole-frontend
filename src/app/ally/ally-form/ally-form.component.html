@@ -1,0 +1,119 @@
+<!-- <p>{{ schools | json }}</p> -->
+<div class="container-fluid">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-building fa-2x"></i>
+        </div>
+        <h4 class="card-title">Crear</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="allyForm" (ngSubmit)="onSubmit()">
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('name') }"
+              >
+                <input
+                  formControlName="name"
+                  matInput
+                  type="text"
+                  placeholder="Nombre"
+                />
+                <mat-error *ngIf="hasError('name', 'required')">
+                  El nombre del aliado es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'minlength')">
+                  El nombre del aliado tiene que ser al menos 3 caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'maxlength')">
+                  El nombre del aliado tiene que ser máximo 255 caracteres
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('contactDetail') }"
+              >
+                <input
+                  formControlName="contactDetail"
+                  matInput
+                  type="text"
+                  placeholder="Detalles de contacto"
+                />
+                <mat-error *ngIf="hasError('contactDetail', 'required')">
+                  Los detalles de contacto del aliado es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('contactDetail', 'minlength')">
+                  Los detalles de contacto del aliado tiene que ser al menos 3
+                  caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('contactDetail', 'maxlength')">
+                  Los detalles de contacto del aliado tiene que ser máximo 255
+                  caracteres
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field appearance="fill">
+                <mat-label>Seleccione Sedes</mat-label>
+                <mat-select formControlName="franchises" multiple>
+                  <mat-optgroup
+                    *ngFor="let school of schools"
+                    [label]="school.name"
+                  >
+                    <mat-option
+                      *ngFor="let franchise of school.franchises"
+                      [value]="franchise.id"
+                    >
+                      {{ franchise.name }}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <p class="col-12">Puedes subir imagenes png y jpg</p>
+            <div class="col-12 ml-auto mr-auto">
+              <input
+                type="file"
+                formControlName="image"
+                [accept]="extensions()"
+                (change)="handleFileInput($event.target.files)"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field>
+                <textarea
+                  formControlName="description"
+                  matInput
+                  rows="6"
+                  placeholder="Descripción"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!allyForm.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                Crear
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

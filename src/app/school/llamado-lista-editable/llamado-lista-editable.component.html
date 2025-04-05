@@ -1,0 +1,116 @@
+<div class="container-fluid p-0">
+  <mat-card>
+    <mat-toolbar color="primary">
+      <span><mat-icon>assignment</mat-icon> Llamado a Lista</span>
+    </mat-toolbar>
+    <mat-card-content>
+      <p>Registro y modificación de asistencia</p>
+
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="fechaSeleccionada" (dateChange)="cargarAsistencia()">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Materia</mat-label>
+            <mat-select [(ngModel)]="materiaSeleccionada" (selectionChange)="cargarAsistencia()">
+              <mat-option value="">Seleccione una materia</mat-option>
+              <mat-option *ngFor="let materia of materias" [value]="materia.id">{{materia.nombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Grado</mat-label>
+            <mat-select [(ngModel)]="gradoSeleccionado" (selectionChange)="cargarAsistencia()">
+              <mat-option value="">Seleccione un grado</mat-option>
+              <mat-option *ngFor="let grado of grados" [value]="grado.id">{{grado.nombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button mat-raised-button color="primary" (click)="cargarAsistencia()" [disabled]="!puedeCargarAsistencia()">
+            <mat-icon>search</mat-icon> Consultar
+          </button>
+        </div>
+      </div>
+
+      <mat-card *ngIf="asistencias.length > 0" class="mb-4">
+        <mat-card-content>
+          <p><mat-icon>info</mat-icon> <strong>Estado:</strong> {{estadoLlamado}}</p>
+          <button mat-stroked-button color="primary" *ngIf="estadoLlamado === 'Borrador'" (click)="habilitarEdicion()">
+            <mat-icon>edit</mat-icon> Modificar
+          </button>
+          <button mat-stroked-button color="accent" *ngIf="estadoLlamado === 'Borrador'" (click)="finalizarLlamado()">
+            <mat-icon>check</mat-icon> Finalizar
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <table mat-table [dataSource]="asistencias" class="mat-elevation-z8" *ngIf="asistencias.length > 0">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let asistencia; let i = index">{{i + 1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="estudiante">
+          <th mat-header-cell *matHeaderCellDef>Estudiante</th>
+          <td mat-cell *matCellDef="let asistencia">{{asistencia.estudiante}}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let asistencia">
+            <mat-form-field appearance="outline">
+              <mat-select [(ngModel)]="asistencia.estado" [disabled]="!modoEdicion">
+                <mat-option value="presente">Presente</mat-option>
+                <mat-option value="ausente">Ausente</mat-option>
+                <mat-option value="tardanza">Tardanza</mat-option>
+                <mat-option value="excusa">Excusa</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef>Observaciones</th>
+          <td mat-cell *matCellDef="let asistencia">
+            <mat-form-field appearance="outline" class="w-100">
+              <textarea matInput rows="2" [(ngModel)]="asistencia.observaciones" [disabled]="!modoEdicion"></textarea>
+            </mat-form-field>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="evidencia">
+          <th mat-header-cell *matHeaderCellDef>Evidencia</th>
+          <td mat-cell *matCellDef="let asistencia; let i = index">
+            <button mat-icon-button color="primary" *ngIf="!modoEdicion && asistencia.evidencia" (click)="verEvidencia(asistencia)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <input type="file" *ngIf="modoEdicion" (change)="onFileSelected($event, i)">
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['index', 'estudiante', 'estado', 'observaciones', 'evidencia']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['index', 'estudiante', 'estado', 'observaciones', 'evidencia'];"></tr>
+      </table>
+
+      <mat-card *ngIf="modoEdicion" class="mt-4">
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Nota general del llamado a lista</mat-label>
+            <textarea matInput rows="3" [(ngModel)]="notaGeneral"></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+    <mat-card-actions align="end" *ngIf="modoEdicion">
+      <button mat-stroked-button color="warn" (click)="cancelarEdicion()">
+        <mat-icon>cancel</mat-icon> Cancelar
+      </button>
+      <button mat-raised-button color="primary" (click)="guardarCambios()">
+        <mat-icon>save</mat-icon> Guardar cambios
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

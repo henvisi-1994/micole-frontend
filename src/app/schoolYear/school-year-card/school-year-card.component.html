@@ -1,0 +1,54 @@
+<div class="card card-profile">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="material-icons">calendar_today </i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h6 class="card-category text-gray">
+      Jornada: {{ schoolYear.normalizedSchoolDay }}
+    </h6>
+    <p class="card-description mb-0">
+      Año de inicio: {{ schoolYear.startYear }}
+    </p>
+    <p class="card-description mb-0">
+      Mes de inicio: {{ schoolYear.normalizedStartMonth }}
+    </p>
+    <p class="card-description mb-0">Año de fin: {{ schoolYear.endYear }}</p>
+    <p class="card-description mb-0">
+      Mes de fin: {{ schoolYear.normalizedEndMonth }}
+    </p>
+    <div class="row mt-3 mb-3">
+      <div
+        class="col-12 col-lg-6 col-md-6 full-width ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin', 'Admin']"
+      >
+        <button
+          (click)="createPeriod()"
+          class="btn btn-primary btn-round full-width"
+        >
+          Crear periodo
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 full-width ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin', 'Admin']"
+      >
+        <button
+          *ngIf="schoolYear.close"
+          (click)="showSummary(true)"
+          class="btn btn-primary btn-round full-width"
+        >
+          Ver resumen del año
+        </button>
+        <button
+          *ngIf="!schoolYear.close"
+          (click)="showSummary(false)"
+          class="btn btn-primary btn-round full-width"
+        >
+          Cerrar año escolar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

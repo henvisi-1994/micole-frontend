@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-12 col-md-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-calendar fa-2x"></i>
+        </div>
+        <h4 class="card-title">Crear evento</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('name')}">
+              <input
+              formControlName="name"
+              matInput
+              type="text"
+              placeholder="Nombre">
+              <mat-error *ngIf="hasError('name','required')">
+                El nombre del evento es requerido
+              </mat-error>
+              <mat-error *ngIf="hasError('name','minlength')">
+                El nombre del evento tiene que ser al menos 3 caracteres
+              </mat-error>
+              <mat-error *ngIf="hasError('name','maxlength')">
+                El nombre del evento tiene que ser máximo 255 caracteres
+              </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <input
+              type="file" formControlName="file"
+              [accept]="extensions()"
+              (change)="handleFileInput($event.target.files)">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field >
+                <input matInput
+                formControlName="eventDate"
+                autocomplete="off"
+                [min]="minDate" [matDatepicker]="picker" placeholder="Fecha del evento" (click)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker
+                ></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <!-- <div class="row mb-3">
+            <div class="col-12">
+              <mat-radio-group formControlName="hasFile">
+                <mat-radio-button [value]="0">Sin Adjunto ?</mat-radio-button>
+                | <mat-radio-button [value]="1">Tiene archivo ?</mat-radio-button>
+                | <mat-radio-button [value]="2">Tiene url ?</mat-radio-button>
+              </mat-radio-group>
+
+            </div>
+          </div> -->
+          <!-- <div class="row mb-3"
+          formGroupName="eventInvitation" *ngIf="hasFile == 1 || hasFile == 2">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('name','eventInvitation')}">
+              <input
+              formControlName="name"
+              matInput
+              type="text"
+              placeholder="Nombre">
+              <mat-error *ngIf="hasError('name','required','eventInvitation')">
+                El nombre del archivo es es requerido
+              </mat-error>
+              <mat-error *ngIf="hasError('name','minlength','eventInvitation')">
+                El nombre del archivo tiene que ser almenos 3 caracteres
+              </mat-error>
+              <mat-error *ngIf="hasError('name','maxlength','eventInvitation')">
+                El nombre del archivo tiene que ser máximo 255 caracteres
+              </mat-error>
+              </mat-form-field>
+            </div>
+          </div> -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <textarea
+                formControlName="description"
+                matInput rows="6" placeholder="Descripción"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-12 ml-auto mr-auto text-center">
+              <button
+              [disabled]="!eventForm.valid"
+              type="submit" class="btn btn-info btn-round">
+               Crear nuevo evento
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

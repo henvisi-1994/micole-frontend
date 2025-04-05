@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-12 text-right" *appHasPermission="['SuperAdmin']">
+    <a class="btn btn-primary" (click)="moveToCreatePrize()">Crear premio</a>
+  </div>
+  <app-ally-card
+    class="col-12 col-lg-4 col-md-6 mr-auto ml-auto"
+    [ally]="ally"
+    [show]="true"
+    (onChangeStatus)="changeStatus()"
+  ></app-ally-card>
+</div>
+
+<app-table
+  *ngIf="show"
+  title="Premios"
+  subtitle="Información de los premios del aliado"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [showSearch]="true"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [hasActions]="true"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>

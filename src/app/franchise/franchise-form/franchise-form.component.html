@@ -1,0 +1,192 @@
+<div class="container-fluid" *ngIf="isVisible">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="material-icons">school</i>
+          </div>
+          <h4 class="card-title">{{title}}</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="franchiseForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('name')}">
+                <input
+                formControlName="name"
+                matInput
+                type="text"
+                placeholder="Nombre">
+                <mat-error *ngIf="hasError('name','required')">
+                  El nombre de la sede es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('name','minlength')">
+                  El nombre de la sede tiene que ser al menos 3 caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('name','maxlength')">
+                  El nombre de la sede tiene que ser máximo 255 caracteres
+                </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3" formGroupName="address">
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('country','address')}">
+                  <input
+                  formControlName="country"
+                  matInput
+                  type="text"
+                  placeholder="País">
+                  <mat-error *ngIf="hasError('country','required', 'address')">
+                    El nombre del país es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('country','minlength','address')">
+                    El nombre del país tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('country','maxlength','address')">
+                    El nombre del país tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('city','address')}">
+                  <input
+                  formControlName="city"
+                  matInput
+                  type="text"
+                  placeholder="Ciudad">
+                  <mat-error *ngIf="hasError('city','required', 'address')">
+                    El nombre de la ciudad es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('city','minlength','address')">
+                    El nombre de la ciudad tiene que ser almenos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('city','maxlength','address')">
+                    El nombre de la ciudad tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('street','address')}">
+                  <input
+                  formControlName="street"
+                  matInput
+                  type="text"
+                  placeholder="Dirección">
+                  <mat-error *ngIf="hasError('street','required', 'address')">
+                    La direccion es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('street','minlength','address')">
+                    La direccion tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('street','maxlength','address')">
+                    La direccion tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('postCode','address')}">
+                  <input
+                  formControlName="postCode"
+                  matInput
+                  type="text"
+                  placeholder="Código Postal">
+                  <mat-error *ngIf="hasError('postCode','required', 'address')">
+                    El código postal es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('postCode','pattern', 'address')">
+                    El código postal debe ser numérico y tener mínimo 3 caracteres
+                  </mat-error>
+
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3" formGroupName="phone">
+              <div class="col-12">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('number','phone')}">
+                  <input
+                  formControlName="number"
+                  matInput
+                  type="text"
+                  placeholder="Numero telefónico">
+                  <mat-error *ngIf="hasError('number','required', 'phone')">
+                    El numero telefónico es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('number','pattern', 'phone')">
+                    El numero telefónico debe ser numérico y tener de 6 a 15 caracteres
+                  </mat-error>
+
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('indicative','phone')}">
+                  <input
+                  formControlName="indicative"
+                  matInput
+                  type="text"
+                  placeholder="El indicativo">
+                  <mat-error *ngIf="hasError('indicative','required', 'phone')">
+                    El indicativo es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('indicative','pattern', 'phone')">
+                    El indicativo debe ser numérico y tener de 2 a 6 caracteres
+                  </mat-error>
+
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('ext','phone')}">
+                  <input
+                  formControlName="ext"
+                  matInput
+                  type="text"
+                  placeholder="Extension">
+                  <mat-error *ngIf="hasError('ext','ext', 'phone')">
+                    La extension solo puede ser numérico y mínimo 2 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('message')}">
+                  <textarea
+                  formControlName="message"
+                  matInput
+                  placeholder="Mensaje Mi Cole Me Cuida">
+                 
+                </textarea>
+                <mat-error *ngIf="hasError('message','maxlength')">
+                  El mensaje no puede ser mayor a 100.000 caracteres
+                </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 ml-auto mr-auto text-center">
+                <button
+                [disabled]="!franchiseForm.valid"
+                type="submit" class="btn btn-info btn-round">
+                  {{title}}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-8 col-lg-6 ml-auto mr-auto">
+      <app-course-card
+      [course]="course"
+      (onSubject)="associateSubject($event)"
+      (onDownload)="onDownload()"
+      (onDownloadUser)="onDownloadUser($event)"
+      (onDownloadFormat)="onDownloadFormat($event)"
+      (onDownloadPdf)="onDownloadPdf()"
+      (onDownloadStudentAdmin)="onDownloadStudentAdmin()"
+      (onDownloadPdfEnd)="onDownloadPdfEnd()"
+      (onDownloadMassivePdf)="onDownloadMassivePdf()"
+      (onDownloadMassivePdfEnd)="onDownloadMassivePdfEnd()"
+      (onAssociateUserExcel)="onAssociateUserExcel($event)"
+      (onUser)="associateUser($event)"></app-course-card>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="showSubjects && subjectItems.length > 0">
+  <app-table
+  class="full-screen"
+  title="Materias"
+  subtitle="Información de las materias que tiene asociado el curso"
+  [headers]="subjectHeaders"
+  [items]="subjectItems"
+  [itemKeys]="subjectKeys"
+  [hasActions]="true"
+  [actions]="subjectAction"
+  (onAction)="onSubjectAction($event)"
+  ></app-table>
+</div>
+
+<div class="row justify-content-center" *ngIf="showDirectors && directorItems.length > 0">
+  <app-table
+  class="full-screen"
+  title="Directores de curso"
+  subtitle="Información de los directores de curso"
+  [headers]="userHeaders"
+  [items]="directorItems"
+  [itemKeys]="userKeys"
+  [hasActions]="true"
+  [photo]="true"
+  [actions]="userAction"
+  (onAction)="onAction($event,'director')"
+  ></app-table>
+</div>
+
+<div class="row justify-content-center" *ngIf="showUsers && userItems.length > 0">
+  <app-table
+  class="full-screen"
+  title="Estudiantes"
+  subtitle="Información de los estudiantes del curso"
+  [headers]="userHeaders"
+  [items]="userItems"
+  [itemKeys]="userKeys"
+  [hasActions]="true"
+  [photo]="true"
+  [actions]="studentAction"
+  (onAction)="onAction($event,'user')"
+  ></app-table>
+</div>
+
+<app-notification-modal *appHasPermission="['CanCreateComments']"
+(onNotification)="onNotification($event)"></app-notification-modal>
+
+<app-grade-modal
+[id]="course.id"></app-grade-modal>

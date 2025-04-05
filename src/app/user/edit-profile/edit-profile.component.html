@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lx-6">
+      <app-user-form [user]="user" (onEdit)="onEdit($event)"
+      [title]="'Información básica'"></app-user-form>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+      <div class="row mb-2">
+        <div class="col-12">
+          <app-upload-photo [title]="'Foto'" [url]="user.photo"
+          (onUpload)="onAvatar($event)"></app-upload-photo>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-password-form [title]="'Cambiar contraseña'"
+          (onPasswordChange)="onPasswordChange($event)"></app-password-form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

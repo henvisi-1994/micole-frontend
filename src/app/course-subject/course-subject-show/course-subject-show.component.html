@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-8 col-lg-6 ml-auto mr-auto">
+      <app-course-subject-card
+        [courseSubject]="courseSubject"
+        (onUser)="onUser($event)"
+        (onLink)="onLink($event)"
+        (onClasses)="goToClasses($event)"
+        (onEvents)="goToEvents($event)"
+        (onFinalGrade)="goToFinalGrade($event)"
+        (onRecoveryGrade)="goToRecoveryGrade($event)"
+        (onDownload)="onDownload()"
+        (onDownloadFormat)="onDownloadFormat($event)"
+      ></app-course-subject-card>
+    </div>
+  </div>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showTeachers && teacherItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Profesores"
+    subtitle="Información de los profesores que dictan la materia"
+    [headers]="teacherHeaders"
+    [items]="teacherItems"
+    [itemKeys]="teacherKeys"
+    [hasActions]="true"
+    [photo]="true"
+    [actions]="teacherAction"
+    (onAction)="onTeacherAction($event)"
+  ></app-table>
+</div>
+
+<div class="row justify-content-center" *ngIf="userItems.length > 0">
+  <app-table
+    *appHasPermission="['Teacher','SuperAdmin']"
+    class="full-screen"
+    title="Estudiantes"
+    subtitle="Información de los estudiantes del curso"
+    [headers]="userHeaders"
+    [items]="userItems"
+    [itemKeys]="userKeys"
+    [hasActions]="true"
+    [photo]="true"
+    [actions]="studentAction"
+    (onAction)="onAction($event, 'user')"
+  ></app-table>
+</div>
+
+<app-notification-modal
+  *appHasPermission="['CanCreateComments']"
+  (onNotification)="onNotification($event)"
+></app-notification-modal>

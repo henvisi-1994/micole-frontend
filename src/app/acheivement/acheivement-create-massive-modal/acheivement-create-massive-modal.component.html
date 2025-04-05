@@ -1,0 +1,46 @@
+<div class="modal fade" id="acheivementMassiveModal" tabindex="-1" role="dialog" aria-labelledby="acheivementMassiveModal" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{modalTitle}}</h4>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="acheivementUploadForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Año escolar" formControlName="year" multiple>
+                  <mat-option *ngFor="let year of parameters.years" [value]="year.id">
+                    {{ year.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Periodo" formControlName="period">
+                  <mat-option *ngFor="let p of parameters.periods" [value]="p.id">
+                    {{ p.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <input type="file" formControlName="file"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="handleFileInput($event.target.files)">
+          <div class="text-center">
+            <button type="submit"
+            [disabled]="!acheivementUploadForm.valid" class="btn btn-info">{{modalButton}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

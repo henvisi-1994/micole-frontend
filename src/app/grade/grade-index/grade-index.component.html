@@ -1,0 +1,47 @@
+<div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+  <div class="card">
+    <div class="card-header card-header-icon">
+      <div class="card-icon card-icon-color">
+        <i class="fa fa-graduation-cap fa-2x"></i>
+      </div>
+      <h4 class="card-title">Notas para {{grades.course}}: {{grades.name}}
+      </h4>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngIf="periods.length > 0">
+        <div class="col-12 col-md-8 col-lg-8">
+          <mat-select placeholder="Seleccionar periodo" class="white-select" ngClass="btn btn-primary btn-round"
+          (selectionChange)="changePeriod($event.value)">
+            <mat-option *ngFor="let period of grades.periods" [value]="period.id">
+              {{period.name}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="row mt-3" *ngIf="tasks.length > 0">
+        <h4 class="col-12">Tareas</h4>
+        <div id="accordion" class="col-12" role="tablist" *ngIf="tasks.length > 0">
+          <div class="card-collapse" *ngFor="let task of tasks let i = index">
+            <div class="card-header" role="tab" id="heading{{i}}">
+              <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#task{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="task{{i}}">
+                  {{task.name}}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div id="task{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="task{{i}}"
+            data-parent="#accordion" style="">
+              <div class="card-body">
+                <p>Porcentaje de la tarea: {{task.percentage}}%</p>
+                <p *ngIf="task.score.value !== null">Nota: {{task.score.value}}</p>
+                <p *ngIf="task.score.value === null">La tarea no se ha calificado</p>
+                <a class="mt-2" (click)="showTask(task.id)" style="cursor: pointer;">Ver detalle</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

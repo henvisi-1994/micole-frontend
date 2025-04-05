@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+      <app-franchise-card
+      [franchise]="franchise"
+      [currentValue]="currentValue"
+      (onDisabled)="disabledFranchise()"
+      (onOpenModal)="currentValue = null"
+      (onSubmit)="onSubmit($event)"
+      (onCounselor)="onCounselor($event)"></app-franchise-card>
+    </div>
+    </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="showSchoolYear && schoolYearItems.length > 0">
+  <app-table
+  class="full-screen"
+  title="Años escolares"
+  subtitle="Información de cada uno de los años que tiene la sede"
+  [headers]="schoolYearHeaders"
+  [items]="schoolYearItems"
+  [itemKeys]="schoolYearKeys"
+  [hasActions]="hasAction"
+  [actions]="schoolYearAction"
+  (onAction)="onSchoolYearAction($event)"
+  ></app-table>
+</div>
+
+
+<div class="row justify-content-center" *ngIf="users && users.length > 0">
+  <app-table
+  class="full-screen"
+  title="Orientadores"
+  subtitle="Información de los orientadores asociados a la sede"
+  [headers]="userHeaders"
+  [items]="users"
+  [itemKeys]="userKeys"
+  [hasActions]="hasAction"
+  [actions]="userAction"
+  [photo]="true"
+  (onAction)="onUserAction($event)"
+  ></app-table>
+</div>

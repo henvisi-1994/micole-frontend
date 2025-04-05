@@ -1,0 +1,147 @@
+<form [formGroup]="helpForm" (ngSubmit)="onSubmit()">
+  <div class="row mb-3">
+    <div class="col-12">
+      <mat-radio-group formControlName="sad"
+        [ngClass]="{'has-success': showSuccess('sad')}">
+          <mat-label class="mb-1">1. ¿Con qué frecuencia te sientes triste?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Nunca'">Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Casi Nunca'">Casi Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'A veces'">A veces</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Frecuentemente'">Frecuentemente</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Siempre'">Siempre</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('sad','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formControlName="mistreated"
+        [ngClass]="{'has-success': showSuccess('mistreated')}">
+          <mat-label class="mb-1">2. ¿Te sientes maltratado/a por algún miembro de la institución o de tu familia o de tu entorno?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Nunca'">Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Casi Nunca'">Casi Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'A veces'">A veces</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Frecuentemente'">Frecuentemente</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Siempre'">Siempre</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('mistreated','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formControlName="fear"
+        [ngClass]="{'has-success': showSuccess('fear')}">
+          <mat-label class="mb-1">3. ¿Te Sientes impaciente o con miedo?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Nunca'">Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Casi Nunca'">Casi Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'A veces'">A veces</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Frecuentemente'">Frecuentemente</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Siempre'">Siempre</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('fear','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formControlName="mood"
+        [ngClass]="{'has-success': showSuccess('mood')}">
+          <mat-label class="mb-1">4. ¿Tienes problemas familiares que afecten tu estado de ánimo?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Nunca'">Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Casi Nunca'">Casi Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'A veces'">A veces</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Frecuentemente'">Frecuentemente</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Siempre'">Siempre</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('mood','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formControlName="suicide"
+        [ngClass]="{'has-success': showSuccess('suicide')}">
+          <mat-label class="mb-1">5. ¿Has pensado suicidarte?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Nunca'">Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Casi Nunca'">Casi Nunca</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'A veces'">A veces</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Frecuentemente'">Frecuentemente</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Siempre'">Siempre</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('suicide','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formArrayName="fail"
+        [ngClass]="{'has-success': showSuccess('fail')}">
+          <mat-label class="mb-1">6. ¿Alguna vez as fallado al colegio por una o varias de las siguientes razones?</mat-label>
+          <br>
+          <mat-checkbox [formControlName]="0">Dificultades económicas de tu familia</mat-checkbox>
+          <br>
+          <mat-checkbox [formControlName]="1">Problemas de inseguridad de tu barrio</mat-checkbox>
+          <br>
+          <mat-checkbox [formControlName]="2">Tienes que ir a trabajar</mat-checkbox>
+          <br>
+          <mat-checkbox [formControlName]="3">No sientes ganas de asistir</mat-checkbox>
+          <br>
+          <mat-checkbox [formControlName]="4">Otra razón</mat-checkbox>
+          <!-- <br> -->
+          <!-- <mat-error *ngIf="hasError('fail','required')">
+            La respuesta es obligatoria
+          </mat-error> -->
+        </mat-radio-group>
+    </div>
+    <div class="col-12">
+      <mat-radio-group formControlName="pregnancy"
+        [ngClass]="{'has-success': showSuccess('pregnancy')}">
+          <mat-label class="mb-1">7. ¿Estás embarazada o embarazado?</mat-label>
+          <br>
+          <mat-radio-button [value]="'Si'">Si</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'No'">No</mat-radio-button>
+          <br>
+          <mat-radio-button [value]="'Tal vez'">Tal vez</mat-radio-button>
+          <br>
+          <mat-error *ngIf="hasError('pregnancy','required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-radio-group>
+    </div>
+    <div class="col-md-6 ml-auto mr-auto text-center">
+      <button
+      [disabled]="!helpForm.valid"
+      type="submit" class="btn btn-info btn-round">
+        Crear caso
+      </button>
+    </div>
+  </div>
+</form>

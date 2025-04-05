@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="material-icons">view_timeline</i>
+        </div>
+        <h4 class="card-title">Observaciones</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="course.students.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let student of course.students; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#student{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="schoolYear{{ i }}"
+                >
+                  {{ student.student}}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="student{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="student{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="card-body">
+                <div
+                class="d-flex flex-column flex-nowrap">
+                  <button *appHasPermission="['SuperAdmin','Teacher']" class="w-50 btn btn-primary mb-2" (click)="createObservation(student.id)">Crear observación</button>
+                  <ng-template [ngIf]="student.periods.length > 0">
+                    <div
+                      class="d-flex flex-row flex-nowrap"
+                      *ngFor="let info of student.periods"
+                    >
+                      <div class="m-1 p-1 d-flex flex-row border full-width">
+                        <p class="m-0">{{info.period}}: {{info.text}}</p>
+                      </div>
+                      <i *appHasPermission="['SuperAdmin','Teacher']" class="fa fa-trash icon-red fa-1x align-self-center"
+                      (click)="deleteObservation(info.id, student.student, info.period)"></i>
+                    </div>
+                  </ng-template>
+                  <ng-template [ngIf]="student.periods.length === 0">
+                    <p>No hay observaciones para el estudiante</p>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="course.students.length === 0">
+          No hay estudiantes asignados
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<app-course-observation-modal
+[periods]="course.periods"
+(onAction)="create($event)"></app-course-observation-modal>

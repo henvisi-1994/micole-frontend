@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+      <div class="card card-profile">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="material-icons">school
+            </i>
+          </div>
+        </div>
+        <div class="card-body">
+          <h6 class="card-category text-gray">
+            {{schoolYearPeriod.school}}
+          </h6>
+          <p class="card-description mb-0">Sede: {{ schoolYearPeriod.franchise }} </p>
+          <p class="card-description mb-0">Año: {{ schoolYearPeriod.year }} </p>
+
+          <div class="row mt-3 mb-3">
+            <div class="col-12 col-lg-12 col-md-12 full-width ml-auto mr-auto"
+            *appHasPermission="['SuperAdmin','Admin']">
+              <button
+              (click)="sendReport()"
+              class="btn btn-primary btn-round full-width">Enviar reporte</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ml-auto mr-auto">
+  <div class="card">
+    <div class="card-header card-header-my-cole">
+      <h4 class="card-title">Grados</h4>
+      <p class="card-category">Resumen de personas que perdieron el año</p>
+    </div>
+    <div class="card-body">
+      <mat-accordion displayMode="" multi>
+        <mat-expansion-panel *ngFor="let grade of schoolYearPeriod.grades">
+          <mat-expansion-panel-header class="mat-row">
+            <span class="mat-cell">{{grade.grade}}</span>
+          </mat-expansion-panel-header>
+          <mat-accordion class="mat-table">
+            <mat-expansion-panel *ngFor="let course of grade.courses">
+              <mat-expansion-panel-header class="mat-row">
+                <span class="mat-cell">{{course.course}}</span>
+              </mat-expansion-panel-header>
+              <mat-accordion class="mat-table">
+                <mat-expansion-panel *ngFor="let user of course.users">
+                  <mat-expansion-panel-header class="mat-row">
+                    <span class="mat-cell">{{user.name}}-{{user.identification}}</span>
+                  </mat-expansion-panel-header>
+                  <mat-accordion class="mat-table">
+                    <mat-expansion-panel *ngFor="let group of user.groups">
+                      <mat-expansion-panel-header class="mat-row">
+                        <span class="mat-cell">{{group.group}}</span>
+                      </mat-expansion-panel-header>
+                      <p><b>Calificación:</b> {{group.grade}}</p>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-expansion-panel>
+      </mat-accordion>
+  </div>
+</div>
+
+

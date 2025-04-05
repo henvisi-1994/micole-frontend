@@ -1,0 +1,18 @@
+<!-- <div> -->
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a href="javascript:void(0)">
+      <img [src]="redemption.priceImage" alt="" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <p class="card-category">Cupon: {{ redemption.coupon }}</p>
+    <p class="card-category">Aliado: {{ redemption.ally }}</p>
+    <p class="card-category">Contacto: {{ redemption.allyDetails }}</p>
+    <p class="card-category">Puntos: {{ redemption.pricePoints }}</p>
+    <h4 class="card-title">
+      {{ redemption.price }}
+    </h4>
+    <p class="card-description mb-0">{{ redemption.priceDescription }}</p>
+  </div>
+</div>

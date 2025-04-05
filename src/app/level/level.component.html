@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-12 text-right" *appHasPermission="['SuperAdmin']">
+    <a
+      class="btn btn-primary"
+      [routerLink]="['/', 'dashboard', 'levels', 'new']"
+      routerLinkActive="router-link-active"
+      >Crear nivel</a
+    >
+  </div>
+  <app-level-card
+    class="col-12 col-md-6 col-lg-4 mt-4"
+    [level]="level"
+    (onLodLevels)="onLoadLevels($event)"
+    *ngFor="let level of levels"
+  ></app-level-card>
+  <h3 class="col-12 text-center" *ngIf="levels.length == 0">
+    No hay niveles creados
+  </h3>
+</div>

@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-trophy fa-2x"></i>
+        </div>
+        <h4 class="card-title">{{ title }}</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="prizeForm" (ngSubmit)="onSubmit()">
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('name') }"
+              >
+                <input
+                  formControlName="name"
+                  matInput
+                  type="text"
+                  placeholder="Nombre"
+                />
+                <mat-error *ngIf="hasError('name', 'required')">
+                  El nombre del premio es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'minlength')">
+                  El nombre del premio tiene que ser al menos 3 caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'maxlength')">
+                  El nombre del premio tiene que ser máximo 255 caracteres
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 col-md-12 col-lg-12">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('points') }"
+              >
+                <input
+                  formControlName="points"
+                  matInput
+                  type="number"
+                  placeholder="Puntos para redimir"
+                />
+                <mat-error *ngIf="hasError('points', 'required')">
+                  Los puntos son requeridos
+                </mat-error>
+                <mat-error *ngIf="hasError('points', 'min')">
+                  Los puntos debe ser mayor o igual a 0
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <p class="col-12">Puedes subir imagenes png y jpg</p>
+            <div class="col-12 ml-auto mr-auto">
+              <input
+                type="file"
+                formControlName="image"
+                [accept]="extensions()"
+                (change)="handleFileInput($event.target.files)"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field>
+                <textarea
+                  formControlName="description"
+                  matInput
+                  rows="6"
+                  placeholder="Descripción"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!prizeForm.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                {{ title }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

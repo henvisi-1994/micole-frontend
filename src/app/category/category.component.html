@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-12 text-right" *appHasPermission="['SuperAdmin']">
+    <a
+      class="btn btn-primary"
+      [routerLink]="['/', 'dashboard', 'categories', 'new']"
+      routerLinkActive="router-link-active"
+      >Crear categoria</a
+    >
+  </div>
+  <app-category-card
+    class="col-12 col-md-6 col-lg-4 mt-4"
+    [category]="category"
+    (onLoadCategories)="onLoadCategories($event)"
+    *ngFor="let category of categories"
+  >
+  </app-category-card>
+</div>

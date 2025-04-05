@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <app-user-form
+      [showSchools]="showSchools"
+      [showRoles]="true"
+      [showPassword]="true"
+      (onEdit)="onEdit($event)"
+      [roles]="roles"
+      [title]="'Crear usuario'"></app-user-form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="row">
+  <!-- <div class="col-12 text-right" *appHasPermission="['SuperAdmin']">
+    <a class="btn btn-primary" (click)="moveToCreatePrize()">Crear premio</a>
+  </div> -->
+  <app-prize-card
+    class="col-12 col-lg-4 col-md-6 mr-auto ml-auto"
+    [prize]="prize"
+    (onChangeStatus)="changeStatus()"
+    (onUploadCoupon)="uploadCoupon()"
+  ></app-prize-card>
+</div>
+
+<app-table
+  *ngIf="show"
+  title="Cupones"
+  subtitle="Información de los cupones del premio"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [hasActions]="false"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>
+
+<app-coupon-modal [id]="id" (onCouponModal)="reloadData()"></app-coupon-modal>

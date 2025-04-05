@@ -1,0 +1,31 @@
+.card-header {
+  background-color: #2C3E50 !important;
+}
+
+.btn-primary {
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+
+.btn-primary:hover {
+  background-color: #1a252f;
+  border-color: #1a252f;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+
+.table th {
+  font-weight: 500;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+}
+

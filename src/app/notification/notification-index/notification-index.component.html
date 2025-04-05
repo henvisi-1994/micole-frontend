@@ -1,0 +1,70 @@
+<div class="card">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="fa fa-comment fa-2x"></i>
+    </div>
+    <h4 class="card-title">Observador</h4>
+  </div>
+  <div class="card-body">
+    <div id="accordion" role="tablist" *ngIf="notfications.length > 0">
+      <div class="card-collapse" *ngFor="let course of notfications let i = index">
+        <div class="card-header" role="tab" id="heading{{i}}">
+          <h5 class="mb-0">
+            <a class="collapsed" data-toggle="collapse" href="#course{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="course{{i}}">
+              {{course.course}}
+              <i class="material-icons">keyboard_arrow_down</i>
+            </a>
+          </h5>
+        </div>
+        <div id="course{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="course{{i}}"
+        data-parent="#accordion" style="">
+          <div class="card-body">
+            <ng-template [ngIf]="course.notifications.length > 0">
+              <div class="row border mb-2" *ngFor="let notification of course.notifications">
+                <p class="col-12 mt-2">
+                  <b>Descripción:</b> {{notification.description}}
+                </p>
+                <p class="col-12 mt-2">
+                  <b>Fecha de la observacion:</b> {{notification.date}}
+                </p>
+                <p class="col-12 mt-2">
+                  <b>Acciones tomadas:</b> {{notification.actionTaken}}
+                </p>
+                <p class="col-12 mt-2" *ngIf="notification.studentDischarges.length > 0">
+                  <b>Descargo del estudiante:</b> {{notification.studentDischarges}}
+                </p>
+                <p class="col-12 mt-2" *ngIf="notification.studentDischargesDate != null">
+                  <b>Fecha del descargo del estudiante:</b> {{notification.studentDischargesDate}}
+                </p>
+                <p class="col-12 mt-2" *ngIf="notification.parentDischarges.length > 0">
+                  <b>Descargo del acudiente:</b> {{notification.parentDischarges}}
+                </p>
+                <p class="col-12 mt-2" *ngIf="notification.parentDischargesDate != null">
+                  <b>Fecha del descargo del acudiente:</b> {{notification.parentDischargesDate}}
+                </p>
+                <p class="col-12 mt-2" *ngIf="notification.appointment != null">
+                  <b>Fecha de citación:</b> {{notification.appointment}}
+                </p>
+                <p class="col-12 mt-2">
+                  <b>Severidad:</b> {{getSeverity(notification.severity)}}
+                </p>
+                <p *ngIf="notification.teacher != null" class="col-12 mt-2">
+                  <b>Profesor:</b> {{notification.teacher}}
+                </p>
+                <div class="col-12 text-center" *ngIf="showDischarges(notification.appointment,notification.studentDischarges,notification.parentDischarges)">
+                  <button class="btn btn-primary btn-round" (click)="openDischarges(notification.id)">
+                    Descargos
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <h5 *ngIf="course.notifications.length === 0">No hay observaciónes para este curso</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="text-center" *ngIf="notfications.length === 0">
+      No tiene observaciónes
+    </h5>
+  </div>
+</div>

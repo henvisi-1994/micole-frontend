@@ -1,0 +1,51 @@
+<div
+  class="modal fade"
+  id="couponModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="couponModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="couponModal">Crear cupones</h5>
+        <button
+          mat-button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="modalForm" (ngSubmit)="onSubmit()">
+          <div class="row mt-3">
+            <p class="col-12">Puedes subir un excel</p>
+            <div class="col-12 ml-auto mr-auto">
+              <input
+                type="file"
+                formControlName="file"
+                [accept]="extensions()"
+                (change)="handleFileInput($event.target.files)"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!modalForm.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                Crear
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

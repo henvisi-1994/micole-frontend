@@ -1,0 +1,13 @@
+<app-table
+*ngIf="show"
+[title]="userTitle"
+[subtitle]="userSubtitle"
+[headers]="headers"
+[items]="items"
+[itemKeys]="keys"
+[hasPagination]="false"
+[showSearch]="false"
+[hasActions]="true"
+[photo]="true"
+[actions]="actions"
+(onAction)="onAction($event)"></app-table>

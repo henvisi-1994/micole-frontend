@@ -1,0 +1,90 @@
+<div class="modal fade"
+tabindex="-1" role="dialog" aria-labelledby="notificationModal" aria-hidden="true"
+id="notificationModal">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear observación</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" arai-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('description')}">
+                <textarea
+                  formControlName="description"
+                  matInput rows="6" placeholder="Descripción"></textarea>
+                  <mat-error *ngIf="hasError('description','required')">
+                    La Descripción de la falta es requerida
+                  </mat-error>
+                  <mat-error *ngIf="hasError('description','minlength')">
+                    La Descripción de la falta tiene que ser mínimo 3 caracteres
+                  </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('action')}">
+                <textarea
+                  formControlName="action"
+                  matInput rows="6" placeholder="Acciones tomadas"></textarea>
+                  <mat-error *ngIf="hasError('action','required')">
+                    La Acciones tomadas son requerida
+                  </mat-error>
+                  <mat-error *ngIf="hasError('action','minlength')">
+                    La Acciones tomadas tiene que ser mínimo 3 caracteres
+                  </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Tipo" formControlName="severity">
+                  <mat-option *ngFor="let s of getSeverities()" [value]="s">
+                    {{severity[s]}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-checkbox (change)="changeAppointment($event.checked)">Tiene citación ?</mat-checkbox>
+          <div class="row mb-3" *ngIf="hasAppointment">
+            <div class="col-12">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('appointment')}">
+                <input matInput
+                formControlName="appointment"
+                autocomplete="off"
+                [min]="minDate" [matDatepicker]="picker" placeholder="Fecha de la citación" (click)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker
+                ></mat-datepicker>
+                <mat-error *ngIf="hasError('appointment','required')">
+                  La fecha de citación es requerida
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12">
+              <input placeholder="Seleccione la hora"
+              class="form-control"
+              formControlName="hour"
+              aria-label="Seleccione la hora" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+              <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit"
+            [disabled]="!notificationForm.valid" class="btn btn-info btn-round">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

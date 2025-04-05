@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg  navbar-absolute" [ngClass]="{'text-white': isLight, 'navbar-transparent': isLight, 'navbar-white': !isLight}">
+  <div [ngClass]="{'container': !isFluid, 'container-fluid': isFluid}">
+    <div class="navbar-wrapper">
+      <a class="navbar-brand" href="javascript:;" *ngIf="hasName">{{name}}</a>
+      <div class="breadcrumbs-container" *ngIf="!hasName">
+        <app-breadcrumb *ngFor="let b of breadcrumbs; let i=index" [name]="b"
+        [last]="(i + 1) == breadcrumbs.length"></app-breadcrumb>
+      </div>
+
+    </div>
+    <button mat-button class="navbar-toggler"
+    (click)="sidebarToggle()" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!isAuth && public">
+          <a routerLink="/login" class="nav-link">
+            <i class="material-icons">fingerprint</i>
+            Inicio de sessión
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isAuth && public">
+          <a routerLink="/" class="nav-link">
+            <i class="material-icons">dashboard</i>
+            Dashboard
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

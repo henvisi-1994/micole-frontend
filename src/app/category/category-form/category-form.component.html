@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-tags fa-2x"></i>
+        </div>
+        <h4 class="card-title">{{ title }}</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="categoryGroup" (ngSubmit)="onSubmit()">
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('name') }"
+              >
+                <input
+                  formControlName="name"
+                  matInput
+                  type="text"
+                  placeholder="Nombre"
+                />
+                <mat-error *ngIf="hasError('name', 'required')">
+                  El nombre de la categoria es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'minlength')">
+                  El nombre de la categoria tiene que ser al menos 3 caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'maxlength')">
+                  El nombre de la categoria tiene que ser máximo 255 caracteres
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <mat-form-field>
+                <textarea
+                  formControlName="description"
+                  matInput
+                  rows="6"
+                  placeholder="Descripción"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!categoryGroup.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                {{ title }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

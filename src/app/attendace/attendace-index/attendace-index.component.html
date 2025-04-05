@@ -1,0 +1,85 @@
+
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-history fa-2x"></i>
+        </div>
+        <h4 class="card-title">Asistencia del {{current.format('YYYY-MM-DD')}}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 mr-auto">
+            <mat-form-field >
+              <input matInput [matDatepicker]="picker" placeholder="Seleccione una fecha" (click)="picker.open()"
+              [max]="maxDate"
+              (dateChange)="onDate($event)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker
+              ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div id="accordion" role="tablist" *ngIf="students.length > 0">
+          <div class="card-collapse" *ngFor="let student of students let i = index">
+            <div class="card-header" role="tab" id="heading{{i}}">
+              <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#student{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="student{{i}}">
+                  {{ student.fullName.trim() }}-{{ getAttendance(student.id) }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div id="student{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="student{{i}}"
+            data-parent="#accordion" style="">
+              <div class="card-body">
+                <p class="col-12">Identificación: {{ student.identification }}</p>
+                <p class="col-12">Correo electrónico: {{ student.email }}</p>
+                <div class="col-12" *ngIf="showAtttendance(student.id)">
+                  <p *appHasPermission="['Teacher','SuperAdmin']">Valor seleccionado: {{getValue(i)}}</p>
+                </div>
+                <div class="container-legend" *ngIf="showAtttendance(student.id)">
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-red" [matTooltip]="'No asistió'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'NOATTENDANCE')"></div>
+                  </div>
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-gray" [matTooltip]="'Retardo'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'DELAY')"></div>
+                  </div>
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-green" [matTooltip]="'Asistió'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'ATTENDANCE')"></div>
+                  </div>
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-orange" [matTooltip]="'Evasión'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'EVASION')"></div>
+                  </div>
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-blue" [matTooltip]="'Mal uso del uniforme'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'SCHOOL_UNIFORM')"></div>
+                  </div>
+                  <div class="column" *appHasPermission="['Teacher','SuperAdmin']">
+                    <div class="circle circle-yellow" [matTooltip]="'No asistencia con justificación'" [matTooltipPosition]="'above'"
+                    (click)="setValue(i,'JUSTIFIED_NOATTENDANCE')"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="showButton()">
+          <button class="btn btn-primary btn-round"
+          [disabled]="noSelectedAttendance()"
+          (click)="takeAttendance()" *appHasPermission="['Teacher','SuperAdmin']">
+            Tomar asistencia
+          </button>
+        </div>
+        <h5 class="text-center" *ngIf="students.length === 0">
+          No hay estudiantes asociados al curso
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

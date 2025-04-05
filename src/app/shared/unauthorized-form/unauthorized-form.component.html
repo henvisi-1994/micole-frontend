@@ -1,0 +1,202 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
+      <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
+        <div class="card card-login" [ngClass]="{ 'card-hidden': cardHidden }">
+          <div class="card-header card-header-my-cole text-center">
+            <h4>{{ title | uppercase }}</h4>
+          </div>
+          <div class="card-body card-wrapper-center">
+            <span class="bmd-form-group full-width" *ngIf="!isPasswordRestart">
+              <div class="input-group form-inline">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">email</i>
+                  </span>
+                </div>
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    matInput
+                    type="text"
+                    placeholder="# de identificación o correo electrónico"
+                    formControlName="email"
+                    autocomplete="username"
+                  />
+                  <mat-error *ngIf="hasError('email', 'required')">
+                    El numero de identificación o el correo electronico es
+                    requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('email', 'pattern')">
+                    El numero de identificación o el correo electronico o  es
+                    requerida
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </span>
+            <span
+              class="bmd-form-group full-width"
+              *ngIf="isLogin || isPasswordRestart"
+            >
+              <div class="input-group form-inline">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">lock_outline</i>
+                  </span>
+                </div>
+                <mat-form-field
+                  [ngClass]="{
+                    'has-success': isLogin
+                      ? showSuccess('password')
+                      : showSuccess('newPassword')
+                  }"
+                >
+                  <input
+                    matInput
+                    [type]="hide ? 'password' : 'text'"
+                    placeholder="Contraseña"
+                    [formControlName]="isLogin ? 'password' : 'newPassword'"
+                    autocomplete="current-password"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide"
+                  >
+                    <mat-icon>{{
+                      hide ? "visibility_off" : "visibility"
+                    }}</mat-icon>
+                  </button>
+                  <mat-error
+                    *ngIf="
+                      isLogin
+                        ? hasError('password', 'required')
+                        : hasError('newPassword', 'required')
+                    "
+                  >
+                    La contraseña es requerida
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      isLogin
+                        ? hasError('password', 'minlength')
+                        : hasError('newPassword', 'minlength')
+                    "
+                  >
+                    La contraseña tiene que ser mínimo 8 caracteres
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      !isLogin ? hasError('newPassword', 'pattern') : false
+                    "
+                  >
+                    La contraseña debe tener una mayúscula, una minúscula, un
+                    numero y un carácter especial
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </span>
+            <div class="form-group full-width" *ngIf="isLogin">
+              <div class="form-inline">
+                <mat-checkbox formControlName="accept">
+                  <a
+                    href="https://micolesas.com/politicasdeprivacidad/"
+                    target="blank"
+                    >¿Aceptar terminos y condiciones ?</a
+                  >
+                  <mat-error *ngIf="hasError('accept', 'required')">
+                    Debes acepter los terminos y condiciones
+                  </mat-error>
+                </mat-checkbox>
+              </div>
+            </div>
+            <span class="bmd-form-group full-width" *ngIf="isPasswordRestart">
+              <div class="input-group form-inline">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">lock_outline</i>
+                  </span>
+                </div>
+                <mat-form-field>
+                  <input
+                    matInput
+                    [type]="hideConfirm ? 'password' : 'text'"
+                    placeholder="Confirmacion de contraseña"
+                    formControlName="newPasswordConfirmation"
+                    autocomplete="current-password"
+                    [errorStateMatcher]="matcher"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="hideConfirm = !hideConfirm"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hideConfirm"
+                  >
+                    <mat-icon>{{
+                      hideConfirm ? "visibility_off" : "visibility"
+                    }}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="loginForm.hasError('confirmation')">
+                    Las contraseñas no coinciden
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </span>
+            <!-- <div class="input-group form-inline mt-2 mb-2" *ngIf="isLogin">
+              <mat-select
+                placeholder="Seleccione la escuela"
+                class="white-select"
+                name="school"
+                ngClass="btn btn-primary btn-round"
+                formControlName="schoolId"
+              >
+                <mat-option *ngFor="let school of schools" [value]="school.id">
+                  {{ school.name }}
+                </mat-option>
+              </mat-select>
+            </div> -->
+            <div class="row" *ngIf="isLogin">
+              <div class="col-12 text-center">
+                <a
+                  [routerLink]="['/request-email-verification']"
+                  routerLinkActive="router-link-active"
+                  class="btn btn-link btn-primary"
+                  >Enviar correo de verificacion</a
+                >
+              </div>
+              <div class="col-12 text-center">
+                <a
+                  [routerLink]="['/request-password-change']"
+                  routerLinkActive="router-link-active"
+                  class="btn btn-link btn-primary"
+                  >Recuperar contraseña</a
+                >
+              </div>
+            </div>
+            <div class="row" *ngIf="!isLogin">
+              <div class="col-12 text-center">
+                <a
+                  [routerLink]="['/login']"
+                  routerLinkActive="router-link-active"
+                  class="btn btn-link btn-primary"
+                  >Iniciar sesion</a
+                >
+              </div>
+            </div>
+            <button
+              class="btn btn-info mt-2 mb-2"
+              type="submit"
+              [disabled]="!loginForm.valid"
+            >
+              {{ buttonText }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

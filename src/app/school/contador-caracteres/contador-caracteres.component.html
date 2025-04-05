@@ -1,0 +1,37 @@
+<div class="form-group">
+  <label for="mensaje">Mensaje de notificación <span class="text-danger">*</span></label>
+  <div class="position-relative">
+    <textarea 
+      class="form-control" 
+      id="mensaje" 
+      rows="5" 
+      [(ngModel)]="mensaje" 
+      (input)="actualizarContador()" 
+      [maxlength]="caracteresMaximos"
+      placeholder="Escriba el mensaje de la notificación..."
+      [ngClass]="{'border-warning': caracteresRestantes < 50, 'border-danger': caracteresRestantes < 20}"
+    ></textarea>
+    <div class="contador-caracteres" [ngClass]="{
+      'text-muted': caracteresRestantes > 50,
+      'text-warning': caracteresRestantes <= 50 && caracteresRestantes >= 20,
+      'text-danger': caracteresRestantes < 20
+    }">
+      <small>
+        <span *ngIf="caracteresRestantes > 50">{{caracteresRestantes}} caracteres restantes</span>
+        <span *ngIf="caracteresRestantes <= 50 && caracteresRestantes >= 20">
+          <i class="fa fa-exclamation-circle mr-1"></i>
+          {{caracteresRestantes}} caracteres restantes
+        </span>
+        <span *ngIf="caracteresRestantes < 20">
+          <i class="fa fa-exclamation-triangle mr-1"></i>
+          ¡Solo quedan {{caracteresRestantes}} caracteres!
+        </span>
+      </small>
+    </div>
+  </div>
+  <small class="form-text text-muted mt-2">
+    <i class="fa fa-info-circle mr-1"></i>
+    Las notificaciones tienen un límite de {{caracteresMaximos}} caracteres para garantizar su correcta visualización en dispositivos móviles.
+  </small>
+</div>
+

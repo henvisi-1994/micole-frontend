@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 ml-auto mr-auto">
+      <app-case-card
+      [case]="case"
+      (show)="showForm($event)"
+      (comment)="comment($event)"
+      (close)="close($event)"></app-case-card>
+    </div>
+    <div class="col-12 ml-auto mr-auto" *ngIf="show">
+      <app-case-attend-form
+      [case]="case"
+      (onAction)="studentCard($event)"
+      ></app-case-attend-form>
+    </div>
+    <div class="col-12 col-lg-6" *ngIf="case.studentGuidenceSheetTransformed !== null">
+      <app-case-student-card
+      [case]="case">
+      </app-case-student-card>
+    </div>
+    <div class="col-12 col-lg-6" *ngIf="case.studentGuidenceSheetTransformed !== null">
+      <app-case-observation-card
+      [case]="case">
+      </app-case-observation-card>
+    </div>
+  </div>
+</div>
+<app-case-observation-modal (onAction)="createComment($event)"></app-case-observation-modal>

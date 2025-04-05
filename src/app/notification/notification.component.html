@@ -1,0 +1,10 @@
+<div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+  <app-notification-index
+  [notfications]="notfications"
+  (onDischarge)="openDischarges($event)"></app-notification-index>
+</div>
+
+<app-notification-discharge
+*appHasPermission="['Student','Parent']"
+(onDischarge)="onDischarge($event)">
+</app-notification-discharge>

@@ -1,0 +1,100 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-8 ml-auto mr-auto">
+      <div class="card">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="material-icons">perm_identity</i>
+          </div>
+          <h4 class="card-title">
+            Creación masiva de usuarios
+          </h4>
+        </div>
+        <div class="card-body text-center">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <input type="file" formControlName="users"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            (change)="handleFileInput($event.target.files)">
+            <div class="row mb-3" *ngIf="showSchools || showRoles">
+              <div class="col-12 col-md-6" *ngIf="showRoles">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione el role" name="role"
+                  formControlName="role"
+                  >
+                    <mat-option *ngFor="let role of roles" [value]="role">
+                      {{ role }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6" *ngIf="showSchools">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione un colegio" name="school"
+                  formControlName="school"
+                  >
+                    <mat-option *ngFor="let school of schools" [value]="school.id">
+                      {{ school.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+
+
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('newPassword')}">
+                  <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña"
+                  formControlName="newPassword"
+                  autocomplete="current-password"
+                  />
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="hasError('newPassword','required')">
+                    La contraseña es requerida
+                  </mat-error>
+                  <mat-error *ngIf="hasError('newPassword','minlength')">
+                    La contraseña es mínimo de 8 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('newPassword','pattern')">
+                    La contraseña debe tener una mayúscula, una minúscula, un numero y un carácter especial
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                [ngClass]="{'has-success': showSuccess('newPasswordConfirmation')}"
+                >
+                  <input matInput [type]="hideConfirm ? 'password' : 'text'" placeholder="Confirmar contraseña"
+                  formControlName="newPasswordConfirmation"
+                  autocomplete="current-password"
+                  [errorStateMatcher]="matcher"
+                  />
+                  <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                    <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="userForm.hasError('confirmation')">
+                    La contraseña no coincide
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 ml-auto mr-auto text-center">
+                <button
+                [disabled]="!userForm.valid"
+                type="submit" class="btn btn-info btn-round">
+                  Crear
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

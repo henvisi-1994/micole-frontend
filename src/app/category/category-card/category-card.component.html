@@ -1,0 +1,27 @@
+<div class="card card-profile">
+  <div class="card-body">
+    <h4 class="card-title">
+      {{ category.name }}
+    </h4>
+    <p class="card-description">
+      {{ category.description }}
+    </p>
+    <div class="row mt-1">
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-primary full-width" (click)="updateCategory()">
+          Actualizar
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-danger full-width" (click)="deleteCategory()">
+          Borrar
+        </button>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-info full-width" (click)="moveToAllies()">
+          Aliados
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

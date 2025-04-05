@@ -1,0 +1,14 @@
+<app-table
+  *ngIf="show"
+  title="Cupones"
+  subtitle="Información de los cupones del premio"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [hasActions]="false"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>

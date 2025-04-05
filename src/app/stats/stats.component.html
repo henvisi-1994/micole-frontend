@@ -1,0 +1,133 @@
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+    <div class="card card-profile">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="material-icons">equalizer</i>
+        </div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Estadisticas - {{ selectedSchool.name }}</h4>
+        <div class="row mt-3 mb-3">
+          <div class="col-12 full-width ml-auto mr-auto" *ngIf="isAdmin">
+            <mat-select
+              [(value)]="schoolId"
+              placeholder="Seleccione la escuela"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="schoolChanged($event.value)"
+            >
+              <mat-option *ngFor="let school of schools" [value]="school.id">
+                {{ school.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-12 full-width ml-auto mr-auto">
+            <mat-select
+              [(value)]="selectedStats"
+              placeholder="Seleccione la estadistica"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="statsChanged($event.value)"
+            >
+              <mat-option *ngFor="let key of getStats()" [value]="key">
+                {{ stats[key] }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngIf="isCoursesStats">
+          <div class="col-12 full-width ml-auto mr-auto">
+            <mat-select
+              [(value)]="selectedFranchise"
+              placeholder="Seleccione la sede"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="franchiseChanged($event.value)"
+            >
+              <mat-option
+                *ngFor="let franchise of franchises"
+                [value]="franchise.id"
+              >
+                {{ franchise.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngIf="isCoursesStats">
+          <div class="col-12 full-width ml-auto mr-auto">
+            <mat-select
+              [(value)]="selectedSchoolYear"
+              placeholder="Seleccione el año escolar"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="schoolYearChanged($event.value)"
+            >
+              <mat-option
+                *ngFor="let schoolYear of schoolYears"
+                [value]="schoolYear.id"
+              >
+                {{ schoolYear.year }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngIf="isCoursesStats">
+          <div class="col-12 full-width ml-auto mr-auto">
+            <mat-select
+              [(value)]="selectedCourse"
+              placeholder="Seleccione el curso"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+            >
+              <mat-option *ngFor="let course of courses" [value]="course.id">
+                {{ course.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-12 full-width ml-auto mr-auto">
+            <button class="btn btn-primary" (click)="geneareStats()">
+              Generar estadistica
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-4" *ngIf="showChart">
+  <div class="col-12">
+    <div class="card card-profile">
+      <div class="card-body">
+        <canvas
+          *ngIf="showChart && !isPie"
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+          [colors]="chartColors"
+        >
+        </canvas>
+        <canvas
+          *ngIf="showChart && isPie"
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="pieChartType"
+          [colors]="chartColors"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>

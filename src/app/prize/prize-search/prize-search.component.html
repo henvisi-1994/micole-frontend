@@ -1,0 +1,17 @@
+<div class="row d-flex align-items-center">
+  <div class="col-12 col-md-6 col-lg-4">
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar</mat-label>
+      <input matInput placeholder="Ejemplo premio 1" [(ngModel)]="search" />
+    </mat-form-field>
+  </div>
+  <div class="col-12 col-md-6 col-lg-4">
+    <button
+      class="btn btn-primary"
+      [style.width]="'100%'"
+      (click)="searchPrizes()"
+    >
+      Buscar
+    </button>
+  </div>
+</div>

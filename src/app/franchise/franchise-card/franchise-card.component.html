@@ -1,0 +1,147 @@
+<div class="card card-profile">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="material-icons">school</i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h6 class="card-category text-gray">
+      Teléfono: {{franchise.phone.indicative}} {{franchise.phone.number}}
+      <p *ngIf="franchise.phone.ext">ext: {{franchise.phone.ext}}</p>
+    </h6>
+    <h4 class="card-title">{{franchise.name}}</h4>
+    <p class="card-description mb-0">País: {{ franchise.address.country }} </p>
+    <p class="card-description mb-0">Ciudad: {{ franchise.address.city }} </p>
+    <p class="card-description mb-0">Dirección: {{ franchise.address.street }} </p>
+    <p class="card-description mb-0">Código Postal: {{ franchise.address.postCode }} </p>
+    <p class="card-description mb-0" *ngIf="franchise.message">Mensaje Mi Cole Me Cuida: {{ franchise.message }} </p>
+    <p class="card-description mb-0" *ngIf="!franchise.message">Mensaje Mi Cole Me Cuida: No configurado </p>
+
+    <div class="row mt-3 mb-3">
+      <div class="col-12 full-width ml-auto mr-auto"
+      *appHasPermission="['SuperAdmin','Admin']">
+        <button
+        [routerLink]="['edit']"
+        class="btn btn-primary btn-round full-width">Editar</button>
+      </div>
+      <!-- <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto full-width"
+      *appHasPermission="['CanCreateFranchises']">
+        <button
+        (click)="disabledFranchise()"
+        class="btn btn-danger btn-round full-width">{{getDisabledText()}}</button>
+      </div> -->
+      <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto full-width"
+      *appHasPermission="['SuperAdmin','Admin']">
+        <button
+        (click)="openModal()"
+        [disabled]="franchise.disabled"
+        class="btn btn-info btn-round full-width"
+        >Crear año escolar</button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto full-width"
+      *appHasPermission="['SuperAdmin','Admin']">
+        <app-select-person
+        [btnClass]="'btn-info'"
+        [buttonText]="'Asociar orientador'"
+        [index]="0"
+        [role]="counselor"
+        (onSelectedUser)="onCounselorEvent($event)"
+        [school]="franchise.schoolId"
+        ></app-select-person>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *appHasPermission="['CanCreateSchoolYear']" class="modal fade" id="planSchoolModal" tabindex="-1" role="dialog" aria-labelledby="planModal" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="planModal">{{modalText}}</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="modalForm" (ngSubmit)="submit()">
+          <div class="row mb-3">
+            <div class="col-12 col-md-6">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('startYear')}">
+                <input
+                  formControlName="startYear"
+                  matInput
+                  type="number"
+                  placeholder="Año de inicio">
+                  <mat-error *ngIf="hasError('startYear','required')">
+                    El año de inicio es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('startYear','pattern')">
+                    El año de inicio debe tener 4 números
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('endYear')}">
+                <input
+                  formControlName="endYear"
+                  matInput
+                  type="number"
+                  placeholder="Año de finalización">
+                  <mat-error *ngIf="hasError('endYear','required')">
+                    El año de finalización es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('endYear','pattern')">
+                    El año de finalización debe tener 4 números
+                  </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12 col-md-6">
+              <mat-form-field>
+                <mat-select placeholder="Mes de inicio" formControlName="startMonth">
+                  <mat-option *ngFor="let p of getMonth()" [value]="p">
+                    {{ monthValue[p] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <mat-form-field>
+                <mat-select placeholder="Mes de finalización" formControlName="endMonth">
+                  <mat-option *ngFor="let p of getMonth()" [value]="p">
+                    {{ monthValue[p] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Jornada" formControlName="schoolDay">
+                  <mat-option *ngFor="let p of getSchoolDay()" [value]="p">
+                    {{ schoolDayValue[p] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+              [disabled]="!modalForm.valid"
+              type="submit" class="btn btn-info btn-round">
+                <ng-template [ngIf]="currentValue">Actualizar</ng-template>
+                <ng-template [ngIf]="!currentValue">Crear</ng-template>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

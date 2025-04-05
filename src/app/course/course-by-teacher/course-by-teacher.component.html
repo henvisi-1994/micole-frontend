@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="material-icons">grading</i>
+        </div>
+        <h4 class="card-title">Cursos {{ name }}</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="courses.length > 0">
+          <div
+            class="card-collapse"
+            *ngFor="let course of courses; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#schoolYear{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="schoolYear{{ i }}"
+                >
+                  {{ course.franchise }}- {{ getSchoolYear(course) }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="schoolYear{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="schoolYear{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="card-body">
+                <ng-template [ngIf]="course.courses.length > 0">
+                  <div
+                    class="d-flex flex-row flex-nowrap"
+                    *ngFor="let info of course.courses"
+                  >
+                    <div class="m-1 p-1 d-flex flex-column flex-fill border">
+                      <h5
+                        (click)="courseInfo(info.id, course.userId)"
+                        style="cursor: pointer"
+                      >
+                        {{ info.course }}
+                      </h5>
+                      <p
+                        class="mt-1"
+                        (click)="courseInfo(info.id, course.userId)"
+                        style="cursor: pointer"
+                      >
+                        Grado: {{ info.grade }}
+                      </p>
+                      <div
+                        *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+                      >
+                        <button
+                          (click)="downloadGrade(info.id)"
+                          class="btn btn-primary btn-round full-width"
+                        >
+                        NOTAS POR MATERIA
+                        </button>
+                      </div>
+                    </div>
+                    <i
+                      class="material-icons align-self-center"
+                      (click)="courseInfo(info.id, course.userId)"
+                      style="cursor: pointer"
+                      >keyboard_arrow_right</i
+                    >
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-center" *ngIf="courses.length === 0 && isTeacher">
+          No has sido director de curso
+        </h5>
+        <h5 class="text-center" *ngIf="courses.length === 0 && !isTeacher">
+          No tienes cursos asociados
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

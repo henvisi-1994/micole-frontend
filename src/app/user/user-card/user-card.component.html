@@ -1,0 +1,182 @@
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a>
+      <img [src]="getUserImage()" alt="Profile image" class="img" />
+    </a>
+  </div>
+  <div class="card-body" *ngIf="user != null && user != undefined">
+    <h6 class="card-category text-gray">
+      {{ getIdentification() | titlecase }}
+    </h6>
+    <h4>{{ getFullName() }}</h4>
+    <p class="card-description mb-0" *ngIf="canShow()">
+      Celular: {{ user?.phoneNumber }}
+    </p>
+    <p class="card-description mb-0" *ngIf="canShow()">
+      Teléfono: {{ user?.phone }}
+    </p>
+    <p class="card-description mb-0">Correo electrónico: {{ user?.email }}</p>
+    <p class="card-description mb-0">Genero: {{ getGender() }}</p>
+    <p class="card-description mb-0" *ngIf="canShow()">
+      Tipo de sangre: {{ getBloodType() }}
+    </p>
+    <p class="card-description mb-0">
+      Fecha de nacimiento:
+      {{ (user?.birthday | date: "dd/MM/yyy") || "No se ha establecido" }}
+    </p>
+    <p class="card-description mb-0">
+      Grupo poblacional:
+      {{
+        user?.populationGroup == "Otro"
+          ? user.populationGroupOther
+          : user.populationGroup
+      }}
+    </p>
+    <p class="card-description mb-0">
+      Caracteristica especial: {{ user?.specialFeature }}
+    </p>
+    <p class="card-description mb-0">
+      {{ user?.sms ? "SMS habilitado" : "SMS deshabilitado" }}
+    </p>
+    <p class="card-description mb-0" *ngIf="showEdit && this.roles != undefined">
+      Roles: {{ getUserRoles() }}
+    </p>
+    <p class="card-description mb-0" *ngIf="disabled">
+      Colegio: {{ disabled.school }}
+    </p>
+    <p class="card-description mb-0" *ngIf="user.franchise">
+      Sede: {{ user.franchise }}
+    </p>
+    <p class="card-description mb-0" *ngIf="user.course">
+      Curso: {{ user.course }}
+    </p>
+    <p class="card-description mb-0" *ngIf="canShow()">
+      Enfermedades: {{ user?.diseases }}
+    </p>
+    <p class="card-description">{{ user?.description }}</p>
+    <div
+      *ngIf="showEdit"
+      class="btn btn-round btn-primary"
+      class="btn btn-primary btn-round full-width"
+      (click)="editProfile()"
+    >
+      Editar perfil
+    </div>
+
+    <div class="row" *ngIf="showActions">
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user.role == 'Student'"
+      >
+        <button
+          (click)="downloadNotifications()"
+          class="btn btn-primary btn-round full-width"
+        >
+          Descargar observador
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user.role == 'Student'"
+      >
+        <button
+          (click)="downloadNotificationsExcel()"
+          class="btn btn-primary btn-round full-width"
+        >
+          Descargar observador excel
+        </button>
+      </div>
+
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *appHasPermission="['CanDisabledUser']"
+      >
+        <button
+          (click)="disableUser()"
+          class="btn btn-primary btn-round full-width"
+        >
+          {{ getEnableText() }}
+        </button>
+      </div>
+      <ng-template [ngIf]="(user?.role == student || user?.role == parent) && isAdmin()">
+        <div
+          class="col-12 col-lg-6 ml-auto mr-auto"
+          *appHasPermission="['CanCreateParent', 'CanCreateStudent']"
+        >
+          <app-select-person
+            [btnClass]="'btn-primary'"
+            [buttonText]="
+              user?.role == 'Parent'
+                ? 'Asociar Estudiante'
+                : 'Asociar Acudientes'
+            "
+            [index]="0"
+            [role]="user?.role == 'Parent' ? 'Student' : 'Parent'"
+            (onSelectedUser)="onParent($event)"
+            [school]="user.schoolId"
+          ></app-select-person>
+        </div>
+      </ng-template>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user?.role == student && isParent()"
+      >
+        <button
+          [routerLink]="['/', 'dashboard', 'courses', 'students', user?.id]"
+          [queryParams]="{ name: getFullName() }"
+          class="btn btn-primary btn-round full-width"
+        >
+          Cursos
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user?.role == student && isParent()"
+      >
+        <button
+          [routerLink]="['/', 'dashboard', 'timetables']"
+          [queryParams]="{ name: getFullName(), student: user?.id }"
+          class="btn btn-primary btn-round full-width"
+        >
+          Horario
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user?.role == student && isParent()"
+      >
+        <button
+          [routerLink]="['/', 'dashboard', 'events', user?.id]"
+          [queryParams]="{ name: getFullName() }"
+          class="btn btn-info btn-round full-width"
+        >
+          Eventos
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user?.role == student && isParent()"
+      >
+        <button
+          [routerLink]="['/', 'dashboard', 'tasks', 'student', user?.id]"
+          [queryParams]="{ name: getFullName() }"
+          class="btn btn-info btn-round full-width"
+        >
+          Tareas
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 ml-auto mr-auto full-width"
+        *ngIf="user?.role == student && isParent()"
+      >
+        <button
+          [routerLink]="['/', 'dashboard', 'attendances', user?.id]"
+          [queryParams]="{ name: getFullName() }"
+          class="btn btn-default btn-round full-width"
+        >
+          Asistencia
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

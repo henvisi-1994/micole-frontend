@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-history fa-2x"></i>
+        </div>
+        <h4 class="card-title">Asistencia del {{current.format('YYYY-MM-DD')}}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 mr-auto">
+            <mat-form-field >
+              <input matInput [matDatepicker]="picker" placeholder="Seleccione una fecha" (click)="picker.open()"
+              [max]="maxDate"
+              (dateChange)="onDate($event)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker
+              ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div id="accordion" role="tablist" *ngIf="attendances.length > 0">
+          <div class="card-collapse" *ngFor="let attendance of attendances let i = index">
+            <div class="card-header" role="tab" id="heading{{i}}">
+              <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#subject{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="subject{{i}}">
+                  {{ attendance.subject }}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div id="subject{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="subject{{i}}"
+            data-parent="#accordion" style="">
+              <div class="card-body">
+                <p class="col-12 mt-2">Fecha: {{ attendance.day }}</p>
+                <p class="col-12 mt-2">Día: {{ current.format('dddd') | titlecase }}</p>
+                <p class="col-12 mt-2"><b>{{attendaceValue[attendance.value]}}</b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="text-center" *ngIf="attendances.length === 0">
+          No hay asistencia para este día
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

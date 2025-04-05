@@ -1,0 +1,36 @@
+<div class="row" *ngIf="showFilter">
+  <div class="col-12 col-md-6 col-lg-4">
+    <mat-select
+      placeholder="Seleccionar Filtro"
+      class="white-select"
+      name="school"
+      ngClass="btn btn-primary btn-round"
+      (selectionChange)="changeFilter($event.value)"
+    >
+      <mat-option *ngFor="let filter of filters" [value]="filter.value">
+        {{ filter.key }}
+      </mat-option>
+    </mat-select>
+  </div>
+</div>
+
+<app-table
+  *ngIf="show"
+  [title]="userTitle"
+  [subtitle]="userSubtitle"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [showSearch]="true"
+  [hasActions]="true"
+  [photo]="true"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>
+
+<app-notification-private-modal
+  (onAction)="onNotification($event)"
+></app-notification-private-modal>

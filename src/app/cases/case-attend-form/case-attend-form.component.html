@@ -1,0 +1,780 @@
+<!-- <div> -->
+<div class="card">
+  <div class="card-header card-header-icon">
+    <h4 class="card-title">Ficha del estudiante</h4>
+  </div>
+  <div class="card-body">
+    <p class="card-category no-space">Grado: {{case.grade}}</p>
+    <p class="card-category no-space">Curso: {{case.course}}</p>
+    <p class="card-category no-space">Sede: {{case.franchise}}</p>
+
+    <form [formGroup]="caseAttendForm" (ngSubmit)="onSubmit()">
+      <div class="row mt-3">
+        <div class="col-12">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('dateAndPlace') }"
+          >
+            <input
+              formControlName="dateAndPlace"
+              matInput
+              type="text"
+              placeholder="Fecha y lugar de nacimiento"
+            />
+            <mat-error *ngIf="hasError('dateAndPlace', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Edad</mat-label>
+            <mat-select placeholder="Edad" formControlName="age">
+              <mat-option *ngFor="let a of ages" [value]="a.id">
+                {{ a.value }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('age', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('nuip') }"
+          >
+            <input
+              formControlName="nuip"
+              matInput
+              type="text"
+              placeholder="NUIP"
+            />
+            <mat-error *ngIf="hasError('nuip', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Género</mat-label>
+            <mat-select placeholder="Género" formControlName="gender">
+              <mat-option *ngFor="let a of gender" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('gender', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Jornada</mat-label>
+            <mat-select placeholder="Jornada" formControlName="day">
+              <mat-option *ngFor="let a of day" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('day', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('address') }"
+          >
+            <input
+              formControlName="address"
+              matInput
+              type="text"
+              placeholder="Dirección"
+            />
+            <mat-error *ngIf="hasError('address', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('phone') }"
+          >
+            <input
+              formControlName="phone"
+              matInput
+              type="text"
+              placeholder="Teléfono"
+            />
+            <mat-error *ngIf="hasError('phone', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('attendant') }"
+          >
+            <input
+              formControlName="attendant"
+              matInput
+              type="text"
+              placeholder="Acudiente"
+            />
+            <mat-error *ngIf="hasError('attendant', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('attendantPhone') }"
+          >
+            <input
+              formControlName="attendantPhone"
+              matInput
+              type="text"
+              placeholder="Teléfono"
+            />
+            <mat-error *ngIf="hasError('attendantPhone', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Parentesco</mat-label>
+            <mat-select placeholder="Parentesco" formControlName="attendantRelationship">
+              <mat-option *ngFor="let a of relationship" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('attendantRelationship', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Nivel educativo</mat-label>
+            <mat-select placeholder="Nivel educativo" formControlName="attendantEducationLevel">
+              <mat-option *ngFor="let a of educationLevel" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('attendantEducationLevel', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿Razón por la que se acerca al servicio?</mat-label>
+            <mat-select placeholder="Razón por la que se acerca al servicio" formControlName="reasonOfTheService">
+              <mat-option *ngFor="let a of reasonOfTheService" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('reasonOfTheService', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+          <mat-label>Fecha de remisión</mat-label>
+            <input matInput
+            formControlName="submissionDate"
+            autocomplete="off"
+            [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Fecha de remision" (click)="picker.open()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker
+            ></mat-datepicker>
+            <mat-error *ngIf="hasError('submissionDate','required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿Quién remite?</mat-label>
+            <mat-select placeholder="Quién remite" formControlName="whoSends">
+              <mat-option *ngFor="let a of whoSends" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('whoSends', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <div class="col-12">
+          <mat-form-field>
+          <mat-label>Fecha que ingresa al servicio</mat-label>
+            <input matInput
+            formControlName="serviceDate"
+            autocomplete="off"
+            [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="Fecha que ingresa al servicio" (click)="picker1.open()">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1
+            ></mat-datepicker>
+            <mat-error *ngIf="hasError('serviceDate','required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('descriptionFamiliarRelationship') }">
+            <mat-label>Descripción relación familiar</mat-label>
+            <textarea
+              formControlName="descriptionFamiliarRelationship"
+              matInput rows="6" placeholder="Descripción relación familiar"></textarea>
+              <mat-error *ngIf="hasError('descriptionFamiliarRelationship','required')">
+                El campo es requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('mother') }"
+          >
+            <input
+              formControlName="mother"
+              matInput
+              type="text"
+              placeholder="Madre"
+            />
+            <mat-error *ngIf="hasError('mother', 'required')">
+              El campo es requerido 
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('motherPhone') }"
+          >
+            <input
+              formControlName="motherPhone"
+              matInput
+              type="text"
+              placeholder="Teléfono"
+            />
+            <mat-error *ngIf="hasError('motherPhone', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('motherJob') }"
+          >
+            <input
+              formControlName="motherJob"
+              matInput
+              type="text"
+              placeholder="Ocupación"
+            />
+            <mat-error *ngIf="hasError('motherJob', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Nivel educativo</mat-label>
+            <mat-select placeholder="Nivel educativo" formControlName="motherEducationLevel">
+              <mat-option *ngFor="let a of educationLevel" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('motherEducationLevel', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('father') }"
+          >
+            <input
+              formControlName="father"
+              matInput
+              type="text"
+              placeholder="Padre"
+            />
+            <mat-error *ngIf="hasError('father', 'required')">
+              El campo es requerido 
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('fatherPhone') }"
+          >
+            <input
+              formControlName="fatherPhone"
+              matInput
+              type="text"
+              placeholder="Teléfono"
+            />
+            <mat-error *ngIf="hasError('fatherPhone', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('fatherJob') }"
+          >
+            <input
+              formControlName="fatherJob"
+              matInput
+              type="text"
+              placeholder="Ocupación"
+            />
+            <mat-error *ngIf="hasError('fatherJob', 'required')">
+              El campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Nivel educativo</mat-label>
+            <mat-select placeholder="Nivel educativo" formControlName="fatherEducationLevel">
+              <mat-option *ngFor="let a of educationLevel" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('fatherEducationLevel', 'required')">
+              El campo es requerido es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Embarazo deseado</mat-label>
+            <mat-select placeholder="Embarazo deseado" formControlName="desiredPregnancy">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('pregnancyTime') }"
+          >
+            <input
+              formControlName="pregnancyTime"
+              matInput
+              type="text"
+              placeholder="Tiempo"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('pregnancyMedicaments') }"
+          >
+            <input
+              formControlName="pregnancyMedicaments"
+              matInput
+              type="text"
+              placeholder="Medicamentos"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Sustancias psicoactivas</mat-label>
+            <mat-select placeholder="Sustancias psicoactivas" formControlName="drugs">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('nutrition') }"
+          >
+            <input
+              formControlName="nutrition"
+              matInput
+              type="text"
+              placeholder="Nutrición"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('weight') }"
+          >
+            <input
+              formControlName="weight"
+              matInput
+              type="text"
+              placeholder="Peso"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+            [ngClass]="{ 'has-success': showSuccess('size') }"
+          >
+            <input
+              formControlName="size"
+              matInput
+              type="text"
+              placeholder="Talla"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Incubadora</mat-label>
+            <mat-select placeholder="Incubadora" formControlName="incubator">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <mat-form-field>
+            <mat-label>Tipo de parto</mat-label>
+            <mat-select placeholder="Tipo de parto" formControlName="typeOfBirth">
+              <mat-option *ngFor="let a of typeOfBirth" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Forceps</mat-label>
+            <mat-select placeholder="Forceps" formControlName="forceps">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Dificultades</mat-label>
+            <mat-select placeholder="Dificultades" formControlName="difficulties">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('difficultiesText') }">
+            <mat-label>¿Cuáles?</mat-label>
+            <textarea
+              formControlName="difficultiesText"
+              matInput rows="6" placeholder="¿Cuáles?"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('engineDevelopment') }">
+            <mat-label>Desarrollo Motor</mat-label>
+            <textarea
+              formControlName="engineDevelopment"
+              matInput rows="6" placeholder="Desarrollo Motor"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('engineLanguage') }">
+            <mat-label>Desarrollo de Lenguaje</mat-label>
+            <textarea
+              formControlName="engineLanguage"
+              matInput rows="6" placeholder="Desarrollo de Lenguaje"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Hospitalizaciones</mat-label>
+            <mat-select placeholder="Hospitalizaciones" formControlName="hospitalizations">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Sufre alguna enfermedad</mat-label>
+            <mat-select placeholder="Sufre alguna enfermedad" formControlName="disease">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Tipo de patología</mat-label>
+            <mat-select placeholder="Tipo de patología" formControlName="pathologyType">
+              <mat-option *ngFor="let a of pathologyType" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿Tiene algún tipo de discapacidad?</mat-label>
+            <mat-select placeholder="Sufre alguna enfermedad" formControlName="disease">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿Utiliza algún tipo de de ayuda técnica o dispositivo de apoyo?</mat-label>
+            <mat-select placeholder="Utiliza algún tipo de de ayuda técnica o dispositivo de apoyo" formControlName="technicalHelp">
+              <mat-option *ngFor="let a of technicalHelp" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('technicalHelpText') }">
+            <mat-label>¿Cuál?</mat-label>
+            <textarea
+              formControlName="technicalHelpText"
+              matInput rows="6" placeholder="¿Cuál?"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('diagnosticImpression') }">
+            <mat-label>Impresión diagnóstica</mat-label>
+            <textarea
+              formControlName="diagnosticImpression"
+              matInput rows="6" placeholder="Impresión diagnostica"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>¿Está en estado de embarazo?</mat-label>
+            <mat-select placeholder="Está en estado de embarazo" formControlName="pregnancy">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>¿Número de meses?</mat-label>
+            <mat-select placeholder="Está en estado de embarazo" formControlName="pregnancyMonth">
+              <mat-option *ngFor="let a of months" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿Consume algún tipo de spa?</mat-label>
+            <mat-select placeholder="Consume algún tipo de spa" formControlName="spa">
+              <mat-option *ngFor="let a of options" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>¿Repitencia año escolar?</mat-label>
+            <mat-select placeholder="Repitencia año escolar" formControlName="repeatedSchoolYear">
+              <mat-option *ngFor="let a of yesOrNo" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>¿Cuántas veces?</mat-label>
+            <mat-select placeholder="Cuántas veces" formControlName="repeatedSchoolYearTimes">
+              <mat-option *ngFor="let a of howMany" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('repeatedReason') }">
+            <mat-label>Explique razones</mat-label>
+            <textarea
+              formControlName="repeatedReason"
+              matInput rows="6" placeholder="Explique razones"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          >
+            <input
+              formControlName="repeatedGrades"
+              matInput
+              type="text"
+              placeholder="Grados que repitió"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('activitiesLowerDifficulty') }">
+            <mat-label>Actividades de mayor facilidad</mat-label>
+            <textarea
+              formControlName="activitiesLowerDifficulty"
+              matInput rows="6" placeholder="Actividades de mayor facilidad"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('activitiesHigherDifficulty') }">
+            <mat-label>Actividades de mayor dificultad</mat-label>
+            <textarea
+              formControlName="activitiesHigherDifficulty"
+              matInput rows="6" placeholder="Actividades de mayor dificultad"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>¿En cuántos colegios ha estudiado?</mat-label>
+            <mat-select placeholder="En cuántos colegios ha estudiado" formControlName="studiedSchools">
+              <mat-option *ngFor="let a of howMany" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('studiedSchoolsText') }">
+            <mat-label>Si es mayor a 3, explique las razones</mat-label>
+            <textarea
+              formControlName="studiedSchools"
+              matInput rows="6" placeholder="Si es mayor a tres explique las razones"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Persona que sumistra la información</mat-label>
+            <mat-select placeholder="Persona que sumistra la información" formControlName="personGiveInformation">
+              <mat-option *ngFor="let a of person" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          >
+            <input
+              formControlName="personGiveInformationText"
+              matInput
+              type="text"
+              placeholder="¿Cuál?"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field>
+            <mat-label>Parentesco con el estudiante</mat-label>
+            <mat-select placeholder="Persona que sumistra la información" formControlName="relationship">
+              <mat-option *ngFor="let a of relationship" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field
+          [ngClass]="{ 'has-success': showSuccess('observation') }">
+            <mat-label>Seguimiento</mat-label>
+            <textarea
+              formControlName="observation"
+              matInput rows="6" placeholder="Seguimiento"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 ml-auto mr-auto text-center">
+          <button
+          [disabled]="!caseAttendForm.valid"
+          type="submit" class="btn btn-info btn-round">
+            Ficha estudiante
+          </button>
+        </div>
+        
+      </div>
+    </form>
+
+  </div>
+</div>
+

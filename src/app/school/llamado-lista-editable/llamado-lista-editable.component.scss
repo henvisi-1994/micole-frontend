@@ -1,0 +1,44 @@
+.card-header {
+  background-color: #2C3E50 !important;
+}
+
+.btn-primary {
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+
+.btn-primary:hover {
+  background-color: #1a252f;
+  border-color: #1a252f;
+}
+
+.custom-file-label::after {
+  background-color: #2C3E50;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #f39c12;
+}
+
+.badge-success {
+  background-color: #2ecc71;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.modal-header {
+  background-color: #2C3E50;
+}
+
+.evidencia-preview {
+  max-height: 400px;
+  overflow-y: auto;
+}
+

@@ -1,0 +1,29 @@
+<!-- <div> -->
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a href="javascript:void(0)">
+      <img [src]="level.image" alt="" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <p class="card-category">
+      Limite: {{ level.lowerBound }}-{{ level.upperBound }}
+    </p>
+    <h4 class="card-title">
+      {{ level.name }}
+    </h4>
+    <p class="card-description mb-0">{{ level.description }}</p>
+    <div class="row mt-1">
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-primary full-width" (click)="updateLevel()">
+          Actualizar
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6">
+        <button class="btn btn-danger full-width" (click)="deleteLevel()">
+          Borrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

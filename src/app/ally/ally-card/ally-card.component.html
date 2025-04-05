@@ -1,0 +1,49 @@
+<!-- <div> -->
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a href="javascript:void(0)">
+      <img [src]="ally.logo" alt="" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <p class="card-category">Categoria: {{ ally.categoryName }}</p>
+    <h4 class="card-title">
+      {{ ally.name }}
+    </h4>
+    <p class="card-description mb-0">
+      Detalles de contacto: {{ ally.contactDetail }}
+    </p>
+    <p class="card-description mb-0">{{ ally.description }}</p>
+    <div class="card-category" *ngIf="ally.franchises.length > 0 && show">
+      <h4>Sedes</h4>
+      <div class="row" *ngFor="let franchise of filteredFranchises()">
+        <p class="col-12">{{ franchise.schoolName }} - {{ franchise.name }}</p>
+      </div>
+    </div>
+    <div
+      class="row mt-1"
+      *appHasPermission="['Admin', 'Parent', 'Student', 'Teacher']"
+    >
+      <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto">
+        <button class="btn btn-info full-width" (click)="moveToPrizes()">
+          Premios
+        </button>
+      </div>
+    </div>
+    <div class="row mt-1" *appHasPermission="['SuperAdmin']">
+      <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto">
+        <button
+          class="btn btn-primary full-width"
+          (click)="changeStatusLevel()"
+        >
+          {{ ally.disabled ? "Habilitar" : "Deshabilitar" }}
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 col-md-6 ml-auto mr-auto">
+        <button class="btn btn-info full-width" (click)="updateLevel()">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

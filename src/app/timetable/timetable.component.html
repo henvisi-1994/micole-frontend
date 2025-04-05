@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-end mb-2" *appHasPermission="['CanCreateTimetable']">
+  <a class="btn btn-primary"
+  (click)="openMassiveCreation()">Subir horarios</a>
+</div>
+<app-full-calendar
+*ngIf="show"
+[canEdit]="canEdit"
+[events]="events"
+(onCreate)="onCreate($event)"
+(onDelete)="onDelete($event)"
+(onReload)="onReload($event)"></app-full-calendar>
+<app-associate-student
+[title]="'Crear horarios'"
+[buttonText]="'Crear'"
+(onAssociateUser)="onCreateTimetable($event)">

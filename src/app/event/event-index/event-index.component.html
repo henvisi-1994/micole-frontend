@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-calendar fa-2x"></i>
+        </div>
+        <h4 class="card-title">Eventos para el curso {{upcomingEvent.course}}</h4>
+      </div>
+      <div class="card-body">
+        <div id="accordion" role="tablist" *ngIf="upcomingEvent.months.length > 0">
+          <div class="card-collapse" *ngFor="let month of upcomingEvent.months; let i = index">
+            <div class="card-header" role="tab" id="heading{{i}}">
+              <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#month{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="month{{i}}">
+                  {{month.month}}
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+              </h5>
+            </div>
+            <div id="month{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="month{{i}}" data-parent="#accordion" style="">
+              <div class="card-body">
+                <div class="row" *ngFor="let event of month.events">
+                  <div class="inline">
+                    <h5 class="col-8">
+                      Nombre: {{event.name}}
+                    </h5>
+                    <span class="col-4 text-right font-weight-bold">
+                      {{event.eventDate}}
+                    </span>
+                    <i class="fa fa-trash icon-red fa-1x"
+                    *ngIf="showEvents(event.eventDate)"
+                    (click)="onDelete(event.id, event.name)"></i>
+                  </div>
+                  <a class="col-12 mt-2" [href]="event.link " target="_blank" *ngIf="event.link != null && event.link.length > 0">Link del evento</a>
+                  <p class="col-12 mt-2">
+                    Descripción: {{event.description}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <h5 class="text-center" *ngIf="upcomingEvent.months.length === 0">
+          No hay eventos disponibles
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

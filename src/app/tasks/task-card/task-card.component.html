@@ -1,0 +1,42 @@
+<div class="card card-profile">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="fa fa-tasks fa-2x"></i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{task.name}}</h4>
+    <p class="card-description mb-0">Materia: {{ task.subject }} </p>
+    <p class="card-description mb-0">Descripción: {{ task.description }} </p>
+    <p class="card-description mb-0">Fecha de entrega: {{ task.taskDate }} </p>
+    <p class="card-description mb-0">Porcentaje: {{ task.percentage }}% </p>
+    <div class="row mt-3 text-center">
+      <div class="col-12 col-lg-12 full-width ml-auto mr-auto"
+      *appHasPermission="['Teacher','Admin','SuperAdmin']">
+          <button class="btn btn-primary full-width btn-round"
+          (click)="openModalExcel()">
+            Subir notas masivas
+          </button>
+        </div>
+      <ng-container
+      *appHasPermission="['Teacher','Student','SuperAdmin','Admin']">
+        <div class="col-12 col-lg-6 full-width ml-auto mr-auto"
+        *ngIf="validDate()">
+          <button class="btn btn-info  full-width btn-round"
+          (click)="openModal(false)">
+            Subir Archivo
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *appHasPermission="['Teacher','SuperAdmin','Admin']">
+        <div class="col-12 col-lg-6 full-width ml-auto mr-auto"
+        *ngIf="validDate()">
+          <button class="btn btn-info full-width btn-round"
+          (click)="openModal(true)">
+            Subir Url
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

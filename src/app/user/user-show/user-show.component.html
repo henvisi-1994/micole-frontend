@@ -1,0 +1,197 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+      <app-user-card
+        [user]="user"
+        [disabled]="disabled"
+        [showEdit]="showEdit"
+        [showActions]="true"
+        (onDisabled)="disableUser()"
+        (onUser)="associateParent($event)"
+      ></app-user-card>
+    </div>
+    <div
+      class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto"
+      *ngIf="userPoint != undefined && userPoint.level != null"
+    >
+      <app-user-point [point]="userPoint"></app-user-point>
+    </div>
+  </div>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showUsers && userItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    [title]="userTitle"
+    [subtitle]="userSubtitle"
+    [headers]="userHeaders"
+    [items]="userItems"
+    [itemKeys]="userKeys"
+    [hasActions]="userAction.length > 0"
+    [actions]="userAction"
+    [photo]="true"
+    (onAction)="onAction($event)"
+  ></app-table>
+</div>
+
+<div class="row" *ngIf="user?.role === 'Student'">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <app-notification-index
+      [notfications]="notfications"
+      (onDischarge)="openDischarges($event)"
+    ></app-notification-index>
+  </div>
+
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-graduation-cap fa-2x"></i>
+        </div>
+        <h4 class="card-title">Notas</h4>
+      </div>
+      <div class="card-body">
+        <div class="row" *ngIf="stats.length > 0">
+          <div class="col-12 col-md-8 col-lg-8">
+            <mat-select
+              placeholder="Seleccionar grado"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="changeGrade($event.value)"
+            >
+              <mat-option *ngFor="let grade of stats" [value]="grade.id">
+                {{ grade.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row" *ngIf="courses.length > 0">
+          <div class="col-12 col-md-8 col-lg-8">
+            <mat-select
+              placeholder="Seleccionar curso"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="changeCourse($event.value)"
+            >
+              <mat-option *ngFor="let course of courses" [value]="course.id">
+                {{ course.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="row" *ngIf="periods.length > 0">
+          <div class="col-12 col-md-8 col-lg-8">
+            <mat-select
+              placeholder="Seleccionar periodo"
+              class="white-select"
+              ngClass="btn btn-primary btn-round"
+              (selectionChange)="changePeriod($event.value)"
+            >
+              <mat-option *ngFor="let period of periods" [value]="period.id">
+                {{ period.name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div
+          id="accordion"
+          role="tablist"
+          class="row mt-4"
+          *ngIf="subjects.length > 0"
+        >
+          <div
+            class="card-collapse col-12 mt-2"
+            *ngFor="let subject of subjects; let i = index"
+          >
+            <div class="card-header" role="tab" id="heading{{ i }}">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  href="#grades{{ i }}"
+                  [attr.aria-expanded]="i === 0 ? true : false"
+                  attr.aria-controls="course{{ i }}"
+                >
+                  <div class="row ml-2">
+                    {{ subject.name }} - {{ subject.grade }}:
+                  </div>
+                  <div class="progress progress-line-primary">
+                    <div
+                      class="progress-bar progress-bar-primary"
+                      [ngClass]="{
+                        zero: subject.grade < maxGrade / 10,
+                        one: subject.grade < (maxGrade / 10) * 2 && subject.grade >= maxGrade / 10,
+                        two: subject.grade < (maxGrade / 10) * 3 && subject.grade >= (maxGrade / 10) * 2,
+                        three: subject.grade < (maxGrade / 10) * 4 && subject.grade >= (maxGrade / 10) * 3,
+                        four: subject.grade < (maxGrade / 10) * 5 && subject.grade >= (maxGrade / 10) * 4,
+                        five: subject.grade < (maxGrade / 10) * 6 && subject.grade >= (maxGrade / 10) * 5,
+                        six: subject.grade < (maxGrade / 10) * 7 && subject.grade >= (maxGrade / 10) * 6,
+                        seven: subject.grade < (maxGrade / 10) * 8 && subject.grade >= (maxGrade / 10) * 7,
+                        eigth: subject.grade < (maxGrade / 10) * 9 && subject.grade >= (maxGrade / 10) * 8,
+                        nine: subject.grade < maxGrade  && subject.grade >= (maxGrade / 10) * 9,
+                        ten: subject.grade >= maxGrade
+                      }"
+                      [matTooltip]="subject.grade"
+                      [matTooltipPosition]="'above'"
+                      role="progressbar"
+                      [attr.aria-valuenow]="subject.grade"
+                      aria-valuemin="0"
+                      aria-valuemax="5"
+                    >
+                      <span class="sr-only"
+                        >{{ subject.grade | number }}</span
+                      >
+                    </div>
+                  </div>
+                </a>
+              </h5>
+            </div>
+            <div
+              id="grades{{ i }}"
+              class="collapse"
+              [ngClass]="{ show: i === 0 }"
+              role="tabpanel"
+              attr.aria-labelledby="grades{{ i }}"
+              data-parent="#accordion"
+              style=""
+            >
+              <div class="row mt-3" *ngIf="subject.tasks.length > 0">
+                <p class="col-4">Nombre</p>
+                <p class="col-4">Porcentaje</p>
+                <p class="col-4">Nota</p>
+                <div class="col-12" *ngFor="let taks of subject.tasks">
+                  <div class="row">
+                    <div class="col-4">{{ taks.name }}</div>
+                    <div class="col-4">{{ taks.percentage }}%</div>
+                    <div class="col-4">
+                      {{ taks.grade === null ? "No hay nota" : taks.grade }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="subject.tasks.length == 0">
+                <p class="col-12">No hay tareas asociadas a la materia</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="stats.length == 0">
+          <p class="col-12">No hay grados asociados con el usuario</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-notification-discharge
+  *appHasPermission="['Student', 'Parent']"
+  (onDischarge)="onDischarge($event)"
+>
+</app-notification-discharge>
+
+<app-notification-private-modal
+  (onAction)="onNotification($event)"
+></app-notification-private-modal>

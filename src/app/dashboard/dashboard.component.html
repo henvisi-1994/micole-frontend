@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+      <app-user-card
+      [user]="loginInfo.user"
+      [roles]="loginInfo.roles"
+      [showEdit]="true"
+      [showActions]="false"
+      ></app-user-card>
+    </div>
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 ml-auto mr-auto" *ngIf="hasSchool">
+      <app-school-card
+      [school]="loginInfo.school"
+      [showEditButton]="canEdit()"></app-school-card>
+    </div>
+  </div>
+</div>
+

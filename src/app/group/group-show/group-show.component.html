@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-6 ml-auto mr-auto">
+      <app-group-card
+      [group]="group"
+      (onOpenModal)="currentValue = null"
+      [currentValueSubject]="currentValue"
+      (onEdit)="upadateGroup($event)"
+      (onSubject)="onSubject($event)"></app-group-card>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="showSubject && subjectItems.length > 0">
+  <app-table
+  class="full-screen"
+  title="Materias"
+  subtitle="Información de cada una de las materias que tiene el área"
+  [headers]="subjectHeaders"
+  [items]="subjectItems"
+  [itemKeys]="subjectKeys"
+  [hasActions]="hasAction"
+  [actions]="subjectAction"
+  (onAction)="onSubjectAction($event)"
+  ></app-table>
+</div>
+

@@ -1,0 +1,14 @@
+<div class="row mt-3">
+  <app-redemption-card
+    *ngFor="let redemption of redemptions"
+    class="col-12 col-lg-4 col-md-6 mr-auto ml-auto"
+    [redemption]="redemption"
+  ></app-redemption-card>
+</div>
+
+<app-pagination
+  *ngIf="redemptions.length > 0"
+  [pagination]="pagination"
+  (onRequest)="onRequest($event)"
+></app-pagination>
+<h3 *ngIf="redemptions.length === 0">No hay resultados</h3>

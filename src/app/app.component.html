@@ -1,0 +1,2 @@
+<app-loading-screen *ngIf="showLoadingScreen"></app-loading-screen>
+<router-outlet [ngClass]="{'disabled-scroll': showLoadingScreen}"></router-outlet>

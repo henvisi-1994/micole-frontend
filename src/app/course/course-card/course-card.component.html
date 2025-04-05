@@ -1,0 +1,316 @@
+<div class="card card-profile">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="material-icons">grading</i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{course.name}}</h4>
+    <p class="card-description mb-0">Colegio: {{ course.school }} </p>
+    <p class="card-description mb-0">Sede: {{ course.franchise }} </p>
+    <p class="card-description mb-0">Descripción: {{ course.description }} </p>
+    <div class="container">
+      <mat-expansion-panel class="full-width-100 mt-3">
+        <mat-expansion-panel-header>
+          <mat-panel-title>EVENTOS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-12">
+            <button
+            class="btn btn-primary btn-round full-width"
+            [routerLink]="['events']" >Eventos</button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin','Admin','Teacher']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>CARGUE DE INFORMACIÓN</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="col-12"
+        *appHasPermission="['CanCreateSubject']">
+          <button
+          data-toggle="modal"
+          (click)="openModal()"
+          class="btn btn-primary btn-round full-width">Asociar materia</button>
+        </div>
+        <div class="col-12"
+        *appHasPermission="['CanCreateTeacher']">
+          <app-select-person
+          [btnClass]="'btn-primary'"
+          [buttonText]="'Asociar director de grupo'"
+          [index]="0"
+          [role]="teacher"
+          (onSelectedUser)="onDirector($event)"
+          [school]="course.schoolId"
+          ></app-select-person>
+        </div>
+        <div class="col-12"
+          *appHasPermission="['CanCreateStudent']">
+            <app-select-person
+            [btnClass]="'btn-primary'"
+            [buttonText]="'Asociar estudiante'"
+            [index]="1"
+            [role]="student"
+            (onSelectedUser)="onStudent($event)"
+            [school]="course.schoolId"
+          ></app-select-person>
+        
+        </div>
+        <div class="col-12"
+        *appHasPermission="['CanCreateStudent']">
+          <button
+          (click)="associateStudents()"
+          class="btn btn-primary btn-round full-width">
+          ASOCIAR ESTUDIANTES MASIVO
+        </button>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="full-width-100 mt-3"
+      *appHasPermission="['SuperAdmin','Admin','Teacher','Student','Parent']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>NOTAS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadGrade()"
+            class="btn btn-default btn-round full-width">Ponderadas por materia</button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadFormat('Task')"
+            class="btn btn-default btn-round full-width">
+            CARGA MASIVA NOTAS
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="consolidateByPeriod()"
+            class="btn btn-default btn-round full-width">
+            Consolidado por periodo
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="consolidate()"
+            class="btn btn-default btn-round full-width">
+            Consolidado final
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher','Parent','Student']">
+            <button
+            class="btn btn-default btn-round full-width"
+            (click)="openGradeModal()"
+            >RENDIMIENTO POR MATERIA</button>
+          </div>
+          <ng-template [ngIf]="showDownload">
+            <div class="col-12"
+            *appHasPermission="['SuperAdmin','Admin','Teacher']">
+              <button
+              class="btn btn-default btn-round full-width"
+              (click)="downloadMassivePdf()"
+              >Boletín de notas masivo</button>
+            </div>
+          </ng-template>
+    
+          <ng-template [ngIf]="showDownloadFinal">
+            <div class="col-12"
+            *appHasPermission="['SuperAdmin','Admin','Teacher']">
+              <button
+              class="btn btn-default btn-round full-width"
+              (click)="downloadMassivePdfEnd()"
+              >Boletín de notas final masivo</button>
+            </div>
+          </ng-template>
+
+          <ng-template [ngIf]="showDownload">
+            <div class="col-12"
+            *appHasPermission="['Student','Parent']">
+              <button
+              class="btn btn-default btn-round full-width"
+              (click)="downloadPdf()"
+              >Boletín de notas</button>
+            </div>
+          </ng-template>
+    
+          <ng-template [ngIf]="showDownloadFinal">
+            <div class="col-12"
+            *appHasPermission="['Student','Parent']">
+              <button
+              class="btn btn-default btn-round full-width"
+              (click)="downloadPdfEnd()"
+              >Boletín de notas final</button>
+            </div>
+          </ng-template>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin','Admin','Teacher']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>GESTIÓN DEL CURSO</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadFormat('Parent')"
+            class="btn btn-warning btn-round full-width">
+            PLANILLA ASOCIAR ACUDIENTES
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadUserExcel(false)"
+            class="btn btn-default btn-round full-width">
+            Planilla de estudiantes
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadUserExcel(true)"
+            class="btn btn-default btn-round full-width">
+            Planilla de acudientes
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadStudentAdminExcel(true)"
+            class="btn btn-default btn-round full-width">
+            Planilla de estudiantes para imprimir
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="goToCourseObservations()"
+            class="btn btn-default btn-round full-width">
+            Observaciones al boletin
+            </button>
+          </div>
+          
+        </div>
+      </mat-expansion-panel>
+
+      <!-- <div class="col-12 col-lg-6 full-width ml-auto mr-auto"
+      >
+        <button
+        class="btn btn-primary btn-round full-width"
+        (click)="openGradeModal()"
+        >RENDIMIENTO POR MATERIA</button>
+      </div>
+      <ng-template [ngIf]="showDownload">
+        <div class="col-12 col-lg-6 full-width ml-auto mr-auto"
+        *appHasPermission="['Student','Parent']">
+          <button
+          class="btn btn-info btn-round full-width"
+          (click)="downloadPdf()"
+          >Boletín de notas</button>
+        </div>
+      </ng-template>
+
+      <ng-template [ngIf]="showDownloadFinal">
+        <div class="col-12 col-lg-6 full-width ml-auto mr-auto"
+        *appHasPermission="['Student','Parent']">
+          <button
+          class="btn btn-info btn-round full-width"
+          (click)="downloadPdfEnd()"
+          >Boletín de notas final</button>
+        </div>
+      </ng-template>
+    </div> -->
+
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="formSubjectModal">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="planModal">Asociar materia al curso</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              >
+                <mat-select placeholder="Grupo" formControlName="groupId"
+                (selectionChange)="groupChanged($event.value)"
+                >
+                  <mat-option
+                  *ngFor="let g of groups" [value]="g.id">
+                    {{ g.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <mat-form-field
+              >
+                <mat-select placeholder="Materia" formControlName="id">
+                  <mat-option *ngFor="let s of selectedSubjects" [value]="s.id">
+                    {{ s.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12">
+              <p>Si el porcentaje es 0 se tomara el porcentaje de defecto de la materia en el área</p>
+              <mat-form-field
+              [ngClass]="{'has-success': showSuccess('percentage')}">
+              <input
+              formControlName="percentage"
+              matInput
+              type="number"
+              step="0.01"
+              placeholder="Porcentaje">
+              <mat-error *ngIf="hasError('percentage','required')">
+                El porcentaje es requerido
+              </mat-error>
+              <mat-error *ngIf="hasError('percentage','min')">
+                El valor mínimo es 0
+              </mat-error>
+              <mat-error *ngIf="hasError('percentage','max')">
+                El valor máximo es 100
+              </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+              [disabled]="!subjectForm.valid"
+              type="submit" class="btn btn-info btn-round">
+                Asociar materia
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<app-associate-student
+[title]="'Asociar masivamente estudiantes'"
+[buttonText]="'Asociar'"
+(onAssociateUser)="onAssociateUser($event)">
+</app-associate-student>

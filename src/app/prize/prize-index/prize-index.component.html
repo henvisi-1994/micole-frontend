@@ -1,0 +1,17 @@
+<app-prize-search (onSearch)="searchPrizes($event)"></app-prize-search>
+<div class="row mt-3">
+  <app-prize-card
+    *ngFor="let prize of prizes"
+    class="col-12 col-lg-4 col-md-6 mr-auto ml-auto"
+    [prize]="prize"
+    [userPoint]="userPoints"
+    (onRedemPrize)="redemPrize($event)"
+  ></app-prize-card>
+</div>
+
+<app-pagination
+  *ngIf="prizes.length > 0"
+  [pagination]="pagination"
+  (onRequest)="onRequest($event)"
+></app-pagination>
+<h3 *ngIf="prizes.length === 0">No hay resultados</h3>

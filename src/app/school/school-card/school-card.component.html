@@ -1,0 +1,178 @@
+<div class="card card-profile">
+  <div class="card-avatar">
+    <a>
+      <img [src]="getSchoolImage()" alt="Profile image" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <h6 class="card-category text-gray">
+      Teléfono: {{ school.phone.indicative }} {{ school.phone.number }}
+      <p *ngIf="school.phone.ext">ext: {{ school.phone.ext }}</p>
+    </h6>
+    <h4 class="card-title">{{ school.name }}</h4>
+    <p class="card-description mb-0">Codigo dane: {{ school.dane }}</p>
+    <p class="card-description mb-0">Resolution: {{ school.resolution }}</p>
+    <p class="card-description mb-0">Nombre corto: {{ school.shortName }}</p>
+    <p class="card-description mb-0">Correo electrónico: {{ school.email }}</p>
+    <p class="card-description mb-0">País: {{ school.address.country }}</p>
+    <p class="card-description mb-0">Ciudad: {{ school.address.city }}</p>
+    <p class="card-description mb-0">Dirección: {{ school.address.street }}</p>
+    <p class="card-description mb-0"
+    *ngIf="school.directorName">Rector: {{ school.directorName }}</p>
+    <p class="card-description mb-0"
+    *ngIf="!school.directorName">Rector no configurado</p>
+    <p class="card-description mb-0"
+    *ngIf="school.secretariatName">Secretaria: {{ school.secretariatName }}</p>
+    <p class="card-description mb-0"
+    *ngIf="!school.secretariatName">Secretaria no configurada</p>
+    <p class="card-description mb-0">
+      Código Postal: {{ school.address.postCode }}
+    </p>
+    <!-- <p class="card-description mb-0">Plan: {{ getPlan() }}</p> -->
+    <p class="card-description mb-0">
+      {{ school.sms ? "SMS habilitado" : "SMS deshabilitado" }}
+    </p>
+    <p class="card-description mb-0">{{ school.description }}</p>
+    <button
+      type="button"
+      *ngIf="showEditButton"
+      (click)="editSchool()"
+      class="btn btn-round btn-primary"
+    >
+      Editar Información
+    </button>
+    <div class="row mt-3 mb-3" *ngIf="showActions">
+      <div
+        class="col-12 col-lg-6 col-md-6 full-width ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin', 'Admin']"
+      >
+        <button
+          [routerLink]="['edit']"
+          class="btn btn-primary btn-round full-width"
+        >
+          Editar
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin', 'Admin']"
+      >
+        <button
+          class="btn btn-round full-width btn-primary"
+          (click)="createConfigGrade()"
+        >
+          Crear equivalencia
+        </button>
+      </div>
+      <!-- <div
+          class="col-12 col-lg-6 col-md-6 full-width ml-auto mr-auto"
+          *appHasPermission="['CanCreateSchool']"
+        >
+          <app-school-plan
+            class="full-width"
+            [plan]="this.school.plan"
+            (onPlanSelected)="planSelected($event)"
+          ></app-school-plan>
+        </div> -->
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['CanCreateSchool']"
+      >
+        <button
+          (click)="disableSchool()"
+          class="btn btn-primary btn-round full-width"
+        >
+          {{ getEnableText() }}
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin','Admin']"
+      >
+        <button
+          [disabled]="school.disabled"
+          [routerLink]="['franchises', 'new']"
+          class="btn btn-info btn-round full-width"
+        >
+          Crear Sedes
+        </button>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['CanCreateSettings']"
+      >
+        <app-franchise-modal-form
+          [index]="0"
+          [btnClass]="'btn-info'"
+          [buttonText]="'Crear Configuraciónes'"
+          [modalText]="settingText"
+          [disabled]="school.disabled"
+          [action]="formActionSetting"
+          (onAction)="onAction($event)"
+          [currentValue]="currentValue"
+        ></app-franchise-modal-form>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['CanCreateSettings']"
+      >
+        <app-franchise-modal-form
+          [index]="1"
+          [btnClass]="'btn-default'"
+          [buttonText]="'Crear Periodos'"
+          [modalText]="periodText"
+          [disabled]="school.disabled"
+          [action]="formActionPeriod"
+          [currentValue]="currentValue"
+          (onAction)="onAction($event)"
+        ></app-franchise-modal-form>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin','Admin']"
+      >
+        <app-franchise-modal-form
+          [index]="2"
+          [btnClass]="'btn-default'"
+          [modalText]="groupText"
+          [buttonText]="'Crear Áreas'"
+          [disabled]="school.disabled"
+          [action]="formActionGroup"
+          [currentValue]="currentValue"
+          (onAction)="onAction($event)"
+        ></app-franchise-modal-form>
+      </div>
+
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin','Admin']"
+      >
+        <app-franchise-modal-form
+          [index]="3"
+          [btnClass]="'btn-warning'"
+          [modalText]="gradeText"
+          [buttonText]="'Crear Grados'"
+          [disabled]="school.disabled"
+          [action]="formActionGrade"
+          [currentValue]="currentValue"
+          (onAction)="onAction($event)"
+        ></app-franchise-modal-form>
+      </div>
+      <div
+        class="col-12 col-lg-6 col-md-6 ml-auto mr-auto"
+        *appHasPermission="['SuperAdmin', 'Admin','Counselor']"
+      >
+        <app-franchise-modal-form
+          [index]="4"
+          [btnClass]="'btn-warning'"
+          [buttonText]="'Notificacion'"
+          [modalText]="'Enviar notificación'"
+          [disabled]="school.disabled"
+          [action]="formActionNotification"
+          [currentValue]="null"
+          (onAction)="onAction($event)"
+        ></app-franchise-modal-form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<app-full-calendar
+*ngIf="show"
+[canEdit]="false"
+[events]="events"
+(onReload)="onReload($event)"
+(onShow)="onShow($event)"></app-full-calendar>

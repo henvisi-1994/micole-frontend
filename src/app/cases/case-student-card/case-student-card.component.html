@@ -1,0 +1,206 @@
+<!-- <div> -->
+  <div class="card card-profile">
+    <!-- <div class="card-header card-header-icon">
+      <div class="card-icon card-icon-color">
+        <i class="material-icons">help</i>
+      </div>
+    </div> -->
+    <div class="card-body">
+      <h4 class="card-title">Ficha del estudiante</h4>
+      <p class="card-category left no-space">
+        Fecha y lugar de nacimiento: {{ case.studentGuidenceSheetTransformed.dateAndPlace }}
+      </p>
+      <p class="card-category left no-space">
+        Edad: {{ case.studentGuidenceSheetTransformed.age }}
+      </p>
+      <p class="card-category left no-space">
+        NUIP: {{ case.studentGuidenceSheetTransformed.nuip }}
+      </p>
+      <p class="card-category left no-space">
+        Género: {{ case.studentGuidenceSheetTransformed.gender }}
+      </p>
+      <p class="card-category left no-space">
+        Jornada: {{ case.studentGuidenceSheetTransformed.day }}
+      </p>
+      <p class="card-category left no-space">
+        Dirección: {{ case.studentGuidenceSheetTransformed.address }}
+      </p>
+      <p class="card-category left no-space">
+        Teléfono: {{ case.studentGuidenceSheetTransformed.phone }}
+      </p>
+      <div class="mt-1 border">
+        <h6>Acudiente</h6>
+        <p class="card-category left no-space">
+          Nombre: {{ case.studentGuidenceSheetTransformed.attendant }}
+        </p>
+        <p class="card-category left no-space">
+          Teléfono acudiente: {{ case.studentGuidenceSheetTransformed.attendantPhone }}
+        </p>
+        <p class="card-category left no-space">
+          Parentesco: {{ case.studentGuidenceSheetTransformed.attendantPhone }}
+        </p>
+        <p class="card-category left no-space">
+          Nivel educativo: {{ case.studentGuidenceSheetTransformed.attendantEducationLevel }}
+        </p>
+      </div>
+      <p class="card-category left no-space">
+        Razón del servicio: {{ case.studentGuidenceSheetTransformed.reasonOfTheService }}
+      </p>
+      <p class="card-category left no-space">
+        Fecha de remisión: {{ case.studentGuidenceSheetTransformed.submissionDate.split("T")[0] }}
+      </p>
+      <p class="card-category left no-space">
+        Quién remite: {{ case.studentGuidenceSheetTransformed.whoSends }}
+      </p>
+      <p class="card-category left no-space">
+        Fecha que ingresó al servicio: {{ case.studentGuidenceSheetTransformed.serviceDate.split("T")[0] }}
+      </p>
+      <div class="mt-1 border">
+        <h6>Historia familiar</h6>
+        <p class="card-category left no-space">
+          Descripción de la relación familiar: {{ case.studentGuidenceSheetTransformed.descriptionFamiliarRelationship }}
+        </p>
+        <p class="card-category left no-space">
+          Madre: {{ case.studentGuidenceSheetTransformed.mother }}
+        </p>
+        <p class="card-category left no-space">
+          Teléfono de la madre: {{ case.studentGuidenceSheetTransformed.motherPhone }}
+        </p>
+        <p class="card-category left no-space">
+          Ocupación de la madre: {{ case.studentGuidenceSheetTransformed.motherJob }}
+        </p>
+        <p class="card-category left no-space">
+          Nivel educativo de la madre: {{ case.studentGuidenceSheetTransformed.motherEducationLevel }}
+        </p>
+        <p class="card-category left no-space">
+          Padre: {{ case.studentGuidenceSheetTransformed.father }}
+        </p>
+        <p class="card-category left no-space">
+          Teléfono de la padre: {{ case.studentGuidenceSheetTransformed.fatherPhone }}
+        </p>
+        <p class="card-category left no-space">
+          Ocupación de la padre: {{ case.studentGuidenceSheetTransformed.fatherJob }}
+        </p>
+        <p class="card-category left no-space">
+          Nivel educativo de la padre: {{ case.studentGuidenceSheetTransformed.fatherEducationLevel }}
+        </p>
+      </div>
+      <div class="mt-1 border">
+        <h6>Desarrollo Prenatal y perinatal</h6>
+        <p class="card-category left no-space">
+          Embarazo deseado: {{ transform(case.studentGuidenceSheetTransformed.desiredPregnancy) }}
+        </p>
+        <p class="card-category left no-space">
+          Tiempo del embarazo: {{ transform(case.studentGuidenceSheetTransformed.pregnancyTime) }}
+        </p>
+        <p class="card-category left no-space">
+          Medicamentos en el embarazo: {{ transform(case.studentGuidenceSheetTransformed.pregnancyMedicaments) }}
+        </p>
+        <p class="card-category left no-space">
+          Sustancias psicoactivas: {{ transform(case.studentGuidenceSheetTransformed.drugs) }}
+        </p>
+        <p class="card-category left no-space">
+          Nutrición: {{ transform(case.studentGuidenceSheetTransformed.nutrition) }}
+        </p>
+        <p class="card-category left no-space">
+          Peso: {{ transform(case.studentGuidenceSheetTransformed.weight) }}
+        </p>
+        <p class="card-category left no-space">
+          Talla: {{ transform(case.studentGuidenceSheetTransformed.size) }}
+        </p>
+        <p class="card-category left no-space">
+          Incubadora: {{ transform(case.studentGuidenceSheetTransformed.incubator) }}
+        </p>
+        <p class="card-category left no-space">
+          Tipo de parto: {{ transform(case.studentGuidenceSheetTransformed.typeOfBirth) }}
+        </p>
+        <p class="card-category left no-space">
+          Forceps: {{ transform(case.studentGuidenceSheetTransformed.forceps) }}
+        </p>
+        <p class="card-category left no-space">
+          Dificultades: {{ transform(case.studentGuidenceSheetTransformed.difficulties) }}
+        </p>
+        <p class="card-category left no-space" *ngIf="case.studentGuidenceSheetTransformed.difficultiesText !== null">
+          Caules: {{ transform(case.studentGuidenceSheetTransformed.difficultiesText) }}
+        </p>
+      </div>
+      <div class="mt-1 border">
+        <h6>Desarrollo evolutivo</h6>
+        <p class="card-category no-space">
+          Desarrollo del motor: {{ transform(case.studentGuidenceSheetTransformed.engineDevelopment) }}
+        </p>
+        <p class="card-category left no-space">
+          Desarrollo del lenguaje: {{ transform(case.studentGuidenceSheetTransformed.engineLanguage) }}
+        </p>
+        <p class="card-category left no-space">
+          Hospitalizaciones: {{ transform(case.studentGuidenceSheetTransformed.hospitalizations) }}
+        </p>
+        <p class="card-category left no-space">
+          Sufre de alguna enfermedad: {{ transform(case.studentGuidenceSheetTransformed.disease) }}
+        </p>
+        <p class="card-category left no-space">
+          Tipo de patología: {{ transform(case.studentGuidenceSheetTransformed.pathologyType) }}
+        </p>
+        <p class="card-category left no-space">
+          Tiene algún tipo de discapacidad: {{ transform(case.studentGuidenceSheetTransformed.disability) }}
+        </p>
+        <p class="card-category left no-space">
+          Utiliza algún tipo de ayuda técnica o dispositivo de apoyo: {{ transform(case.studentGuidenceSheetTransformed.technicalHelp) }}
+        </p>
+        <p class="card-category left no-space" *ngIf="case.studentGuidenceSheetTransformed.technicalHelpText !== null">
+          Cual: {{ transform(case.studentGuidenceSheetTransformed.technicalHelpText) }}
+        </p>
+      </div>
+      
+      <p class="card-category left no-space">
+        Impresión diagnóstica: {{ transform(case.studentGuidenceSheetTransformed.diagnosticImpression) }}
+      </p>
+      <p class="card-category left no-space">
+        Está en estado de embarazo: {{ transform(case.studentGuidenceSheetTransformed.pregnancy) }}
+      </p>
+      <p class="card-category left no-space">
+        Numero de meses: {{ transform(case.studentGuidenceSheetTransformed.pregnancyMonth) }}
+      </p>
+      <p class="card-category left no-space">
+        Consume algun tipo de SPA: {{ transform(case.studentGuidenceSheetTransformed.spa) }}
+      </p>
+      <div class="mt-1 border">
+        <h6>Historia académica</h6>
+        <p class="card-category left no-space">
+          Repitencia escolar: {{ transform(case.studentGuidenceSheetTransformed.repeatedSchoolYear) }}
+        </p>
+        <p class="card-category left no-space">
+          Cuántas veces: {{ transform(case.studentGuidenceSheetTransformed.repeatedSchoolYearTimes) }}
+        </p>
+        <p class="card-category left no-space">
+          Explique las razones: {{ transform(case.studentGuidenceSheetTransformed.repeatedReason) }}
+        </p>
+        <p class="card-category left no-space">
+          Grados que repitió: {{ transform(case.studentGuidenceSheetTransformed.repeatedGrades) }}
+        </p>
+        <p class="card-category left no-space">
+          Actividades de mayor facilidad: {{ transform(case.studentGuidenceSheetTransformed.activitiesLowerDifficulty) }}
+        </p>
+        <p class="card-category left no-space">
+          Actividades de mayor dificultad: {{ transform(case.studentGuidenceSheetTransformed.activitiesHigherDifficulty) }}
+        </p>
+        <p class="card-category left no-space">
+         En cuántos colegios ha estudiado: {{ transform(case.studentGuidenceSheetTransformed.studiedSchools) }}
+        </p>
+        <p class="card-category left no-space" *ngIf="case.studentGuidenceSheetTransformed.studiedSchoolsText !== null">
+          Motivo: {{ transform(case.studentGuidenceSheetTransformed.studiedSchoolsText) }}
+        </p>
+         <p class="card-category left no-space">
+          Persona que suministra la información: {{ transform(case.studentGuidenceSheetTransformed.personGiveInformation) }}
+         </p>
+         <p class="card-category left no-space" *ngIf="case.studentGuidenceSheetTransformed.personGiveInformationText !== null">
+         Cual: {{ transform(case.studentGuidenceSheetTransformed.personGiveInformationText) }}
+         </p>
+         <p class="card-category left no-space">
+          Parentesco con el estudiante: {{ transform(case.studentGuidenceSheetTransformed.relationship) }}
+         </p>
+      </div>
+    </div>
+  </div>
+     
+      

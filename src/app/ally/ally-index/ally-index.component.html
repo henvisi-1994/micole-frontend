@@ -1,0 +1,47 @@
+<div class="row d-flex justify-content-center align-items-center">
+  <div class="col-12 col-md-6 col-lg-4">
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar</mat-label>
+      <input matInput placeholder="Ejemplo corral" [(ngModel)]="search" />
+    </mat-form-field>
+  </div>
+  <div class="col-12 col-md-6 col-lg-4">
+    <mat-select
+      placeholder="Seleccionar Filtro"
+      class="white-select"
+      name="school"
+      ngClass="btn btn-primary btn-round"
+      (selectionChange)="changeFilter($event.value)"
+    >
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div class="col-12 col-md-6 col-lg-4">
+    <button
+      class="btn btn-primary"
+      [style.width]="'100%'"
+      (click)="searchAlly()"
+    >
+      Buscar
+    </button>
+  </div>
+</div>
+<div class="row mt-3">
+  <app-ally-card
+    *ngFor="let ally of allies"
+    class="col-12 col-lg-4 col-md-6 mr-auto ml-auto"
+    [ally]="ally"
+    [school]="school"
+    [show]="false"
+  ></app-ally-card>
+</div>
+
+<!-- <p>{{ pagination | json }}</p> -->
+<app-pagination
+  *ngIf="allies.length > 0"
+  [pagination]="pagination"
+  (onRequest)="onRequest($event)"
+></app-pagination>
+<h3 *ngIf="allies.length === 0">No hay resultados</h3>

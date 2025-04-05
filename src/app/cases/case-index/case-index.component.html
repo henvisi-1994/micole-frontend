@@ -1,0 +1,23 @@
+<div class="col-12 text-right">
+  <a
+    class="btn btn-primary"
+    [routerLink]="['/', 'dashboard', 'cases', 'new']"
+    routerLinkActive="router-link-active"
+    >Crear caso</a
+  >
+</div>
+<app-table
+  *ngIf="show"
+  [title]="caseTitle"
+  [subtitle]="caseSubtitle"
+  [headers]="headers"
+  [items]="items"
+  [itemKeys]="keys"
+  [hasPagination]="true"
+  [pagination]="pagination"
+  [showSearch]="true"
+  [hasActions]="true"
+  [actions]="actions"
+  (onAction)="onAction($event)"
+  (onRequest)="onRequest($event)"
+></app-table>

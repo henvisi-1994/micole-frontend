@@ -1,0 +1,118 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 ml-auto mr-auto">
+      <app-school-card
+        [school]="school"
+        (onUpdated)="onUpdated($event)"
+        [showActions]="true"
+        (onPlanSelected)="onPlanSelected($event)"
+        (onDisabled)="disableSchool()"
+      ></app-school-card>
+    </div>
+  </div>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showFranchises && franchiseItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Sedes"
+    subtitle="Información de las sedes"
+    [headers]="franchiseHeaders"
+    [items]="franchiseItems"
+    [itemKeys]="franchiseKeys"
+    [hasActions]="true"
+    [actions]="franchiseAction"
+    (onAction)="onFranchiseAction($event)"
+  ></app-table>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showGroups && groupItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Áreas"
+    subtitle="Áreas principales en las cuales las materias son asociadas"
+    [headers]="groupHeaders"
+    [items]="groupItems"
+    [itemKeys]="groupKeys"
+    [hasActions]="true"
+    [actions]="groupAction"
+    (onAction)="onGroupAction($event)"
+  ></app-table>
+  <!-- [collapsible]="true"
+  [collapsibleKey]="'subjects'"
+  [collapsibleHeaders]="collapsibleHeaders" -->
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showGrade && gradeItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Grados"
+    subtitle="Los grados que son dictados en el colegio"
+    [headers]="gradeHeaders"
+    [items]="gradeItems"
+    [itemKeys]="gradeKeys"
+    [hasActions]="gradeAction.length > 0"
+    [actions]="gradeAction"
+    (onAction)="onGradeAction($event)"
+  ></app-table>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showPeriod && periodItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Periodos"
+    subtitle="Los periodos en los que estan dividido el año escolar"
+    [headers]="periodHeaders"
+    [items]="periodItems"
+    [itemKeys]="periodKeys"
+    [hasActions]="hasPeriodAction"
+    [actions]="periodAction"
+    (onAction)="onPeriodAction($event)"
+  ></app-table>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showSetting && settingItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Configuraciónes"
+    subtitle="Las configuraciónes del colegio"
+    [headers]="settingHeaders"
+    [items]="settingItems"
+    [itemKeys]="settingKeys"
+    [hasActions]="hasSettingAction"
+    [actions]="settingAction"
+    (onAction)="onSettingAction($event)"
+  ></app-table>
+</div>
+
+<div
+  class="row justify-content-center"
+  *ngIf="showConfigGrade && configGradeItems.length > 0"
+>
+  <app-table
+    class="full-screen"
+    title="Equivalencia de notas"
+    subtitle="Equivalencia de notas numericas a letras"
+    [headers]="configGradeHeaders"
+    [items]="configGradeItems"
+    [itemKeys]="configGradeKeys"
+    [hasActions]="hasConfigGradeAction"
+    [actions]="configGradeAction"
+    (onAction)="onConfigGradeAction($event)"
+  ></app-table>
+</div>

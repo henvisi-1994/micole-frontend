@@ -1,0 +1,182 @@
+<mat-tab-group [(selectedIndex)]="selectedTabIndex">
+  <mat-tab label="Por materia">
+    <div *ngIf="selectedTabIndex === 0">
+      <ng-template [ngIf]="showNewButton">
+        <div class="row mb-3 mt-2" *appHasPermission="['CanCreateAcheivement']">
+          <div class="col-12">
+            <a class="btn btn-primary" (click)="addAcheivement()"> Crear  Desempeño</a>
+            <a class="btn btn-primary" (click)="addMassiveAcheivement()"> Crear desempeños con archivo </a>
+          </div>
+        </div>
+      </ng-template>
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+          <div class="card">
+            <div class="card-header card-header-icon">
+              <div class="card-icon card-icon-color">
+                <i class="fa fa-trophy fa-2x"></i>
+              </div>
+              <h4 class="card-title">Desempeños de la materia
+                <i class="fa fa-copy fa-1x icon-primariy" [matTooltip]="'Copiar valores de otro curso'" *appHasPermission="['SuperAdmin','Admin','Teacher']"
+                (click)="copyAcheivement()"></i>
+              </h4>
+            </div>
+            <div class="card-body">
+              <div id="accordion" role="tablist" *ngIf="acheivements.length > 0">
+                <div class="card-collapse" *ngFor="let acheivement of acheivements let i = index">
+                  <div class="card-header" role="tab" id="heading{{i}}">
+                    <h5 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#period{{i}}" [attr.aria-expanded]="i === 0 ? true : false" attr.aria-controls="period{{i}}">
+                        Periodo {{acheivement.period.position}}
+                        <i class="material-icons">keyboard_arrow_down</i>
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="period{{i}}" class="collapse" [ngClass]="{'show': i === 0}" role="tabpanel" attr.aria-labelledby="period{{i}}"
+                  data-parent="#accordion" style="">
+                    <div class="card-body">
+                      <ng-template [ngIf]="acheivement.acheivements.length > 0">
+                        <div class="row" *ngFor="let info of acheivement.acheivements">
+                          <div class="inline">
+                            <h5 class="col-12">
+                              Nombre: {{info.name}}
+                            </h5>
+                            <i class="fa fa-edit icon-primariy fa-1x mr-2"
+                            *appHasPermission="['CanCreateAcheivement']"
+                            (click)="onEdit(info)"></i>
+                            <i class="fa fa-trash icon-red fa-1x"
+                            *appHasPermission="['CanCreateAcheivement']"
+                            (click)="onDelete(info.id, info.name)"></i>
+                          </div>
+                          <p class="col-12 mt-2">
+                            Descripción: {{info.description}}
+                          </p>
+                        </div>
+                      </ng-template>
+                      <h5 *ngIf="acheivement.acheivements.length === 0">No hay desempeños para este periodo</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h5 class="text-center" *ngIf="acheivements.length === 0">
+                No hay desempeños para la materia
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Por estudiante">
+    <div *ngIf="selectedTabIndex === 1">
+      <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+        <div class="card">
+          <div class="card-header card-header-icon">
+            <div class="card-icon card-icon-color">
+              <i class="fa fa-trophy fa-2x"></i>
+            </div>
+            <h4 class="card-title">Desempeños por estudiantes</h4>
+          </div>
+          <div class="card-body">
+            <div id="accordion" role="tablist" *ngIf="acheivementsPerUser.length > 0">
+              <div class="card-collapse" *ngFor="let user of acheivementsPerUser; let i = index">
+                <div class="card-header" role="tab" id="heading{{ i }}">
+                  <h5 class="mb-0">
+                    <a
+                      class="collapsed"
+                      data-toggle="collapse"
+                      href="#student{{ i }}"
+                      [attr.aria-expanded]="i === 0 ? true : false"
+                      attr.aria-controls="period{{ i }}"
+                    >
+                     {{ user.fullName }}
+                      <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                  </h5>
+                </div>
+                <div
+                  id="student{{ i }}"
+                  class="collapse"
+                  [ngClass]="{ show: i === 0 }"
+                  role="tabpanel"
+                  attr.aria-labelledby="student{{ i }}"
+                  data-parent="#accordion"
+                  style=""
+                >
+                  <div class="card-body">
+                    <div class="col-12">
+                      <a class="btn btn-primary" (click)="addAcheivementStudent(user.id)">Crear  Desempeño</a>
+                    </div>
+                    <ng-template [ngIf]="user.periods.length > 0">
+                      <div class="row">
+                        <div class="mt-4"></div>
+                        <div class="col-12" *ngFor="let period of user.periods">
+                          <div class="row" *ngIf="period.acheivements.length > 0">
+                            <div class="inline">
+                              <h4 class="col-12">Periodo {{ period.period.position }}</h4>
+                            </div>
+                            <div class="col-12" *ngFor="let acheivement of period.acheivements; let i = index">
+                              <div class="inline">
+                                <h5 class="col-12">
+                                  Nombre: {{acheivement.name}}
+                                </h5>
+                                <i class="fa fa-edit icon-primariy fa-1x mr-2"
+                                *appHasPermission="['CanCreateAcheivement']"
+                                (click)="onEdit(acheivement)"></i>
+                                <i class="fa fa-trash icon-red fa-1x"
+                                *appHasPermission="['CanCreateAcheivement']"
+                                (click)="onDelete(acheivement.id, acheivement.name)"></i>
+                                  </div>
+                              <p class="col-12 mt-1">
+                                Descripción: {{acheivement.description}}
+                              </p>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                      
+                    </ng-template>
+                    <h5 *ngIf="user.periods.length === 0">
+                      No hay desempeños por estudiante
+                    </h5>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h5 class="text-center" *ngIf="acheivementsPerUser.length === 0">
+              No hay desempeños por estudiante
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+
+<app-acheivement-modal
+[modalTitle]="modalText"
+[showPeriods]="showPeriods"
+[modalButton]="modalButton"
+[schoolId]="acheivements[0].period.schoolId"
+(onAction)="onAction($event)"
+[currentAcheivement]="currentAcheivement">
+</app-acheivement-modal>
+
+<app-acheivement-copy-modal
+*ngIf="parameters !== undefined && parameters !== null"
+[copyModalTitle]="copyModalTitle"
+[parameters]="parameters"
+(onAction)="copy($event)"
+[courseId]="courseId">
+</app-acheivement-copy-modal>
+
+<app-acheivement-create-massive-modal
+*ngIf="parameters !== undefined && parameters !== null"
+[modalTitle]="modalText"
+[parameters]="parameters"
+[modalButton]="modalButton"
+(onAction)="upload($event)">
+</app-acheivement-create-massive-modal>

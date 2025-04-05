@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-8 ml-auto mr-auto">
+      <div class="card">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="material-icons">perm_identity</i>
+          </div>
+          <h4 class="card-title">
+            Asociación masiva de acudientes
+          </h4>
+        </div>
+        <div class="card-body text-center">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <input type="file" formControlName="users"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            (change)="handleFileInput($event.target.files)">
+
+            <div class="row">
+              <div class="col-md-6 ml-auto mr-auto text-center">
+                <button
+                [disabled]="!userForm.valid"
+                type="submit" class="btn btn-info btn-round">
+                  Asociar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

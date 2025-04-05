@@ -1,0 +1,395 @@
+<div class="container-fluid" *ngIf="isVisible">
+  <div class="row">
+    <div
+      class="col-12"
+      [ngClass]="{ 'col-lg-7': isEditing, 'col-lg-12': !isEditing }"
+    >
+      <div class="card">
+        <div class="card-header card-header-icon">
+          <div class="card-icon card-icon-color">
+            <i class="material-icons">school</i>
+          </div>
+          <h4 class="card-title">{{ title }}</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="schoolForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('name') }"
+                >
+                  <input
+                    formControlName="name"
+                    matInput
+                    type="text"
+                    placeholder="Nombre"
+                  />
+                  <mat-error *ngIf="hasError('name', 'required')">
+                    El nombre del colegio es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('name', 'minlength')">
+                    El nombre del colegio tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('name', 'maxlength')">
+                    El nombre del colegio tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('shortName') }"
+                >
+                  <input
+                    formControlName="shortName"
+                    matInput
+                    type="text"
+                    placeholder="Nombre corto"
+                  />
+                  <mat-error *ngIf="hasError('shortName', 'required')">
+                    El nombre corto del colegio es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('shortName', 'minlength')">
+                    El nombre corto del colegio tiene que ser al menos 3
+                    caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('dane') }"
+                >
+                  <input
+                    formControlName="dane"
+                    matInput
+                    type="text"
+                    placeholder="Codigo dane"
+                  />
+                  <mat-error *ngIf="hasError('dane', 'required')">
+                    El codigo dane del colegio es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('dane', 'minlength')">
+                    El codigo dane del colegio tiene que ser al menos 3
+                    caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('resolution') }"
+                >
+                  <input
+                    formControlName="resolution"
+                    matInput
+                    type="text"
+                    placeholder="Resolución"
+                  />
+                  <mat-error *ngIf="hasError('resolution', 'required')">
+                    La resolución colegio es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('resolution', 'minlength')">
+                    La resolución del colegio tiene que ser al menos 3
+                    caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3" formGroupName="address">
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                  [ngClass]="{
+                    'has-success': showSuccess('country', 'address')
+                  }"
+                >
+                  <input
+                    formControlName="country"
+                    matInput
+                    type="text"
+                    placeholder="país"
+                  />
+                  <mat-error *ngIf="hasError('country', 'required', 'address')">
+                    El nombre del país es requerido
+                  </mat-error>
+                  <mat-error
+                    *ngIf="hasError('country', 'minlength', 'address')"
+                  >
+                    El nombre del país tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error
+                    *ngIf="hasError('country', 'maxlength', 'address')"
+                  >
+                    El nombre del país tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('city', 'address') }"
+                >
+                  <input
+                    formControlName="city"
+                    matInput
+                    type="text"
+                    placeholder="Ciudad"
+                  />
+                  <mat-error *ngIf="hasError('city', 'required', 'address')">
+                    El nombre de la ciudad es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('city', 'minlength', 'address')">
+                    El nombre de la ciudad tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('city', 'maxlength', 'address')">
+                    El nombre de la ciudad tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                  [ngClass]="{
+                    'has-success': showSuccess('street', 'address')
+                  }"
+                >
+                  <input
+                    formControlName="street"
+                    matInput
+                    type="text"
+                    placeholder="Direccion"
+                  />
+                  <mat-error *ngIf="hasError('street', 'required', 'address')">
+                    La dirección es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('street', 'minlength', 'address')">
+                    La dirección tiene que ser al menos 3 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="hasError('street', 'maxlength', 'address')">
+                    La dirección tiene que ser máximo 255 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-6">
+                <mat-form-field
+                  [ngClass]="{
+                    'has-success': showSuccess('postCode', 'address')
+                  }"
+                >
+                  <input
+                    formControlName="postCode"
+                    matInput
+                    type="text"
+                    placeholder="código postal"
+                  />
+                  <mat-error
+                    *ngIf="hasError('postCode', 'required', 'address')"
+                  >
+                    El código postal es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('postCode', 'pattern', 'address')">
+                    El código postal debe ser numérico y tener mínimo 3
+                    caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3" formGroupName="phone">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('number', 'phone') }"
+                >
+                  <input
+                    formControlName="number"
+                    matInput
+                    type="text"
+                    placeholder="Numero telefónico"
+                  />
+                  <mat-error *ngIf="hasError('number', 'required', 'phone')">
+                    El numero telefónico es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('number', 'pattern', 'phone')">
+                    El numero telefónico debe ser numérico y tener de 6 a 15
+                    caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                  [ngClass]="{
+                    'has-success': showSuccess('indicative', 'phone')
+                  }"
+                >
+                  <input
+                    formControlName="indicative"
+                    matInput
+                    type="text"
+                    placeholder="El indicativo"
+                  />
+                  <mat-error
+                    *ngIf="hasError('indicative', 'required', 'phone')"
+                  >
+                    El indicativo es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('indicative', 'pattern', 'phone')">
+                    El indicativo debe ser numérico y tener de 2 a 6 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('ext', 'phone') }"
+                >
+                  <input
+                    formControlName="ext"
+                    matInput
+                    type="text"
+                    placeholder="Extension"
+                  />
+                  <mat-error *ngIf="hasError('ext', 'ext', 'phone')">
+                    La extensión solo puede ser numérico y mínimo 2 caracteres
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    formControlName="email"
+                    matInput
+                    type="text"
+                    placeholder="Correo electrónico"
+                  />
+                  <mat-error *ngIf="hasError('email', 'required')">
+                    El correo electrónico es requerido
+                  </mat-error>
+                  <mat-error *ngIf="hasError('email', 'email')">
+                    El correo electrónico no es valido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    formControlName="directorName"
+                    matInput
+                    type="text"
+                    placeholder="Nombre del rector"
+                  />
+                  <mat-error *ngIf="hasError('directorName', 'required')">
+                    El nombre del rector es requerido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    formControlName="directorIdentification"
+                    matInput
+                    type="text"
+                    placeholder="Identificación del rector"
+                  />
+                  <mat-error *ngIf="hasError('directorIdentification', 'required')">
+                    El # de identificación es requerido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    formControlName="secretariatName"
+                    matInput
+                    type="text"
+                    placeholder="Nombre de la secretaria"
+                  />
+                  <mat-error *ngIf="hasError('secretariatName', 'required')">
+                    El nombre de la secretaria es requerido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field
+                  [ngClass]="{ 'has-success': showSuccess('email') }"
+                >
+                  <input
+                    formControlName="secretariatIdentification"
+                    matInput
+                    type="text"
+                    placeholder="Identificación de la secretaria"
+                  />
+                  <mat-error *ngIf="hasError('secretariatIdentification', 'required')">
+                    El # de identificación es requerido
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- <div class="row mb-3" *ngIf="canUpdatePlan">
+              <div class="col-12">
+                <mat-form-field>
+                  <mat-select placeholder="Plan" formControlName="plan">
+                    <mat-option *ngFor="let p of getPlans()" [value]="p">
+                      {{ planValue[p] }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div> -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-checkbox formControlName="sms"
+                  >Activar envio de SMS ?</mat-checkbox
+                >
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-form-field>
+                  <textarea
+                    formControlName="description"
+                    matInput
+                    rows="6"
+                    placeholder="Descripción"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 ml-auto mr-auto text-center">
+                <button
+                  [disabled]="!schoolForm.valid"
+                  type="submit"
+                  class="btn btn-info btn-round"
+                >
+                  {{ title }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-5" *ngIf="isEditing">
+      <app-upload-photo
+        [title]="'Logo'"
+        [url]="school.logo"
+        [defaultPhoto]="defaultPhoto"
+        (onUpload)="onLogo($event)"
+      ></app-upload-photo>
+    </div>
+  </div>
+</div>

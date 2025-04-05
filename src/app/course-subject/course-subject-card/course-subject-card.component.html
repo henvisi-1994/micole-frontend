@@ -1,0 +1,227 @@
+<div class="card card-profile">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="material-icons">school</i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{ courseSubject.course }}</h4>
+    <p class="card-description mb-0">Colegio: {{ courseSubject.school }}</p>
+    <p class="card-description mb-0">Sede: {{ courseSubject.franchise }}</p>
+    <p class="card-description mb-0">Grado: {{ courseSubject.grade }}</p>
+    <p class="card-description mb-0">Materia: {{ courseSubject.subject }}</p>
+    <p class="card-description mb-0">
+      Porcentaje: {{ courseSubject.percentage }}
+    </p>
+    <a
+      class="col-12 mb-0"
+      [href]="courseSubject.link"
+      target="_blank"
+      *ngIf="courseSubject.link != null && courseSubject.link.length > 0"
+      >Link de la clase</a
+    >
+
+    <div class="container">
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>EVENTOS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div
+          class="col-12"
+          *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-primary full-width"
+              (click)="goToEvents()"
+            >
+              Eventos
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>CARGUE DE INFORMACIÓN</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div
+            class="col-12"
+            *appHasPermission="['CanCreateTeacher']"
+          >
+            <app-select-person
+              [btnClass]="'btn-primary'"
+              [buttonText]="'Asociar Profesor'"
+              [index]="0"
+              [role]="teacher"
+              (onSelectedUser)="onTeacer($event)"
+              [school]="courseSubject.schoolId"
+            ></app-select-person>
+          </div>
+          <div class="col-12">
+            <button
+              [routerLink]="['acheivements']"
+              class="btn btn-round btn-primary full-width"
+            >
+              Desempeños/Logros
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin', 'Admin', 'Teacher','Parent','Student']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>NOTAS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="downloadFormat()"
+            class="btn btn-default btn-round full-width">
+            PLANILLA CARGA MASIVA NOTAS
+            </button>
+          </div>
+          <div
+          class="col-12"
+          *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+        >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="donwloadGrades()"
+            >
+              Planilla Notas Parciales
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="goToFinalGrades()"
+            >
+              Definitivas
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="consolidateByPeriod()"
+            class="btn btn-default btn-round full-width">
+            Consolidado por periodo
+            </button>
+          </div>
+          <div class="col-12"
+          *appHasPermission="['SuperAdmin','Admin','Teacher']">
+            <button
+            (click)="consolidate()"
+            class="btn btn-default btn-round full-width">
+            Consolidado final
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="goToRecoveryGrades()"
+            >
+              Recuperaciones
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['Student', 'Parent']"
+          >
+            <button
+              [routerLink]="['grades', id]"
+              class="btn btn-round btn-default full-width"
+            >
+              Rendimiento por materia
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="full-width-100 mt-3" *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']">
+        <mat-expansion-panel-header>
+          <mat-panel-title>GESTIÓN DEL CURSO</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-12">
+            <button
+              [routerLink]="['tasks']"
+              class="btn btn-round btn-default full-width"
+            >
+              Tareas
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['CanTakeAttandace']"
+          >
+            <button
+              [routerLink]="['attendances']"
+              class="btn btn-round btn-default full-width"
+            >
+              Asistencia
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="onDownloadModal()"
+            >
+              Planilla de asistencia
+            </button>
+            <app-download-attendance
+              (onAction)="onActionDownload($event)"
+            ></app-download-attendance>
+          </div>
+          <div class="col-12">
+            <button
+              [routerLink]="['timetables']"
+              class="btn btn-round btn-default full-width"
+            >
+              Horario
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="goToClasses()"
+            >
+              VER VIDEO-CLASE
+            </button>
+          </div>
+          <div
+            class="col-12"
+            *appHasPermission="['SuperAdmin', 'Admin', 'Teacher']"
+          >
+            <button
+              class="btn btn-round btn-default full-width"
+              (click)="onLinkModal()"
+            >
+              ENLACE VIDEOCLASE
+            </button>
+            <app-link-class-modal
+              [link]="courseSubject.link"
+              [modalTitle]="'Crear Link de la calse'"
+              (onAction)="onAction($event)"
+            ></app-link-class-modal>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+    </div>
+  </div>
+</div>

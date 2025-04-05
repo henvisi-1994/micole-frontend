@@ -1,0 +1,128 @@
+<div class="container-fluid p-0">
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">
+        <i class="fa fa-tasks mr-2"></i>
+        Planilla de Tareas
+      </h5>
+      <p class="mb-0 small">Gestión de tareas asignadas</p>
+    </div>
+    <div class="card-body">
+      <div class="form-group row mb-3">
+        <div class="col-md-3">
+          <label for="materia">Materia</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Materia</mat-label>
+            <mat-select id="materia">
+              <mat-option value="Matemáticas">Matemáticas</mat-option>
+              <mat-option value="Español">Español</mat-option>
+              <mat-option value="Ciencias Naturales">Ciencias Naturales</mat-option>
+              <mat-option value="Ciencias Sociales">Ciencias Sociales</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <label for="grado">Grado</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Grado</mat-label>
+            <mat-select id="grado">
+              <mat-option value="Transición">Transición</mat-option>
+              <mat-option value="Primero">Primero</mat-option>
+              <mat-option value="Segundo">Segundo</mat-option>
+              <mat-option value="Tercero">Tercero</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <label for="periodo">Periodo</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Periodo</mat-label>
+            <mat-select id="periodo">
+              <mat-option value="Primer Periodo">Primer Periodo</mat-option>
+              <mat-option value="Segundo Periodo">Segundo Periodo</mat-option>
+              <mat-option value="Tercer Periodo">Tercer Periodo</mat-option>
+              <mat-option value="Cuarto Periodo">Cuarto Periodo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <label for="fecha">Fecha de entrega</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha de entrega</mat-label>
+            <input matInput [matDatepicker]="picker" id="fecha">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="table-responsive mt-4">
+        <table class="table table-bordered">
+          <thead class="bg-light">
+            <tr>
+              <th style="width: 40%">Descripción de la tarea</th>
+              <th style="width: 20%">Recursos</th>
+              <th style="width: 15%">Valor (%)</th>
+              <th style="width: 15%">Fecha límite</th>
+              <th style="width: 10%">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <textarea class="form-control" rows="2" placeholder="Descripción de la tarea..."></textarea>
+              </td>
+              <td>
+                <input type="text" class="form-control" placeholder="Enlaces o recursos">
+              </td>
+              <td>
+                <input type="number" class="form-control" placeholder="Valor">
+              </td>
+              <td>
+                <input type="date" class="form-control">
+              </td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <textarea class="form-control" rows="2" placeholder="Descripción de la tarea..."></textarea>
+              </td>
+              <td>
+                <input type="text" class="form-control" placeholder="Enlaces o recursos">
+              </td>
+              <td>
+                <input type="number" class="form-control" placeholder="Valor">
+              </td>
+              <td>
+                <input type="date" class="form-control">
+              </td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn btn-outline-primary mt-2">
+        <i class="fa fa-plus mr-1"></i> Agregar tarea
+      </button>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-end">
+      <button class="btn btn-secondary mr-2">
+        <i class="fa fa-times mr-1"></i> Cancelar
+      </button>
+      <button class="btn btn-primary">
+        <i class="fa fa-save mr-1"></i> Guardar cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+

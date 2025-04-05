@@ -1,0 +1,24 @@
+<ng-template [ngIf]="!finalGrade && !recoveryGrade">
+  <div class="row mb-5" *appHasPermission="['Teacher','SuperAdmin']">
+    <div class="col-12 text-right">
+      <a class="btn btn-primary" (click)="addTask()"> Crear Tarea </a>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="finalGrade">
+  <div class="row mb-5" *appHasPermission="['Teacher','SuperAdmin']">
+    <div class="col-12 text-right">
+      <a class="btn btn-primary" (click)="addFinalGrade()"> Crear Definitiva</a>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="recoveryGrade">
+  <div class="row mb-5" *appHasPermission="['Teacher','SuperAdmin']">
+    <div class="col-12 text-right">
+      <a class="btn btn-primary" (click)="addRecoveryGrade()"> Crear Recuperación</a>
+    </div>
+  </div>
+</ng-template>
+<div class="contaienr-fluid">
+  <router-outlet></router-outlet>
+</div>

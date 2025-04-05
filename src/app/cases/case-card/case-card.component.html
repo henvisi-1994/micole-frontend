@@ -1,0 +1,57 @@
+<!-- <div> -->
+  <div class="card card-profile">
+    <div class="card-header card-header-icon">
+      <div class="card-icon card-icon-color">
+        <i class="material-icons">help</i>
+      </div>
+    </div>
+    <div class="card-body">
+      <h4 class="card-title">Caso para {{ case.user.name }}</h4>
+      <p class="card-category left no-space">
+        Identificación: {{ case.user.identificationType }}:{{ case.user.identification }}
+      </p>
+      <p class="card-category left no-space">
+        Correo Electrónico: {{ case.user.email }}
+      </p>
+      <p class="card-category left no-space">
+        Teléfono: {{ case.user.phone }}
+      </p>
+      <p class="card-category left no-space">Creado en: {{ case.createdAt }}</p>
+      <p class="card-category left no-space">{{ case.franchise }}: {{case.course}} - {{case.year}}</p>
+      <p class="card-category left no-space">
+        Estado: {{ case.status }}
+      </p>
+      <p class="card-category left no-space">
+        Vida en riesgo ?: {{ case.lifeAtRiskText }}
+      </p>
+      <p class="card-category left no-space">
+        Atendido por ?: {{ case.attendedBy?.name || "No ha sido atentido" }}
+      </p>
+      <div *ngIf="!case.lifeAtRisk && case.answers">
+        <h5 class="card-subtitle no-space">Respuestas</h5>
+        <p class="card-category left  no-space">1. ¿Con qué frecuencia te sientes triste? -> {{case.answersTransformed.sad}}</p>
+        <p class="card-category left no-space">2. ¿Te sientes maltratado/a por algún miembro de la institución o de tu familia o de tu entorno? -> {{case.answersTransformed.mistreated}}</p>
+        <p class="card-category left no-space">3. ¿Te sientes impaciente o con miedo? -> {{case.answersTransformed.fear}}</p>
+        <p class="card-category left no-space">4. ¿Tienes problemas familiares que afecten tu estado de ánimo? -> {{case.answersTransformed.mood}}</p>
+        <p class="card-category left no-space">5.  ¿Has pensado suicidarte? -> {{case.answersTransformed.suicide}}</p>
+        <p class="card-category left no-space" *ngIf="case.answersTransformed.failText.length > 0">6. ¿Alguna vez has fallado al colegio por una o varias de las siguientes razones? -> {{case.answersTransformed.failText.join(',')}} </p>
+        <p class="card-category left no-space" *ngIf="case.answersTransformed.failText.length === 0">6. ¿Alguna vez has fallado al colegio por una o varias de las siguientes razones? -> No contesto nada </p>
+        <p class="card-category left no-space">7.  ¿Estás embarazada o embarazado? -> {{case.answersTransformed.pregnancy}}</p>
+      </div>
+      <div class="col-12" *ngIf="case.studentGuidenceSheetTransformed === null && case.status === 'Abierto' && showF">
+        <button class="btn btn-info full-width col-6" (click)="showForm()">
+          Atender
+        </button>
+      </div>
+
+      <div class="col-12 button-container mt-2" *ngIf="case.studentGuidenceSheetTransformed !== null && case.status === 'En atención'">
+          <button class="btn btn-info col-12 col-lg-5" (click)="addComment()">
+            Agregar segumiento
+          </button>
+          <button class="btn btn-danger col-12 col-lg-5" (click)="closeCase()">
+            Cerrar
+          </button>        
+      </div>
+
+    </div>
+  </div>

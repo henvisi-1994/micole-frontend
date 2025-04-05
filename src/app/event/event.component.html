@@ -1,0 +1,10 @@
+<ng-template [ngIf]="showNewButton">
+  <div class="row mb-5" *appHasPermission="['SuperAdmin','Counselor','Admin','Teacher']">
+    <div class="col-12 text-right">
+      <a class="btn btn-primary" (click)="createEvent()">
+        Crear nuevo evento
+      </a>
+    </div>
+  </div>
+</ng-template>
+<router-outlet></router-outlet>

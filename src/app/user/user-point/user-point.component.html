@@ -1,0 +1,70 @@
+<div class="card card-profile">
+  <div class="card-avatar" *ngIf="point.level != null">
+    <a>
+      <img [src]="point.levelIcon" alt="level image" class="img" />
+    </a>
+  </div>
+  <div class="card-body">
+    <h6 class="card-category text-gray">
+      Puntos acumulados: {{ point.totalPoints }}
+    </h6>
+    <h6 class="card-category text-gray">
+      Puntos disponbles: {{ point.availablePoints }}
+    </h6>
+    <p class="card-description mb-0" *ngIf="point.level != null">
+      Nivel: {{ point.level }}
+    </p>
+    <p class="card-description mb-0" *ngIf="point.level != null">
+      Descripción: {{ point.levelDescription }}
+    </p>
+    <!-- <p class="card-description mb-0" *ngIf="point.level != null"> -->
+    <div
+      class="progress progress-line-primary mt-1"
+      *ngIf="point.level != null"
+    >
+      <div
+        class="progress-bar progress-bar-primary"
+        [ngClass]="{
+          zero: (point.totalPoints * 100) / point.upperBound < 10,
+          one:
+            (point.totalPoints * 100) / point.upperBound < 20 &&
+            (point.totalPoints * 100) / point.upperBound >= 10,
+          two:
+            (point.totalPoints * 100) / point.upperBound < 30 &&
+            (point.totalPoints * 100) / point.upperBound >= 20,
+          three:
+            (point.totalPoints * 100) / point.upperBound < 40 &&
+            (point.totalPoints * 100) / point.upperBound >= 30,
+          four:
+            (point.totalPoints * 100) / point.upperBound < 50 &&
+            (point.totalPoints * 100) / point.upperBound >= 40,
+          five:
+            (point.totalPoints * 100) / point.upperBound < 60 &&
+            (point.totalPoints * 100) / point.upperBound >= 50,
+          six:
+            (point.totalPoints * 100) / point.upperBound < 70 &&
+            (point.totalPoints * 100) / point.upperBound >= 60,
+          seven:
+            (point.totalPoints * 100) / point.upperBound < 90 &&
+            (point.totalPoints * 100) / point.upperBound >= 70,
+          eigth:
+            (point.totalPoints * 100) / point.upperBound < 90 &&
+            (point.totalPoints * 100) / point.upperBound >= 80,
+          nine:
+            (point.totalPoints * 100) / point.upperBound < 100 &&
+            (point.totalPoints * 100) / point.upperBound >= 90,
+          ten: (point.totalPoints * 100) / point.upperBound >= 100
+        }"
+        [matTooltip]="'Puntos ' + point.totalPoints"
+        [matTooltipPosition]="'above'"
+        role="progressbar"
+        [attr.aria-valuenow]="point.totalPoints"
+        [attr.aria-valuemin]="point.lowerBound"
+        [attr.aria-valuemax]="point.upperBound"
+      >
+        <span class="sr-only">{{ point.totalPoints | number }}</span>
+      </div>
+    </div>
+    <!-- </p> -->
+  </div>
+</div>

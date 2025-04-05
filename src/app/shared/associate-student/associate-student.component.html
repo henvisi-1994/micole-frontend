@@ -1,0 +1,29 @@
+<div class="modal fade" id="associteStudentModal" tabindex="-1" role="dialog" aria-labelledby="associteStudentModal" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h5 class="modal-title">{{title}}</h5>
+        <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">close</i>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body text-center">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <input type="file" formControlName="users"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="handleFileInput($event.target.files)">
+          <div class="row mt-3">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+              [disabled]="!userForm.valid"
+              type="submit" class="btn btn-info btn-round">
+                {{buttonText}}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

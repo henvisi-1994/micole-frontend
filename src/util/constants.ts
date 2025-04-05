@@ -1,0 +1,12 @@
+export const TOKEN = "token";
+export const REFRESH = "refresh-token";
+export const PERMISSION = "permission";
+export const ROLE = "role";
+export const SCHOOL = "school";
+export const USER = "user";
+export const SCHOOL_YEAR = "school-year";
+export const LEVEL = "level";
+export const CATEGORY = "category";
+export const ALLY = "ally";
+export const PRIZE = "prize";
+export const CONFIG_GRADE = "config-grade";

@@ -1,0 +1,197 @@
+/*!
+
+ =========================================================
+ * Material Dashboard PRO Angular - v2.4.1
+ =========================================================
+
+ * Product Page: https://www.creative-tim.com/product/material-dashboard-pro-angular2
+ * Copyright 2018 Creative Tim (https://www.creative-tim.com)
+
+ * Designed by www.invisionapp.com Coded by www.creative-tim.com
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "core/variables";
+@import "core/mixins";
+@import "~bootstrap/scss/bootstrap";
+@import "core/reboot";
+
+// Core Components
+@import "core/layout";
+@import "core/buttons";
+@import "core/checkboxes";
+@import "dashboard/cards";
+@import "core/custom-forms";
+@import "core/switches";
+@import "core/example-pages";
+@import "core/radios";
+@import "core/carousel";
+@import "dashboard/forms";
+@import "core/input-group";
+@import "core/list-group";
+@import "core/nav";
+@import "core/images";
+@import "dashboard/navbar";
+@import "core/badges";
+@import "dashboard/alerts";
+@import "core/pagination";
+@import "core/pills";
+@import "core/info-areas";
+@import "core/type";
+@import "core/tabs";
+@import "core/footers";
+@import "core/tooltip";
+@import "core/popover";
+@import "core/modal";
+@import "core/dropdown";
+@import "core/headers";
+@import "core/drawer";
+@import "core/progress";
+@import "core/togglebutton";
+@import "core/ripples";
+@import "dashboard/rtl";
+@import "dashboard/sidebar-and-main-panel";
+@import "dashboard/timeline";
+@import "dashboard/fixed-plugin";
+@import "dashboard/tables";
+@import "dashboard/misc";
+@import "dashboard/pages";
+
+// Components for PRO
+@import "dashboard/social-buttons";
+@import "dashboard/fileupload";
+
+//plugin css
+@import "plugins/plugin-nouislider";
+@import "plugins/animate";
+@import "plugins/sweetalert2";
+// @import "plugins/datatables.net";
+@import "plugins/jquery.jvectormap";
+@import "plugins/plugin-datetime-picker";
+@import "plugins/fullcalendar";
+@import "plugins/wizard-card";
+@import "plugins/chartist";
+@import "~chartist/dist/scss/chartist";
+@import "plugins/select-bootstrap";
+@import "plugins/perfect-scrollbar";
+@import "plugins/plugin-tagsinput";
+
+@import "dashboard/responsive";
+@import "./core/variables/_colors.scss";
+
+// .fc-icon-chevron-right {
+//   &:after {
+//     content: ">";
+//     font-weight: bold;
+//     font-size: 10px;
+//     top: -7%;
+//   }
+
+// }
+
+// .fc-icon-chevron-left {
+//   &:after {
+//     content: "<";
+//     font-weight: bold;
+//     font-size: 10px;
+//     top: -7%;
+//   }
+
+// }
+
+// .fc-content-skeleton {
+//   height:  50px;
+// }
+
+.white-select * {
+  color: white !important;
+}
+.zero {
+  width: 5%;
+}
+.one {
+  width: 10%;
+}
+.two {
+  width: 20%;
+}
+.three {
+  width: 30%;
+}
+.four {
+  width: 40%;
+}
+.five {
+  width: 50%;
+}
+.six {
+  width: 60%;
+}
+.seven {
+  width: 70%;
+}
+.eight {
+  width: 80%;
+}
+.nine {
+  width: 90%;
+}
+.ten {
+  width: 100%;
+}
+
+.timepicker-overlay {
+  z-index: 10000000 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 10000000 !important;
+}
+
+.timepicker {
+  .timepicker__header {
+    background-color: $my-cole-secondary !important;
+  }
+
+  .clock-face__clock-hand {
+    background-color: $my-cole-secondary !important;
+
+    &::after {
+      background-color: $my-cole-secondary !important;
+    }
+
+    &::before {
+      border-color: $my-cole-secondary !important;
+    }
+  }
+
+  .clock-face__number {
+    > span.active {
+      background-color: $my-cole-secondary !important;
+    }
+  }
+
+  button:not(.timepicker-dial__item) {
+    color: $my-cole-secondary !important;
+  }
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+.card-profile .card-avatar img,
+.card-testimonial .card-avatar img {
+  width: 100%;
+  height: 130px !important;
+}
+
+.card-icon-color {
+  background: linear-gradient(60deg, $my-cole-primary, $my-cole-primary);
+}

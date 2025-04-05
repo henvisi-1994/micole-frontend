@@ -1,0 +1,108 @@
+<div class="container-fluid">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-star fa-2x"></i>
+        </div>
+        <h4 class="card-title">{{ title }}</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+          <div class="row mt-3">
+            <div class="col-12 col-md-6 col-lg-6">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('name') }"
+              >
+                <input
+                  formControlName="name"
+                  matInput
+                  type="text"
+                  placeholder="Nombre"
+                />
+                <mat-error *ngIf="hasError('name', 'required')">
+                  El nombre de la equivalencia es requrido
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'minlength')">
+                  El nombre de la equivalencia tiene que ser al menos 3
+                  caracteres
+                </mat-error>
+                <mat-error *ngIf="hasError('name', 'maxlength')">
+                  El nombre de la equivalencia tiene que ser máximo 255
+                  caracteres
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('initials') }"
+              >
+                <input
+                  formControlName="initials"
+                  matInput
+                  type="text"
+                  placeholder="Inicial"
+                />
+                <mat-error *ngIf="hasError('initials', 'required')">
+                  La inicial de la equivalencia es requrido
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 col-md-6 col-lg-6">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('minValue') }"
+              >
+                <input
+                  formControlName="minValue"
+                  matInput
+                  type="number"
+                  placeholder="Limite inferior"
+                />
+                <mat-error *ngIf="hasError('minValue', 'required')">
+                  El limite inferior es requerido
+                </mat-error>
+                <mat-error *ngIf="hasError('minValue', 'min')">
+                  El limite inferior debe ser mayor o igual a 0
+                </mat-error>
+                <mat-error *ngIf="hasError('minValue', 'max')">
+                  El limite inferior debe ser maximo 99
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <mat-form-field
+                [ngClass]="{ 'has-success': showSuccess('maxValue') }"
+              >
+                <input
+                  formControlName="maxValue"
+                  matInput
+                  type="number"
+                  placeholder="Limite superior"
+                />
+                <mat-error *ngIf="hasError('maxValue', 'required')">
+                  El limite superior es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-error *ngIf="configForm.hasError('config')">
+            El limite superior debe ser mayor al inferior
+          </mat-error>
+          <div class="row mt-3">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!configForm.valid"
+                type="submit"
+                class="btn btn-info btn-round"
+              >
+                {{ title }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

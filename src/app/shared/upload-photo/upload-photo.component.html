@@ -1,0 +1,41 @@
+<div class="card">
+  <div class="card-header card-header-icon">
+    <div class="card-icon card-icon-color">
+      <i class="material-icons">perm_media</i>
+    </div>
+    <h4 class="card-title">
+      {{title}}
+    </h4>
+  </div>
+  <div class="card-body text-center">
+    <form [formGroup]="avatarForm" (ngSubmit)="onSubmit()">
+      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+        <div class="fileinput-new thumbnail img-circle">
+          <img [src]="getUserImage()" alt="Profile image">
+        </div>
+        <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
+        <div>
+          <span class="btn btn-round btn-file card-icon-color">
+            <span class="fileinput-new">Seleccionar foto</span>
+            <span class="fileinput-exists">Cambiar foto</span>
+            <input type="file" formControlName="avatar"
+            accept="image/*"
+            (change)="handleFileInput($event.target.files)">
+          </span>
+          <br />
+          <button type="button" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i>Eliminar foto</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 ml-auto mr-auto text-center">
+          <button
+          [disabled]="!avatarForm.valid"
+          type="submit" class="btn btn-info btn-round">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

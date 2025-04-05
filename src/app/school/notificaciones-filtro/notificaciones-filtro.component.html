@@ -1,0 +1,138 @@
+<div class="container-fluid p-0">
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">
+        <i class="fa fa-bell mr-2"></i> Notificaciones
+      </h5>
+      <p class="mb-0 small">Envío de notificaciones por sede y grado</p>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="grado">Sede</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Sede</mat-label>
+              <mat-select [(ngModel)]="sedeSeleccionada" (selectionChange)="cargarGrados()">
+                <mat-option *ngFor="let sede of sedes" [value]="sede.id">{{ sede.nombre }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="grado">Grado</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Sede</mat-label>
+              <mat-select [(ngModel)]="gradoSeleccionado"[disabled]="!sedeSeleccionada">
+                <mat-option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombre }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="tipo">Tipo de notificación</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Tipo de notificación</mat-label>
+              <mat-select id="tipo" [(ngModel)]="tipoSeleccionado"[disabled]="!sedeSeleccionada" name="tipo">
+                <mat-option  value="">Todos los tipos</mat-option>
+                <mat-option  value="academica">Académica</mat-option>
+                <mat-option  value="administrativa">Administrativa</mat-option>
+                <mat-option  value="evento">Evento</mat-option>
+                <mat-option  value="urgente">Urgente</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Estado</mat-label>
+            <mat-select  id="estado" [(ngModel)]="estadoSeleccionado" name="estado">
+              <mat-option  value="">Todos los estados</mat-option>
+              <mat-option  value="enviada">Enviada</mat-option>
+              <mat-option  value="programada">Programada</mat-option>
+              <mat-option  value="borrador">Borrador</mat-option>
+            </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary" (click)="aplicarFiltros()">
+          <i class="fa fa-filter mr-1"></i> Aplicar filtros
+        </button>
+        <button class="btn btn-success" (click)="nuevaNotificacion()">
+          <i class="fa fa-plus mr-1"></i> Nueva notificación
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="bg-light">
+            <tr>
+              <th>Asunto</th>
+              <th>Tipo</th>
+              <th>Sede</th>
+              <th>Grado</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let notificacion of notificaciones">
+              <td>{{ notificacion.asunto }}</td>
+              <td>
+                <span class="badge" [ngClass]="getBadgeClass(notificacion.tipo)">
+                  {{ notificacion.tipo }}
+                </span>
+              </td>
+              <td>{{ notificacion.sede }}</td>
+              <td>{{ notificacion.grado || 'Todos' }}</td>
+              <td>{{ notificacion.fecha }}</td>
+              <td>
+                <span class="badge" [ngClass]="getEstadoBadgeClass(notificacion.estado)">
+                  {{ notificacion.estado }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-info mr-1" title="Ver detalles">
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-primary mr-1" title="Editar" *ngIf="notificacion.estado === 'borrador'">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" title="Eliminar" *ngIf="notificacion.estado === 'borrador'">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alert alert-info mt-3" *ngIf="notificaciones.length === 0">
+        <i class="fa fa-info-circle mr-2"></i>
+        No se encontraron notificaciones con los filtros seleccionados.
+      </div>
+
+      <nav aria-label="Paginación" *ngIf="notificaciones.length > 0">
+        <ul class="pagination justify-content-center mt-4">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

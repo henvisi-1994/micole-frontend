@@ -1,0 +1,198 @@
+<div class="container-fluid p-0">
+  <mat-card>
+    <mat-card-header class="bg-secondary text-white">
+      <mat-card-title>
+        <mat-icon>person_add</mat-icon>
+        Registro de Estudiante
+      </mat-card-title>
+      <mat-card-subtitle>Formulario optimizado con campos indispensables</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-card class="alert-info">
+        <mat-card-content>
+          <mat-icon>info</mat-icon>
+          Este formulario ha sido optimizado para solicitar únicamente la información indispensable.
+          Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+        </mat-card-content>
+      </mat-card>
+
+      <form [formGroup]="estudianteForm">
+        <h5>Información básica</h5>
+        <mat-divider></mat-divider>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Tipo de documento *</mat-label>
+              <mat-select formControlName="tipoDocumento">
+                <mat-option value="">Seleccione...</mat-option>
+                <mat-option value="TI">Tarjeta de Identidad</mat-option>
+                <mat-option value="RC">Registro Civil</mat-option>
+                <mat-option value="CC">Cédula de Ciudadanía</mat-option>
+                <mat-option value="CE">Cédula de Extranjería</mat-option>
+                <mat-option value="PAS">Pasaporte</mat-option>
+              </mat-select>
+              <mat-error *ngIf="estudianteForm.get('tipoDocumento')?.invalid && estudianteForm.get('tipoDocumento')?.touched">
+                Debe seleccionar un tipo de documento.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Número de documento *</mat-label>
+              <input matInput type="text" formControlName="numeroDocumento" placeholder="Número de documento">
+              <mat-error *ngIf="estudianteForm.get('numeroDocumento')?.invalid && estudianteForm.get('numeroDocumento')?.touched">
+                Debe ingresar un número de documento válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Primer Nombre *</mat-label>
+            <input matInput formControlName="primerNombre" placeholder="Primer Nombre">
+            <mat-error *ngIf="estudianteForm.get('primerNombre')?.invalid && estudianteForm.get('primerNombre')?.touched">
+              Debe ingresar el primer nombre.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Primer apellido *</mat-label>
+            <input matInput formControlName="primerApellido" placeholder="Primer apellido">
+            <mat-error *ngIf="estudianteForm.get('primerApellido')?.invalid && estudianteForm.get('primerApellido')?.touched">
+              Debe ingresar el primer apellido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Segundo apellido</mat-label>
+            <input matInput formControlName="segundoApellido" placeholder="Segundo apellido">
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Género <span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="genero">
+              <mat-option value="">Seleccione...</mat-option>
+              <mat-option value="M">Masculino</mat-option>
+              <mat-option value="F">Femenino</mat-option>
+              <mat-option value="O">Otro</mat-option>
+            </mat-select>
+            <mat-error *ngIf="estudianteForm.get('genero')?.invalid && estudianteForm.get('genero')?.touched">
+              Debe seleccionar un género.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Sede <span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="sede">
+              <mat-option value="">Seleccione...</mat-option>
+              <mat-option *ngFor="let sede of sedes" [value]="sede.id">{{ sede.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="estudianteForm.get('sede')?.invalid && estudianteForm.get('sede')?.touched">
+              Debe seleccionar una sede.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Grado <span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="grado">
+              <mat-option value="">Seleccione...</mat-option>
+              <mat-option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="estudianteForm.get('grado')?.invalid && estudianteForm.get('grado')?.touched">
+              Debe seleccionar un grado.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Grupo <span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="grupo">
+              <mat-option value="">Seleccione...</mat-option>
+              <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="estudianteForm.get('grupo')?.invalid && estudianteForm.get('grupo')?.touched">
+              Debe seleccionar un grupo.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Jornada<span class="text-danger">*</span></mat-label>
+            <mat-select formControlName="jornada">
+              <mat-option value="">Seleccione...</mat-option>
+              <mat-option *ngFor="let jornada of jornadas" [value]="jornada.id">{{ jornada.nombre }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="estudianteForm.get('jornada')?.invalid && estudianteForm.get('jornada')?.touched">
+              Debe seleccionar un jornada.
+            </mat-error>
+          </mat-form-field>
+        </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Fecha de nacimiento *</mat-label>
+              <input matInput type="date" formControlName="fechaNacimiento" placeholder="fecha de nacimiento">
+              <mat-error *ngIf="estudianteForm.get('fechaNacimiento')?.invalid && estudianteForm.get('fechaNacimiento')?.touched">
+                Debe ingresar una fecha de nacimiento válida.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <h5>Información de contacto</h5>
+        <mat-divider></mat-divider>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Correo electrónico *</mat-label>
+              <input matInput type="email" formControlName="correoElectronico" placeholder="correo@ejemplo.com">
+              <mat-error *ngIf="estudianteForm.get('correoElectronico')?.invalid && estudianteForm.get('correoElectronico')?.touched">
+                Debe ingresar un correo electrónico válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Teléfono de contacto *</mat-label>
+              <input matInput type="tel" formControlName="telefonoContacto" placeholder="Teléfono de contacto">
+              <mat-error *ngIf="estudianteForm.get('telefonoContacto')?.invalid && estudianteForm.get('telefonoContacto')?.touched">
+                Debe ingresar un teléfono válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <h5>Información adicional</h5>
+        <mat-divider></mat-divider>
+        <mat-checkbox [(ngModel)]="mostrarCamposAdicionales" [ngModelOptions]="{standalone: true}">
+          Mostrar campos adicionales
+        </mat-checkbox>
+
+        <div *ngIf="mostrarCamposAdicionales">
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Dirección</mat-label>
+                <input matInput type="text" formControlName="direccion" placeholder="Dirección de residencia">
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>EPS</mat-label>
+                <input matInput type="text" formControlName="eps" placeholder="Entidad de salud">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
