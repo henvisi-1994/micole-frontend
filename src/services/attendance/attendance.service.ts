@@ -6,7 +6,7 @@ import { DataService } from "../data.service";
 import { catchError, map, switchMap } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { Response } from "src/models/reponse.model";
-import { AttendanceByStudent } from "src/models/attendance/attendanceByStudent.model";
+import { AttendanceForUpdate } from "src/models/attendance/attendanceForUpdate.model";
 @Injectable({
   providedIn: 'root'
 })
@@ -15,24 +15,19 @@ export class AttendanceService {
 
   constructor(private http: HttpClient, private dataService: DataService) {}
 
-  getAllAttendances(school: string, subject: string, level: string) {
-    this.dataService.loadingScreen.next(true);
-    const params = {
-      school,
-      subject,
-      level,
-    };
-
+ //update attendance
+  updateAttendance(attendance: AttendanceForUpdate) {
     return this.http
-      .get<Response<AttendanceByStudent[]>>(`${environment.url}${this.ENDPOINT}`, { params })
+      .put<Response<any>>(
+        `${this.ENDPOINT}Update`,
+        attendance
+      )
       .pipe(
         map((response) => {
-          this.dataService.loadingScreen.next(false);
-          return response.data;
+          return response;
         }),
-        catchError(() => {
-          this.dataService.loadingScreen.next(false);
-          return throwError("No pudimos cargar las asistencias");
+        catchError((error) => {
+          return throwError(error);
         })
       );
   }
