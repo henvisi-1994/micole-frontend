@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //url: "http://192.168.1.21:5000/",
-   url: "https://mycole.azurewebsites.net/",
+  url: "https://localhost:5001/",
+  // url: "https://mycole.azurewebsites.net/",
 };
 
 /*

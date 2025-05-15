@@ -8,6 +8,7 @@ import { Response } from "src/models/reponse.model";
 import { DataService } from "../data.service";
 import { NotificationByRol } from "src/models/notification/notificationbyRol.model";
 import { NotificationForFranchiestGrade } from "src/models/notification/notificatioForFranchiestGrade.model";
+import { SCHOOL, USER } from "src/util/constants";
 
 @Injectable({
   providedIn: "root",
@@ -29,19 +30,6 @@ export class NotificationService {
     toDate?: string
   ) {
     this.dataService.loadingScreen.next(true);
-
-    /*let params: any = {
-      pageNumber: page.toString(),
-      pageSize: pageSize.toString(),
-    };
-
-    if (severity) params.severity = severity;
-    if (studentSchoolId) params.studentSchoolId = studentSchoolId;
-    if (teacherSchoolId) params.teacherSchoolId = teacherSchoolId;
-    if (pendingResponse != null) params.pendingResponse = pendingResponse;
-    if (fromDate) params.fromDate = fromDate;
-    if (toDate) params.toDate = toDate;*/
-
     return this.http
       .get<Response<Notification[]>>(`${environment.url}${this.ENDPOINT}/All`, {
         observe: "response",
@@ -68,10 +56,19 @@ export class NotificationService {
    // Nuevo método para crear una notificación programada
    createScheduledNotification(notification: Notification): Observable<Notification> {
     this.dataService.loadingScreen.next(true);
+  // 👉 Construir solo los campos que quieres enviar
 
+  console.log(notification)
+  const notificationFormatted = {
+    Description: notification.description,
+    UserId: localStorage.getItem(USER),
+    Severity: notification.severity,
+    ActionTaken: notification.actionTaken,
+    StudentSchoolId: localStorage.getItem(SCHOOL),
+  };
     return this.http.post<Notification>(
-      `${environment.url}${this.ENDPOINT}CreateScheduled`,
-      notification,
+      `${environment.url}${this.ENDPOINT}/CreateScheduled`,
+      notificationFormatted,
     ).pipe(
       map(response => {
         this.dataService.loadingScreen.next(false);
@@ -82,6 +79,21 @@ export class NotificationService {
         return throwError("Error al programar la notificación");
       })
     );
+  }
+  // 👉 Método para formatear fecha
+  private formatDate(date: string | Date): string {
+    if (!date) return null;
+
+    const d = new Date(date);
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // +1 porque en JS los meses son 0-11
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const seconds = String(d.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
   createRoleNotification(notification: NotificationByRol): Observable<any> {
     this.dataService.loadingScreen.next(true);

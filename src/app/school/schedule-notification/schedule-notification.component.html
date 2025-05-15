@@ -36,10 +36,11 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Severidad <span class="text-danger">*</span></mat-label>
             <mat-select id="severity" formControlName="severity" required>
-              <mat-option value="low">Baja</mat-option>
-              <mat-option value="medium">Media</mat-option>
-              <mat-option value="high">Alta</mat-option>
-              <mat-option value="critical">Crítica</mat-option>
+              <mat-option value="SLIGHT">Baja</mat-option>
+              <mat-option value="MEDIUM">Media</mat-option>
+              <mat-option value="SEVERE">Alta</mat-option>
+              <mat-option value="CONGRATULATION">Felicitaciones</mat-option>
+              <mat-option value="GENERAL">General</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -54,55 +55,7 @@
             />
           </mat-form-field>
 
-          <!-- Fechas Importantes -->
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Fecha de alta estudiante</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="studentPicker"
-                  formControlName="studentDischargesDate"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="studentPicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #studentPicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Fecha de alta padres</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="parentPicker"
-                  formControlName="parentDischargesDate"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="parentPicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #parentPicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
 
-          <!-- Profesor Responsable -->
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Profesor responsable</mat-label>
-            <mat-select id="teacher" formControlName="teacher">
-              <mat-option *ngIf="isLoadingTeachers" disabled>
-                <mat-spinner diameter="20"></mat-spinner> Cargando profesores...
-              </mat-option>
-              <mat-option *ngIf="teacherError" disabled>
-                {{ teacherError }}
-              </mat-option>
-              <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">
-                {{ teacher.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
 
           <!-- Cita/Appointment -->
           <mat-form-field appearance="outline" class="w-100">
@@ -119,48 +72,7 @@
             <mat-datepicker #appointmentPicker></mat-datepicker>
           </mat-form-field>
 
-          <!-- Configuración de Notificación -->
-          <mat-expansion-panel class="mt-3">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <i class="fa fa-cog mr-2"></i> Configuración de notificación
-              </mat-panel-title>
-            </mat-expansion-panel-header>
 
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Fecha de envío</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="sendDatePicker"
-                    formControlName="sendDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="sendDatePicker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #sendDatePicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Hora de envío</mat-label>
-                  <input matInput type="time" formControlName="sendTime" />
-                </mat-form-field>
-              </div>
-            </div>
-
-            <mat-checkbox formControlName="notifyStudent"
-              >Notificar al estudiante</mat-checkbox
-            >
-            <mat-checkbox formControlName="notifyParent" class="ml-3"
-              >Notificar a los padres</mat-checkbox
-            >
-            <mat-checkbox formControlName="notifyTeacher" class="ml-3"
-              >Notificar al profesor</mat-checkbox
-            >
-          </mat-expansion-panel>
         </form>
       </div>
       <div class="card-footer bg-light d-flex justify-content-end">

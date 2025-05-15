@@ -32,48 +32,18 @@ export class ScheduleNotificationComponent implements OnInit {
 
      this.programacionForm = this.fb.group({
        description: ['', [Validators.required, Validators.minLength(20)]],
-       severity: ['medium', Validators.required],
+       severity: ['MEDIUM', Validators.required],
        actionTaken: [''],
-       studentDischargesDate: [null],
-       parentDischargesDate: [null],
-       teacher: [''],
        appointment: [null],
-       sendDate: [now, Validators.required],
-       sendTime: [defaultSendTime, Validators.required],
        notifyStudent: [true],
        notifyParent: [true],
-       notifyTeacher: [false]
      });
    }
 
    ngOnInit(): void {
-     this.cargarProfesores();
    }
 
-   cargarProfesores(): void {
-     this.isLoadingTeachers = true;
-     this.teacherError = '';
 
-     this.userService.getTeachers(1, 10, "", localStorage.getItem(SCHOOL))
-       .subscribe({
-         next: (response) => {
-           // Adapta esta línea según la estructura de respuesta de tu API
-           this.teachers = response.data.map((teacher: any) => ({
-             id: teacher.id,
-             name: `${teacher.fullName}`
-           }));
-           console.log('Profesores cargados bd :',response.data);
-           console.log('Profesores cargados:', this.teachers);
-
-           this.isLoadingTeachers = false;
-         },
-         error: (err) => {
-           console.error('Error cargando profesores:', err);
-           this.teacherError = 'No se pudieron cargar los profesores';
-           this.isLoadingTeachers = false;
-         }
-       });
-   }
 
    onFileSelected(event: Event): void {
      const input = event.target as HTMLInputElement;
