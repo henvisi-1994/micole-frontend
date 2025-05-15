@@ -24,7 +24,7 @@ export class CanExclisionSubjectGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.hasRole([Role.ADMIN])) {
+    if (this.authService.hasRole([Role.ADMIN,Role.TEACHER])) {
       return true;
     } else {
       return this.router.createUrlTree(["/", "dashboard"]);
