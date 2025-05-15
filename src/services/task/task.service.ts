@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/services/data.service';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs'
+import { TaskForUpdate } from 'src/models/task/taskForUpdate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,18 @@ export class TaskService {
   updateTask(id: string, value: any) {
     this.dataService.loadingScreen.next(true)
     return this.http.put(`${environment.url}${this.ENDPOINT}${encodeURIComponent(id)}`, value)
+      .pipe(map(response => {
+        this.dataService.loadingScreen.next(false)
+        return "Hemos actualizado la tarea exitosamente"
+      }), catchError(err => {
+        this.dataService.loadingScreen.next(false)
+        if(err.error && err.error.data && err.error.data.message && err.error.data.message.includes("El periodo esta cerrado")) return throwError(err.error.data.message)
+        return throwError('No pudimos actualizar la tarea, porque el porcentaje de las tareas del periodo es mayor a 100')
+      }))
+  }
+  updateTaskEditable(value: TaskForUpdate) {
+    this.dataService.loadingScreen.next(true)
+    return this.http.put(`${environment.url}${this.ENDPOINT}Update`, value)
       .pipe(map(response => {
         this.dataService.loadingScreen.next(false)
         return "Hemos actualizado la tarea exitosamente"

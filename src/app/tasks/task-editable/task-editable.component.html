@@ -1,0 +1,92 @@
+<div class="container-fluid p-0">
+  <form [formGroup]="taskForm" (ngSubmit)="saveChanges()">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">
+          <i class="fa fa-tasks mr-2"></i>
+          Tareas
+        </h5>
+        <p class="mb-0 small">Administra las tareas</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive mt-4">
+          <table class="table table-bordered">
+            <thead class="bg-light">
+              <tr>
+                <th style="width: 25%">Nombre</th>
+                <th style="width: 35%">Descripcion</th>
+                <th style="width: 20%">Fecha</th>
+                <th style="width: 10%">Porcentaje</th>
+                <th style="width: 10%">Acciones</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="tasks">
+              <tr *ngFor="let task of tasks.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input matInput placeholder="Nombre de tarea" formControlName="name">
+                    <mat-error *ngIf="task.get('name').hasError('required')">
+                      El nombre es obligatiorio
+                    </mat-error>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <textarea matInput placeholder="Descripcion"
+                      formControlName="description" rows="2"></textarea>
+                    <mat-error *ngIf="task.get('description').hasError('required')">
+                     Descripcion es requerida
+                    </mat-error>
+                  </mat-form-field>
+                </td>
+                <td>
+                 {{ task.taskDate | date: 'dd/MM/yyyy' }}
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input matInput [matDatepicker]="picker" placeholder="Fecha de tarea"
+                      formControlName="taskDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="task.get('taskDate').hasError('required')">
+                      Fecha es requerida
+                    </mat-error>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input matInput type="number" placeholder="Porcentaje"
+                      formControlName="percentage" min="0" max="100">
+                    <span matSuffix>%</span>
+                    <mat-error *ngIf="task.get('percentage').hasError('required')">
+                      Porcentaje es requerido
+                    </mat-error>
+                    <mat-error *ngIf="task.get('percentage').hasError('min') ||
+                                     task.get('percentage').hasError('max')">
+                      Must be between 0 and 100
+                    </mat-error>
+                  </mat-form-field>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeTask(i)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button type="button" class="btn btn-outline-primary mt-2" (click)="addTask()">
+          <i class="fa fa-plus mr-1"></i> Add Task
+        </button>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary mr-2">
+          <i class="fa fa-times mr-1"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-save mr-1"></i> Save Changes
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
