@@ -174,7 +174,6 @@ export class UserService {
     let path: string = `${environment.url}${
       this.ENDPOINT_SCHOOL
     }${encodeURIComponent(school)}`;
-    let path_user: string = `${environment.url}${this.ENDPOINT}`;
     switch (role) {
       case "Orientador":
         path = `${path}/Counselors`;
@@ -187,9 +186,6 @@ export class UserService {
         break;
       case "Profesor":
         path = `${path}/Teachers`;
-        break;
-        case "Profesor":
-        path = `${path_user}/TeacherSchool`;
         break;
       case "Estudiante":
         path = `${path}/Students`;
