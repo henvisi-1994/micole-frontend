@@ -1,0 +1,72 @@
+@import '../../../../assets/scss/core/variables/_colors.scss';
+
+.card-icon-color {
+  background: linear-gradient(60deg, $my-cole-primary, $my-cole-primary);
+}
+
+.inline {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+p {
+  margin-top: 0.3rem;
+}
+
+.container-legend {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  .column {
+    margin: 0.7rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.circle-red {
+  background-color: red;
+}
+
+.circle-green {
+  background-color: $green-900;
+}
+
+.circle-gray {
+  background-color: $grey-a700;
+}
+
+.circle-blue {
+  background-color: blue;
+}
+
+.circle-yellow {
+  background-color: yellow;
+}
+
+.circle-orange {
+  background-color: orange;
+}
+
+.icon-red {
+  color: red;
+  cursor: pointer;
+}
+
+.icon-primariy {
+  color: $my-cole-primary;
+  cursor: pointer;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}

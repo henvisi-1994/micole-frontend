@@ -1,0 +1,111 @@
+<div class="row" *ngIf="attendances">
+  <div class="col-12 col-md-8 col-lg-6 ml-auto mr-auto">
+    <div class="card">
+      <div class="card-header card-header-icon">
+        <div class="card-icon card-icon-color">
+          <i class="fa fa-history fa-2x"></i>
+        </div>
+        <h4 class="card-title">
+          Asistencia del {{ current.format("YYYY-MM-DD") }}
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 mr-auto">
+            <mat-form-field>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Seleccione una fecha"
+                (click)="picker.open()"
+                [max]="maxDate"
+                (dateChange)="onDate($event)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <app-upload-file
+              *appHasPermission="['Teacher', 'Student', 'SuperAdmin']"
+              modalTitle="Justificacion de Asistencia"
+              [isUrl]="isUrl"
+              [onlyFile]="onlyFile"
+              (onUpload)="handleUpload($event)"
+            >
+            </app-upload-file>
+          </div>
+          <p *ngIf="attendances.length > 0">
+            Tipo de Asistencia: {{ attendanceType }}
+          </p>
+          <div class="container-legend" *ngIf="attendances.length > 0">
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-red"
+                matTooltip="No asistió"
+                matTooltipPosition="above"
+                (click)="setValue('NOATTENDANCE')"
+              ></div>
+            </div>
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-gray"
+                matTooltip="Retardo"
+                matTooltipPosition="above"
+                (click)="setValue('DELAY')"
+              ></div>
+            </div>
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-green"
+                matTooltip="Asistió"
+                matTooltipPosition="above"
+                (click)="setValue('ATTENDANCE')"
+              ></div>
+            </div>
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-orange"
+                matTooltip="Evasión"
+                matTooltipPosition="above"
+                (click)="setValue('EVASION')"
+              ></div>
+            </div>
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-blue"
+                matTooltip="Mal uso del uniforme"
+                matTooltipPosition="above"
+                (click)="setValue('SCHOOL_UNIFORM')"
+              ></div>
+            </div>
+            <div class="column" *appHasPermission="['Teacher', 'SuperAdmin']">
+              <div
+                class="circle circle-yellow"
+                matTooltip="No asistencia con justificación"
+                matTooltipPosition="above"
+                (click)="setValue('JUSTIFIED_NOATTENDANCE')"
+              ></div>
+            </div>
+          </div>
+          <app-table
+            [title]="title"
+            [subtitle]="subtitle"
+            [headers]="headers"
+            [items]="attendances"
+            [itemKeys]="keys"
+            [hasPagination]="true"
+            [pagination]="pagination"
+            [showSearch]="true"
+            [hasActions]="true"
+            [actions]="actions"
+            (onAction)="onAction($event)"
+          >
+          </app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
