@@ -4,8 +4,9 @@ import { AttendanceByStudent } from 'src/models/attendance/attendanceByStudent.m
 import { Pagination } from 'src/models/parametric/pagination.model';
 import { AttendanceService } from 'src/services/attendance/attendance.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AttendanceCorrectionDialogComponent } from '../attendance-correction-dialog/attendance-correction-dialog.component';
-import { EvidenceAttachmentDialogComponent } from '../evidence-attachment-dialog/evidence-attachment-dialog.component';
+import { AttendanceStatsRequest } from 'src/models/attendance/attendanceStatsRequest.model';
+import { AttendanceStats } from 'src/models/attendance/attendanceStat.model';
+import { SCHOOL } from 'src/util/constants';
 
 @Component({
   selector: 'app-student-attendance',
@@ -14,27 +15,25 @@ import { EvidenceAttachmentDialogComponent } from '../evidence-attachment-dialog
 })
 export class StudentAttendanceComponent implements OnInit {
   // Datos para la tabla
-  mensajes: AttendanceByStudent[] = [];
+  mensajes: AttendanceStats[] = []; // ✅ Cambiado a AttendanceStats[]
   outBoxTitle: string = 'Asistencias';
   outBoxSubtitle: string = 'Lista de asistencias por estudiante';
   headers = [
-    'ID Estudiante',
-    'Nombre Completo',
-    'Clases Totales',
+    'Estudiante',
     'Clases Asistidas',
     'Clases Perdidas',
-    'Porcentaje de Asistencia',
-    'Acciones'
+    'Total de Asistenncias',
+    'Primera Asistencia',
+    'Ultima Asistencia',
   ];
 
   keys = [
-    'studentId',
-    'fullName',
-    'totalClasses',
-    'attendedClasses',
-    'missedClasses',
-    'attendancePercentage',
-    'actions'
+    'userName',
+    'totalAttendances',
+    'totalDelays',
+    'totalOnTime',
+    'firstAttendanceDate',
+    'lastAttendanceDate'
   ];
 
   pagination: Pagination = {
@@ -58,61 +57,17 @@ export class StudentAttendanceComponent implements OnInit {
 
   initializeForm() {
     this.attendanceForm = new FormGroup({
-      school: new FormControl(''),
-      subject: new FormControl(''),
-      level: new FormControl(''),
+      dateStart: new FormControl(''),
+      dateEnd: new FormControl('')
     });
   }
 
-  fetchAttendances(school: string, subject: string, level: string) {
-    /*const attendanceArray: AttendanceByStudent[] = [
-      {
-        studentId: 1,
-        fullName: "Juan Pérez",
-        totalClasses: 20,
-        attendedClasses: 18,
-        missedClasses: 2,
-        attendancePercentage: 90
-      },
-      {
-        studentId: 2,
-        fullName: "María García",
-        totalClasses: 20,
-        attendedClasses: 15,
-        missedClasses: 5,
-        attendancePercentage: 75
-      },
-      {
-        studentId: 3,
-        fullName: "Carlos López",
-        totalClasses: 20,
-        attendedClasses: 20,
-        missedClasses: 0,
-        attendancePercentage: 100
-      },
-      {
-        studentId: 4,
-        fullName: "Ana Martínez",
-        totalClasses: 20,
-        attendedClasses: 12,
-        missedClasses: 8,
-        attendancePercentage: 60
-      },
-      {
-        studentId: 5,
-        fullName: "Pedro Sánchez",
-        totalClasses: 20,
-        attendedClasses: 19,
-        missedClasses: 1,
-        attendancePercentage: 95
-      }
-    ];*/
-   /* this.mensajes = attendanceArray.map(item => ({
-      ...item,
-      actions: ''
-    }));*/
-    this.attendanceService.getAllAttendances(school, subject, level).subscribe({
+  fetchAttendances(dateStart: string, dateEnd: string) {
+   const attendaceStatRequest: AttendanceStatsRequest= {dateStart, dateEnd};
+    this.attendanceService.getAttendanceStats(attendaceStatRequest).subscribe({
       next: (data) => {
+        console.log(data);
+
         this.mensajes = data;  // Asigna los datos a la variable mensajes
       },
       error: (err) => {
@@ -123,58 +78,20 @@ export class StudentAttendanceComponent implements OnInit {
 
   onSubmit() {
     if (this.attendanceForm.valid) {
-      const { school, subject, level } = this.attendanceForm.value;
-      this.fetchAttendances(school, subject, level);
+      const { dateStart, dateEnd } = this.attendanceForm.value;
+      this.fetchAttendances(dateStart,dateEnd );
     }
   }
 
-  onAction(event: { action: string; index: number }) {
-    const student = this.mensajes[event.index];
 
-    switch(event.action) {
-      case 'add_evidence':
-        this.openEvidenceDialog(student);
-        break;
-      case 'correct_attendance':
-        this.openCorrectionDialog(student);
-        break;
-      default:
-        console.log('Acción no reconocida:', event.action);
-    }
-  }
 
-  openEvidenceDialog(student: AttendanceByStudent) {
-    this.dialog.open(EvidenceAttachmentDialogComponent, {
-      width: '600px',
-      data: { student }
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        // Lógica para guardar la evidencia
-        console.log('Evidencia guardada:', result);
-      }
-    });
-  }
 
-  openCorrectionDialog(student: AttendanceByStudent) {
-    this.dialog.open(AttendanceCorrectionDialogComponent, {
-      width: '600px',
-      data: { student }
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        // Lógica para corregir la asistencia
-        console.log('Asistencia corregida:', result);
-        // Actualizar los datos
-        this.fetchAttendances(
-          this.attendanceForm.value.school,
-          this.attendanceForm.value.subject,
-          this.attendanceForm.value.level
-        );
-      }
-    });
-  }
+
+
 
   onRequest(event: { page: number; text: string }) {
     this.pagination.currentPage = event.page;
-    this.fetchAttendances('school123', 'subject456', 'level789');
+    const { dateStart, dateEnd } = this.attendanceForm.value;
+    this.fetchAttendances(dateStart, dateEnd);
   }
 }

@@ -126,39 +126,23 @@ import { PrizeSearchComponent } from "./prize/prize-search/prize-search.componen
 import { PointIndexComponent } from "./point/point-index/point-index.component";
 import { RedemptionCardComponent } from "./redemption/redemption-card/redemption-card.component";
 import { TaskFinalModalComponent } from "./tasks/task-final-modal/task-final-modal.component";
-import { ConfigFormComponent } from "./config-grade/config-form/config-form.component";
-import { AcheivementCopyModalComponent } from "./acheivement/acheivement-copy-modal/acheivement-copy-modal.component";
-import { CourseObservationComponent } from "./course/course-observation/course-observation.component";
-import { CourseObservationModalComponent } from "./course/course-observation-modal/course-observation-modal.component";
-import { AcheivementCreateMassiveModalComponent } from "./acheivement/acheivement-create-massive-modal/acheivement-create-massive-modal.component";
-import { HelpComponent } from "./help/help.component";
-import { HelpFormComponent } from "./help/help-form/help-form.component";
-import { CaseIndexComponent } from "./cases/case-index/case-index.component";
-import { CaseShowComponent } from "./cases/case-show/case-show.component";
-import { CaseCardComponent } from "./cases/case-card/case-card.component";
-import { CaseAttendFormComponent } from "./cases/case-attend-form/case-attend-form.component";
-import { CaseStudentCardComponent } from "./cases/case-student-card/case-student-card.component";
-import { CaseObservationCardComponent } from "./cases/case-observation-card/case-observation-card.component";
-import { CaseObservationModalComponent } from "./cases/case-observation-modal/case-observation-modal.component";
-import { CaseCreationComponent } from "./cases/case-creation/case-creation.component";
-import { TaskRecoveryModalComponent } from "./tasks/task-recovery-modal/task-recovery-modal.component";
-import { ContadorCaracteresComponent } from "./school/contador-caracteres/contador-caracteres.component";
-
-import { StudentReferralComponent } from "./school/student-referral/student-referral.component";
-import { OutboxComponent } from "./school/outbox/outbox.component";
-import { FilePreviewComponent } from "./shared/file-preview/file-preview.component";
+import { ConfigFormComponent } from './config-grade/config-form/config-form.component';
+import { AcheivementCopyModalComponent } from './acheivement/acheivement-copy-modal/acheivement-copy-modal.component';
+import { CourseObservationComponent } from './course/course-observation/course-observation.component';
+import { CourseObservationModalComponent } from './course/course-observation-modal/course-observation-modal.component';
+import { AcheivementCreateMassiveModalComponent } from './acheivement/acheivement-create-massive-modal/acheivement-create-massive-modal.component';
+import { HelpComponent } from './help/help.component';
+import { HelpFormComponent } from './help/help-form/help-form.component';
+import { CaseIndexComponent } from './cases/case-index/case-index.component';
+import { CaseShowComponent } from './cases/case-show/case-show.component';
+import { CaseCardComponent } from './cases/case-card/case-card.component';
+import { CaseAttendFormComponent } from './cases/case-attend-form/case-attend-form.component';
+import { CaseStudentCardComponent } from './cases/case-student-card/case-student-card.component';
+import { CaseObservationCardComponent } from './cases/case-observation-card/case-observation-card.component';
+import { CaseObservationModalComponent } from './cases/case-observation-modal/case-observation-modal.component';
+import { CaseCreationComponent } from './cases/case-creation/case-creation.component';
+import { TaskRecoveryModalComponent } from './tasks/task-recovery-modal/task-recovery-modal.component';
 import { StudentAttendanceComponent } from "./school/student-attendance/student-attendance.component";
-import { UsersBySchoolComponent } from "./school/users-by-school/users-by-school.component";
-import { TaskTemplateComponent } from "./school/task-template/task-template.component";
-import { ExclusionSubjectComponent } from "./school/exclusion-subject/exclusion-subject.component";
-import { ScheduleNotificationComponent } from "./school/schedule-notification/schedule-notification.component";
-import { EvidenceAttachmentDialogComponent } from "./school/evidence-attachment-dialog/evidence-attachment-dialog.component";
-import { AttendanceCorrectionDialogComponent } from "./school/attendance-correction-dialog/attendance-correction-dialog.component";
-import { EditableAttendanceListComponent } from "./school/editable-attendance-list/editable-attendance-list.component";
-import { NotificationRolsComponent } from "./school/notification-rols/notification-rols.component";
-import { NotificationFilterComponent } from "./school/notification-filter/notification-filter.component";
-import { EvidenceObservationComponent } from "./school/evidence-observation/evidence-observation.component";
-import { RenamePeriodsComponent } from "./school/rename-periods/rename-periods.component";
 
 @NgModule({
   declarations: [
@@ -187,22 +171,6 @@ import { RenamePeriodsComponent } from "./school/rename-periods/rename-periods.c
     SchoolShowComponent,
     SchoolFormComponent,
     SchoolPlanComponent,
-    EvidenceAttachmentDialogComponent,
-    AttendanceCorrectionDialogComponent,
-    StudentReferralComponent,
-    OutboxComponent,
-    ContadorCaracteresComponent,
-    ExclusionSubjectComponent,
-    EditableAttendanceListComponent,
-    NotificationRolsComponent,
-    NotificationFilterComponent,
-    EvidenceObservationComponent,
-    TaskTemplateComponent,
-    FilePreviewComponent,
-    StudentAttendanceComponent,
-    UsersBySchoolComponent,
-    ScheduleNotificationComponent,
-    RenamePeriodsComponent,
     HasPermissionDirective,
     UserComponent,
     UserIndexComponent,
@@ -310,6 +278,7 @@ import { RenamePeriodsComponent } from "./school/rename-periods/rename-periods.c
     CaseObservationCardComponent,
     CaseObservationModalComponent,
     CaseCreationComponent,
+    StudentAttendanceComponent,
   ],
   imports: [
     BrowserModule,

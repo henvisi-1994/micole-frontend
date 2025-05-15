@@ -7,26 +7,32 @@
       <!-- Formulario de filtros -->
       <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
         <div class="row">
-          <div class="col-md-4">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Escuela</mat-label>
-              <input matInput formControlName="school" placeholder="Ingrese la escuela">
-            </mat-form-field>
-          </div>
 
-          <div class="col-md-4">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Asignatura</mat-label>
-              <input matInput formControlName="subject" placeholder="Ingrese la asignatura">
-            </mat-form-field>
-          </div>
+         <!-- Fecha de inicio -->
+         <div class="col-md-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Fecha de inicio</mat-label>
+            <input
+              matInput
+              formControlName="dateStart"
+              type="date"
+              required
+            >
+          </mat-form-field>
+        </div>
 
-          <div class="col-md-4">
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>Nivel</mat-label>
-              <input matInput formControlName="level" placeholder="Ingrese el nivel">
-            </mat-form-field>
-          </div>
+        <!-- Fecha de fin -->
+        <div class="col-md-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Fecha de fin</mat-label>
+            <input
+              matInput
+              formControlName="dateEnd"
+              type="date"
+              required
+            >
+          </mat-form-field>
+        </div>
         </div>
 
         <!-- Botón de enviar -->
@@ -48,15 +54,7 @@
     [showSearch]="true"
     [hasPagination]="true"
     (onRequest)="onRequest($event)"
-    (onAction)="onAction($event)"
   >
-    <ng-template #actions let-item="item">
-      <button mat-icon-button color="primary" title="Adjuntar evidencia" (click)="onAction({action: 'add_evidence', index: item.studentId})">
-        <mat-icon>attach_file</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" title="Corregir asistencia" (click)="onAction({action: 'correct_attendance', index: item.studentId})">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </ng-template>
+
   </app-table>
 </div>

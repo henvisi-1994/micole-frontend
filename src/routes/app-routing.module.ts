@@ -145,35 +145,20 @@ import { FinalGradeResolver } from "src/resolvers/finalGrade.resolver";
 import { CourseObservationComponent } from "src/app/course/course-observation/course-observation.component";
 import { CanCreateObservationsGuard } from "src/guards/can-create-observations/can-create-observations.guard";
 import { CourseObservationsResolver } from "src/resolvers/courseObservations.resolver";
-import { FranchiseCounselorsResolver } from "src/resolvers/franchiseCounselors.resolver";
-import { HelpComponent } from "src/app/help/help.component";
-import { HelpResolver } from "src/resolvers/help.resolver";
-import { CanCreateCasesGuard } from "src/guards/can-create-cases/can-create-cases.guard";
-import { SchoolYearPeriodResolver } from "src/resolvers/schoolYearPeriod.resolver";
-import { CaseIndexComponent } from "src/app/cases/case-index/case-index.component";
-import { CanSeeCasesGuard } from "src/guards/can-see-cases/can-see-cases.guard";
-import { CasesResolver } from "src/resolvers/cases.resolver";
-import { CaseShowComponent } from "src/app/cases/case-show/case-show.component";
-import { CaseByIdResolver } from "src/resolvers/caseById.resolver";
-import { CaseCreationComponent } from "src/app/cases/case-creation/case-creation.component";
-import { RecoveryGradeResolver } from "src/resolvers/recoveryGrade.resolver";
-import { AcheivementByUserResolver } from "src/resolvers/acheivementByUser.resolver";
-import { ContadorCaracteresComponent } from "src/app/school/contador-caracteres/contador-caracteres.component";
-import { StudentReferralComponent } from "src/app/school/student-referral/student-referral.component";
-import { OutboxComponent } from "src/app/school/outbox/outbox.component";
+import { FranchiseCounselorsResolver } from 'src/resolvers/franchiseCounselors.resolver';
+import { HelpComponent } from 'src/app/help/help.component';
+import { HelpResolver } from 'src/resolvers/help.resolver';
+import { CanCreateCasesGuard } from 'src/guards/can-create-cases/can-create-cases.guard';
+import { SchoolYearPeriodResolver } from 'src/resolvers/schoolYearPeriod.resolver';
+import { CaseIndexComponent } from 'src/app/cases/case-index/case-index.component';
+import { CanSeeCasesGuard } from 'src/guards/can-see-cases/can-see-cases.guard';
+import { CasesResolver } from 'src/resolvers/cases.resolver';
+import { CaseShowComponent } from 'src/app/cases/case-show/case-show.component';
+import { CaseByIdResolver } from 'src/resolvers/caseById.resolver';
+import { CaseCreationComponent } from 'src/app/cases/case-creation/case-creation.component';
+import { RecoveryGradeResolver } from 'src/resolvers/recoveryGrade.resolver';
+import { AcheivementByUserResolver } from 'src/resolvers/acheivementByUser.resolver';
 import { StudentAttendanceComponent } from "src/app/school/student-attendance/student-attendance.component";
-import { UsersBySchoolComponent } from "src/app/school/users-by-school/users-by-school.component";
-import { TaskTemplateComponent } from "src/app/school/task-template/task-template.component";
-import { ExclusionSubjectComponent } from "src/app/school/exclusion-subject/exclusion-subject.component";
-import { CanExclisionSubjectGuard } from "src/guards/can-exclusion-subject/can-exclision-subject.guard";
-import { CanOutboxGuard } from "src/guards/can-outbox/can-outbox.guard";
-import { ScheduleNotificationComponent } from "src/app/school/schedule-notification/schedule-notification.component";
-import { CanSheduleNotificationGuard } from "src/guards/can-shedule-notification/can-shedule-notification.guard";
-import { EditableAttendanceListComponent } from "src/app/school/editable-attendance-list/editable-attendance-list.component";
-import { NotificationRolsComponent } from "src/app/school/notification-rols/notification-rols.component";
-import { NotificationFilterComponent } from "src/app/school/notification-filter/notification-filter.component";
-import { EvidenceObservationComponent } from "src/app/school/evidence-observation/evidence-observation.component";
-import { RenamePeriodsComponent } from "src/app/school/rename-periods/rename-periods.component";
 
 const appRoutes: Routes = [
   {
@@ -183,62 +168,12 @@ const appRoutes: Routes = [
     resolve: [UserResolver],
     children: [
       {
-        path: "student-referral",
-        component: StudentReferralComponent,
-        /* resolve: {
-          response: StudentReferralResolver,
-        },*/
-      },
-      {
-        path: "outbox",
-        component: OutboxComponent,
-      canActivate: [CanOutboxGuard],
-      },
-      { path: "contador-caracteres", component: ContadorCaracteresComponent },
-      {
-        path: "exclusion-subject",
-        component: ExclusionSubjectComponent,
-        resolve: {
-          response: SubjectByTeacherResolver,
-        },
-        canActivate: [CanExclisionSubjectGuard],
-      },
-      {
-        path: "users-by-school",
-        component: UsersBySchoolComponent,
-      },
-      {
-        path: "editable-list-attendance",
-        component: EditableAttendanceListComponent,
-      },
-      { path: "notification-rols", component: NotificationRolsComponent },
-      {
-        path: "notification-filter",
-        component: NotificationFilterComponent,
-      },
-      {
-        path: "evidence-ovservation",
-        component: EvidenceObservationComponent,
-      },
-      {
-        path: "student-attendace",
-        component: StudentAttendanceComponent,
-      },
-      { path: "task-template", component: TaskTemplateComponent },
-      {
-        path: "shedule-notification",
-        component: ScheduleNotificationComponent,
-        canActivateChild: [CanSheduleNotificationGuard],
-
-      },
-      { path: "rename-periods", component: RenamePeriodsComponent },
-      {
         path: "help",
         component: HelpComponent,
         resolve: {
-          response: HelpResolver,
+          response: HelpResolver
         },
-        canActivate: [CanCreateCasesGuard],
+        canActivate: [CanCreateCasesGuard]
       },
       {
         path: "cases",
@@ -248,8 +183,8 @@ const appRoutes: Routes = [
             path: "",
             component: CaseIndexComponent,
             resolve: {
-              response: CasesResolver,
-            },
+              response: CasesResolver
+            }
           },
           {
             path: "new",
@@ -262,7 +197,7 @@ const appRoutes: Routes = [
               response: CaseByIdResolver,
             },
           },
-        ],
+        ]
       },
       {
         path: "prizes",
@@ -670,7 +605,7 @@ const appRoutes: Routes = [
                 canActivate: [CanCreateObservationsGuard],
                 resolve: {
                   course: CourseObservationsResolver,
-                },
+                }
               },
               {
                 path: "events",
@@ -721,7 +656,7 @@ const appRoutes: Routes = [
                             component: AcheivementIndexComponent,
                             resolve: {
                               acheivements: AcheivementResolver,
-                              acheivementsByUser: AcheivementByUserResolver,
+                              acheivementsByUser: AcheivementByUserResolver
                             },
                           },
                         ],
@@ -742,7 +677,7 @@ const appRoutes: Routes = [
                         path: "attendances",
                         component: AttendaceComponent,
                         resolve: {
-                          students: StudentResolver,
+                          students: StudentResolver
                         },
                         children: [
                           {
@@ -837,7 +772,6 @@ const appRoutes: Routes = [
               isEditing: false,
             },
           },
-
           {
             path: ":id",
             children: [
@@ -959,7 +893,7 @@ const appRoutes: Routes = [
                         component: FranchiseShowComponent,
                         resolve: {
                           franchise: FranchiseByResolver,
-                          counselors: FranchiseCounselorsResolver,
+                          counselors: FranchiseCounselorsResolver
                         },
                       },
                       {
@@ -1033,6 +967,10 @@ const appRoutes: Routes = [
           },
         ],
       },
+      {
+        path: "student-attendace",
+        component: StudentAttendanceComponent,
+      }
     ],
   },
   {

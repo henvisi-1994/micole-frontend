@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
       if(!data) {
         this.router.navigate(['login'])
       }
-     /* if(!this.loginInfo.user?.hasChangedPassword) {
+      /*if(!this.loginInfo.user?.hasChangedPassword) {
         this.router.navigate(['/','dashboard','users',this.loginInfo.user.id,'edit'], {queryParams: {
           passwordChange: true
         }})
