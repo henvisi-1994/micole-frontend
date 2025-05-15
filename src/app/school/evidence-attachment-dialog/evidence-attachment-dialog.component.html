@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Adjuntar Evidencia</h2>
+<mat-dialog-content>
+  <p>Estudiante: {{data.student.fullName}}</p>
+  <form [formGroup]="evidenceForm">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Tipo de Evidencia</mat-label>
+      <mat-select formControlName="evidenceType">
+        <mat-option value="medical">Boleta Médica</mat-option>
+        <mat-option value="excuse">Excusas</mat-option>
+        <mat-option value="other">Otro</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="mb-3">
+      <label class="form-label">Archivo:</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)">
+    </div>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput formControlName="comments"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!evidenceForm.valid || !selectedFile">Guardar</button>
+</mat-dialog-actions>

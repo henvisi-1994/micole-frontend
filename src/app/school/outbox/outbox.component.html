@@ -1,15 +1,5 @@
 <div class="container-fluid p-0">
-  <div class="card">
-    <div class="card-header bg-secondary text-white">
-      <h5 class="mb-0">
-        <i class="fa fa-paper-plane mr-2"></i>
-        Buzón de Salida
-      </h5>
-      <p class="mb-0 small">Gestión de notificaciones enviadas</p>
-    </div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <app-table
+  <app-table
         [title]="outBoxTitle"
         [subtitle]="outBoxSubtitle"
         [headers]="headers"
@@ -21,21 +11,5 @@
         [hasActions]="true"
         [photo]="false"
       ></app-table>
-      </div>
-    </div>
-    <div class="card-footer bg-light d-flex justify-content-between">
-      <button class="btn btn-primary">
-        <i class="fa fa-plus mr-1"></i> Nueva notificación
-      </button>
-      <div>
-        <button class="btn btn-outline-secondary mr-2">
-          <i class="fa fa-filter mr-1"></i> Filtrar
-        </button>
-        <button class="btn btn-outline-secondary">
-          <i class="fa fa-download mr-1"></i> Exportar
-        </button>
-      </div>
-    </div>
-  </div>
 </div>
 

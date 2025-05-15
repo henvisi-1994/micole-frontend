@@ -1,12 +1,18 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";import { ReferralReason } from "src/models/school/referralReason.model";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";import { Pagination } from "src/models/parametric/pagination.model";
+import { Role } from "src/models/parametric/role.model";
+import { ReferralReason } from "src/models/school/referralReason.model";
 import { StudentReferral } from "src/models/school/studentReferral.model";
+import { User } from "src/models/user/user.model";
 import { StudentReferralService } from "src/services/student-referral/student-referral.service";
-interface Estudiante {
-  id: number
-  nombre: string
-  grado: string
+import { UserService } from "src/services/user/user.service";
+import { SCHOOL } from "src/util/constants";
+export interface ApiResponse<T> {
+  pagination: Pagination;
+  code: number;
+  codeName: string;
+  data: T[];
 }
 @Component({
   selector: 'app-student-referral',
@@ -16,9 +22,40 @@ interface Estudiante {
 export class StudentReferralComponent implements OnInit {
 
    remisionForm: FormGroup
-    estudiantes: Estudiante[] = []
+    estudiantes: User[] = []
+    studentsReferals: ApiResponse<any>[] = [];
 
-    constructor(private fb: FormBuilder,  private referralService: StudentReferralService) {
+    page = 1;
+    limit = 10;
+    hasMore = true;
+    isLoading = false;
+     title: string = ' Remisión a Orientación';
+     subtitle: string = 'Remision de estudiantes';
+      headers = [
+        'Estudiante',
+        'Fecha Remision',
+        'Remitido por',
+        'Descripcion',
+        'Acciones'
+      ];
+
+      keys = [
+        'studentId',
+        'referralDate',
+        'ReferredBy',
+        'detailedDescription',
+        'previousActions',
+      ];
+
+      pagination: Pagination = {
+        currentPage: 1,
+        itemPerPage: 5,
+        totalItems: 0,
+        totalPages: 0,
+      };
+
+    constructor(private fb: FormBuilder,  private referralService: StudentReferralService,    private userService: UserService,
+    ) {
       this.remisionForm = this.fb.group({
         estudiante: ["", Validators.required],
         fecha: [new Date().toISOString().split("T")[0], Validators.required],
@@ -40,7 +77,7 @@ export class StudentReferralComponent implements OnInit {
 
     ngOnInit(): void {
       this.cargarEstudiantes()
-
+      this.cargarStudenReferals()
       // Observar cambios en el campo motivoOtro
       this.remisionForm.get("motivoOtro")?.valueChanges.subscribe((value) => {
         if (value) {
@@ -52,19 +89,60 @@ export class StudentReferralComponent implements OnInit {
       })
     }
 
-
-    cargarEstudiantes(): void {
-      // Simulación de carga de estudiantes desde API
-      this.estudiantes = [
-        { id: 1, nombre: "Ana María Gómez", grado: "5°A" },
-        { id: 2, nombre: "Carlos Rodríguez", grado: "5°A" },
-        { id: 3, nombre: "Laura Martínez", grado: "5°A" },
-        { id: 4, nombre: "Juan Pablo Pérez", grado: "5°A" },
-        { id: 5, nombre: "Sofía Ramírez", grado: "4°B" },
-        { id: 6, nombre: "Daniel Torres", grado: "4°B" },
-      ]
+    onSelectOpened(): void {
+      this.attachScrollListener();
+      if (this.estudiantes.length === 0) {
+        this.cargarEstudiantes();
+      }
     }
+    attachScrollListener(): void {
+      setTimeout(() => {
+        const panel = document.querySelector('.mat-select-panel');
+        if (panel) {
+          panel.addEventListener('scroll', () => {
+            const threshold = 150;
+            const position = panel.scrollTop + panel.clientHeight;
+            const height = panel.scrollHeight;
 
+            if (position > height - threshold && !this.isLoading && this.hasMore) {
+              this.cargarEstudiantes();
+            }
+          });
+        }
+      }, 100); // Espera a que el panel se renderice
+    }
+    cargarEstudiantes(): void {
+      this.isLoading = true;
+      const schoolId = localStorage.getItem(SCHOOL);
+
+      this.userService.getStudentsByPagination(this.page, this.limit, "", schoolId)
+        .subscribe((response) => {
+          const data = response.data || [];
+          if (data.length > 0) {
+            this.estudiantes.push(...data);
+            this.page++;
+          } else {
+            this.hasMore = false;
+          }
+          this.isLoading = false;
+        });
+    }
+cargarStudenReferals(): void {
+  this.referralService.getReferralsByPagination(1, 10).subscribe({
+    next: (response) => {
+      this.studentsReferals = response.data;
+      this.pagination = {
+        currentPage: response.pagination.currentPage,
+        itemPerPage: response.pagination.itemPerPage,
+        totalItems: response.pagination.totalItems,
+        totalPages: response.pagination.totalPages,
+      };
+    },
+    error: (err) => {
+      console.error(err);  // Maneja el error
+    },
+  });
+}
     tieneMotivosSeleccionados(): boolean {
       const {
         motivoBajoRendimiento,

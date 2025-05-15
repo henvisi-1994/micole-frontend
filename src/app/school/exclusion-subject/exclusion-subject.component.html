@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-my-cole">
+        <h4 class="card-title">Exclusión de Materias</h4>
+        <p class="card-category">
+          Selecciona las materias que no se considerarán en el cálculo
+        </p>
+      </div>
+
+      <div class="card-body">
+        <!-- Resumen de materias excluidas -->
+        <div class="alert alert-info" *ngIf="materiasExcluidas.length > 0">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Materias excluidas:</strong>
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="guardarConfiguracion()"
+            >
+              <mat-icon>save</mat-icon> Guardar Configuración
+            </button>
+          </div>
+          <div class="mt-2">
+            <!-- Iteramos sobre cada grupo -->
+            <div
+              *ngFor="let grupo of materiasExcluidas; let i = index"
+              class="mb-3"
+            >
+              <!-- Mostramos tarjeta solo si el grupo tiene materias excluidas -->
+              <mat-card *ngIf="grupo.length > 0" class="group-card">
+                <mat-card-header>
+                  <mat-card-title class="header-group">
+                    {{ groups[i].franchise }} - {{ groups[i].schoolYear }}
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-chip-list>
+                    <mat-chip
+                      *ngFor="let materia of grupo"
+                      [removable]="true"
+                      (removed)="incluirMateria(materia)"
+                    >
+                      {{ materia.name }}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                  </mat-chip-list>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acordeón con tablas -->
+        <mat-accordion [multi]="true">
+          <mat-expansion-panel
+            *ngFor="let group of groups; let i = index"
+            [expanded]="group.expanded"
+            (opened)="toggleGroup(group)"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ group.franchise }} - {{ group.schoolYear }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ group.subjects.length }} materias
+                <!-- Cambiado a subjects -->
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <!-- Tabla personalizada para cada grupo -->
+            <div class="table-container">
+              <app-table
+                [title]="group.franchise"
+                [subtitle]="group.schoolYear"
+                [headers]="headers"
+                [items]="group.subjects"
+                [itemKeys]="keys"
+                [showSearch]="true"
+                [hasPagination]="true"
+                [pagination]="group.pagination"
+                [hasActions]="true"
+                [actions]="actions"
+                (onAction)="onAction($event, i)"
+                (onRequest)="onRequest($event, i)"
+              >
+              </app-table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <div *ngIf="groups.length === 0" class="text-center py-4">
+          <mat-icon>info</mat-icon>
+          <p>No se encontraron grupos de materias</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Corregir Asistencia</h2>
+<mat-dialog-content>
+  <p>Estudiante: {{data.student.fullName}}</p>
+  <form [formGroup]="correctionForm">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Clases Asistidas</mat-label>
+      <input matInput type="number" formControlName="attendedClasses">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Clases Perdidas</mat-label>
+      <input matInput type="number" formControlName="missedClasses">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Motivo de la corrección</mat-label>
+      <textarea matInput formControlName="correctionReason"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!correctionForm.valid">Guardar</button>
+</mat-dialog-actions>

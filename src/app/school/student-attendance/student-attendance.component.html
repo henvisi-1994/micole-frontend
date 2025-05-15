@@ -1,177 +1,62 @@
-<div class="attendance-container">
-  <h2>Estadísticas de Asistencia General por Estudiante</h2>
-
-  <!-- Filtros -->
-  <div class="filters-container">
-    <div class="search-container">
-      <mat-form-field appearance="outline">
-        <mat-label>Buscar estudiante</mat-label>
-        <input matInput [formControl]="searchControl" placeholder="Nombre o ID del estudiante">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header">
+      <h5 class="card-title">Filtro de {{ outBoxTitle }}</h5>
     </div>
-
-    <form [formGroup]="dateRangeForm" class="date-filters">
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha inicial</mat-label>
-        <input matInput formControlName="startDate" [matDatepicker]="startPicker">
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-        <mat-error *ngIf="dateRangeForm.get('startDate')?.invalid">Fecha inválida</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha final</mat-label>
-        <input matInput formControlName="endDate" [matDatepicker]="endPicker" [min]="dateRangeForm.value.startDate">
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-        <mat-error *ngIf="dateRangeForm.get('endDate')?.invalid">Fecha inválida</mat-error>
-      </mat-form-field>
-
-      <button mat-raised-button color="primary" (click)="applyDateFilter()" [disabled]="dateRangeForm.invalid">
-        Aplicar filtro
-      </button>
-
-      <button mat-button (click)="resetFilters()">
-        Reiniciar filtros
-      </button>
-    </form>
-  </div>
-
-  <!-- Resumen -->
-  <div class="attendance-summary">
-    <div class="summary-card">
-      <div class="card-title">Total de Estudiantes</div>
-      <div class="card-value">{{attendanceSummary.totalStudents}}</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="card-title">Asistencia Promedio</div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents > 0">
-        {{attendanceSummary.averageAttendance | number:'1.0-1'}}%
-      </div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents === 0">-</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="card-title">Mejor Asistencia</div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents > 0">
-        {{attendanceSummary.bestAttendance}}%
-      </div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents === 0">-</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="card-title">Peor Asistencia</div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents > 0">
-        {{attendanceSummary.worstAttendance}}%
-      </div>
-      <div class="card-value" *ngIf="attendanceSummary.totalStudents === 0">-</div>
-    </div>
-  </div>
-
-  <!-- Estado de carga/error -->
-  <div class="loading-container" *ngIf="isLoading">
-    <mat-spinner diameter="40"></mat-spinner>
-    <span>Cargando datos de asistencia...</span>
-  </div>
-
-  <div class="error-container" *ngIf="errorLoading">
-    <mat-icon class="error-icon">error_outline</mat-icon>
-    <span>Error al cargar los datos. Intente nuevamente.</span>
-    <button mat-button color="primary" (click)="fetchStudentAttendance()">
-      <mat-icon>refresh</mat-icon>
-      Reintentar
-    </button>
-  </div>
-
-  <!-- Tabla de datos -->
-  <div class="table-container" *ngIf="!isLoading && !errorLoading">
-    <table mat-table [dataSource]="filteredStudents" class="mat-elevation-z8">
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef (click)="sortData('id')">
-          ID
-          <mat-icon>{{getSortIcon('id')}}</mat-icon>
-        </th>
-        <td mat-cell *matCellDef="let student">{{student.id}}</td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef (click)="sortData('name')">
-          Nombre
-          <mat-icon>{{getSortIcon('name')}}</mat-icon>
-        </th>
-        <td mat-cell *matCellDef="let student">{{student.name}}</td>
-      </ng-container>
-
-      <!-- Total Days Column -->
-      <ng-container matColumnDef="totalDays">
-        <th mat-header-cell *matHeaderCellDef (click)="sortData('totalDays')">
-          Días Totales
-          <mat-icon>{{getSortIcon('totalDays')}}</mat-icon>
-        </th>
-        <td mat-cell *matCellDef="let student">{{student.totalDays}}</td>
-      </ng-container>
-
-      <!-- Days Present Column -->
-      <ng-container matColumnDef="daysPresent">
-        <th mat-header-cell *matHeaderCellDef (click)="sortData('daysPresent')">
-          Días Presente
-          <mat-icon>{{getSortIcon('daysPresent')}}</mat-icon>
-        </th>
-        <td mat-cell *matCellDef="let student">{{student.daysPresent}}</td>
-      </ng-container>
-
-      <!-- Attendance Percentage Column -->
-      <ng-container matColumnDef="attendancePercentage">
-        <th mat-header-cell *matHeaderCellDef (click)="sortData('attendancePercentage')">
-          Porcentaje de Asistencia
-          <mat-icon>{{getSortIcon('attendancePercentage')}}</mat-icon>
-        </th>
-        <td mat-cell *matCellDef="let student">
-          <div class="attendance-bar-container">
-            <div class="attendance-bar"
-                 [style.width.%]="student.attendancePercentage"
-                 [ngClass]="getAttendanceClass(student.attendancePercentage)">
-            </div>
-            <span class="attendance-percentage">{{student.attendancePercentage}}%</span>
+    <div class="card-body">
+      <!-- Formulario de filtros -->
+      <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Escuela</mat-label>
+              <input matInput formControlName="school" placeholder="Ingrese la escuela">
+            </mat-form-field>
           </div>
-        </td>
-      </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="['id', 'name', 'totalDays', 'daysPresent', 'attendancePercentage']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'totalDays', 'daysPresent', 'attendancePercentage'];"></tr>
-    </table>
-
-    <mat-paginator [length]="filteredStudents.length"
-                   [pageSize]="pageSize"
-                   [pageSizeOptions]="pageSizeOptions"
-                   (page)="onPageChange($event)"
-                   aria-label="Seleccionar página">
-    </mat-paginator>
-
-    <div class="no-data-message" *ngIf="filteredStudents.length === 0">
-      <mat-icon>info</mat-icon>
-      No se encontraron estudiantes con los criterios de búsqueda actuales.
-    </div>
-  </div>
-
-  <!-- Gráfico -->
-  <div class="attendance-chart" *ngIf="!isLoading && !errorLoading && filteredStudents.length > 0">
-    <h3>Distribución de Asistencia</h3>
-    <div class="chart-container">
-      <div class="bar-chart">
-        <div *ngFor="let student of filteredStudents | slice:0:10" class="chart-bar">
-          <div class="bar-label">{{student.name.split(' ')[0]}}</div>
-          <div class="bar-value"
-               [style.height.%]="student.attendancePercentage"
-               [ngClass]="getAttendanceClass(student.attendancePercentage)">
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Asignatura</mat-label>
+              <input matInput formControlName="subject" placeholder="Ingrese la asignatura">
+            </mat-form-field>
           </div>
-          <div class="bar-percentage">{{student.attendancePercentage}}%</div>
+
+          <div class="col-md-4">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Nivel</mat-label>
+              <input matInput formControlName="level" placeholder="Ingrese el nivel">
+            </mat-form-field>
+          </div>
         </div>
-      </div>
+
+        <!-- Botón de enviar -->
+        <div class="mt-3">
+          <button mat-raised-button color="primary" [disabled]="attendanceForm.invalid">Buscar</button>
+        </div>
+      </form>
     </div>
   </div>
+
+  <!-- Tabla de asistencias -->
+  <app-table
+    [title]="outBoxTitle"
+    [subtitle]="outBoxSubtitle"
+    [headers]="headers"
+    [items]="mensajes"
+    [itemKeys]="keys"
+    [pagination]="pagination"
+    [showSearch]="true"
+    [hasPagination]="true"
+    (onRequest)="onRequest($event)"
+    (onAction)="onAction($event)"
+  >
+    <ng-template #actions let-item="item">
+      <button mat-icon-button color="primary" title="Adjuntar evidencia" (click)="onAction({action: 'add_evidence', index: item.studentId})">
+        <mat-icon>attach_file</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" title="Corregir asistencia" (click)="onAction({action: 'correct_attendance', index: item.studentId})">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </ng-template>
+  </app-table>
 </div>

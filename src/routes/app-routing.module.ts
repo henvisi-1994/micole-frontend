@@ -159,18 +159,21 @@ import { CaseCreationComponent } from "src/app/cases/case-creation/case-creation
 import { RecoveryGradeResolver } from "src/resolvers/recoveryGrade.resolver";
 import { AcheivementByUserResolver } from "src/resolvers/acheivementByUser.resolver";
 import { ContadorCaracteresComponent } from "src/app/school/contador-caracteres/contador-caracteres.component";
-import { ExclusionMateriasComponent } from "src/app/school/exclusion-materias/exclusion-materias.component";
-import { LlamadoListaEditableComponent } from "src/app/school/llamado-lista-editable/llamado-lista-editable.component";
-import { NotificacionRolesComponent } from "src/app/school/notificacion-roles/notificacion-roles.component";
-import { NotificacionesFiltroComponent } from "src/app/school/notificaciones-filtro/notificaciones-filtro.component";
-import { ObservacionEvidenciaComponent } from "src/app/school/observacion-evidencia/observacion-evidencia.component";
-import { ProgramarNotificacionComponent } from "src/app/school/programar-notificacion/programar-notificacion.component";
-import { RenombrarPeriodosComponent } from "src/app/school/renombrar-periodos/renombrar-periodos.component";
 import { StudentReferralComponent } from "src/app/school/student-referral/student-referral.component";
 import { OutboxComponent } from "src/app/school/outbox/outbox.component";
 import { StudentAttendanceComponent } from "src/app/school/student-attendance/student-attendance.component";
 import { UsersBySchoolComponent } from "src/app/school/users-by-school/users-by-school.component";
 import { TaskTemplateComponent } from "src/app/school/task-template/task-template.component";
+import { ExclusionSubjectComponent } from "src/app/school/exclusion-subject/exclusion-subject.component";
+import { CanExclisionSubjectGuard } from "src/guards/can-exclusion-subject/can-exclision-subject.guard";
+import { CanOutboxGuard } from "src/guards/can-outbox/can-outbox.guard";
+import { ScheduleNotificationComponent } from "src/app/school/schedule-notification/schedule-notification.component";
+import { CanSheduleNotificationGuard } from "src/guards/can-shedule-notification/can-shedule-notification.guard";
+import { EditableAttendanceListComponent } from "src/app/school/editable-attendance-list/editable-attendance-list.component";
+import { NotificationRolsComponent } from "src/app/school/notification-rols/notification-rols.component";
+import { NotificationFilterComponent } from "src/app/school/notification-filter/notification-filter.component";
+import { EvidenceObservationComponent } from "src/app/school/evidence-observation/evidence-observation.component";
+import { RenamePeriodsComponent } from "src/app/school/rename-periods/rename-periods.component";
 
 const appRoutes: Routes = [
   {
@@ -182,39 +185,53 @@ const appRoutes: Routes = [
       {
         path: "student-referral",
         component: StudentReferralComponent,
-       /* resolve: {
+        /* resolve: {
           response: StudentReferralResolver,
         },*/
       },
-      { path: "outbox", component: OutboxComponent },
+      {
+        path: "outbox",
+        component: OutboxComponent,
+      canActivate: [CanOutboxGuard],
+      },
       { path: "contador-caracteres", component: ContadorCaracteresComponent },
-      { path: "exclusion-materias", component: ExclusionMateriasComponent },
+      {
+        path: "exclusion-subject",
+        component: ExclusionSubjectComponent,
+        resolve: {
+          response: SubjectByTeacherResolver,
+        },
+        canActivate: [CanExclisionSubjectGuard],
+      },
       {
         path: "users-by-school",
         component: UsersBySchoolComponent,
       },
       {
-        path: "llamado-lista-editable",
-        component: LlamadoListaEditableComponent,
+        path: "editable-list-attendance",
+        component: EditableAttendanceListComponent,
       },
-      { path: "notificaciones-roles", component: NotificacionRolesComponent },
+      { path: "notification-rols", component: NotificationRolsComponent },
       {
-        path: "notificaciones-filtro",
-        component: NotificacionesFiltroComponent,
+        path: "notification-filter",
+        component: NotificationFilterComponent,
       },
       {
-        path: "observacion-evidencia",
-        component: ObservacionEvidenciaComponent,
-      },      {
+        path: "evidence-ovservation",
+        component: EvidenceObservationComponent,
+      },
+      {
         path: "student-attendace",
         component: StudentAttendanceComponent,
       },
       { path: "task-template", component: TaskTemplateComponent },
       {
-        path: "programar-notificacion",
-        component: ProgramarNotificacionComponent,
+        path: "shedule-notification",
+        component: ScheduleNotificationComponent,
+        canActivateChild: [CanSheduleNotificationGuard],
+
       },
-      { path: "renombrar-periodos", component: RenombrarPeriodosComponent },
+      { path: "rename-periods", component: RenamePeriodsComponent },
       {
         path: "help",
         component: HelpComponent,

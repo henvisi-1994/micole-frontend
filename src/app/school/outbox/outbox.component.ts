@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
+import { Notification } from "src/models/notification/notification.model";
 import { Action } from "src/models/parametric/action.model";
 import { Pagination } from "src/models/parametric/pagination.model";
-import { Message } from "src/models/school/message.model";
+import { DataService } from "src/services/data.service";
+import { NotificationService } from "src/services/notification/notification.service";
+
 
 @Component({
   selector: "app-outbox",
@@ -9,74 +12,81 @@ import { Message } from "src/models/school/message.model";
   styleUrls: ["./outbox.component.scss"],
 })
 export class OutboxComponent implements OnInit {
-  outBoxTitle: string;
-  outBoxSubtitle: string;
-  headers: string[] = [];
-  keys: string[];
-  actions: Action[];
-  pagination: Pagination = null;
-
-  mensajes: Message[] = [
-    {
-      asunto: "Reunión de padres - Primer periodo",
-      destinatario: "Padres de familia - Grado 5°",
-      fechaEnvio: "15/03/2024 10:30",
-      estado: "Enviado",
-      respuestas: 3,
-    },
-    {
-      asunto: "Entrega de boletines",
-      destinatario: "Todos los profesores",
-      fechaEnvio: "10/03/2024 08:15",
-      estado: "Enviado",
-      respuestas: 5,
-    },
-    {
-      asunto: "Recordatorio: Entrega de notas",
-      destinatario: "Profesores - Sede Principal",
-      fechaEnvio: "05/03/2024 14:45",
-      estado: "Pendiente",
-      respuestas: 0,
-    },
+  outBoxTitle = "Buzón de salida";
+  outBoxSubtitle = "Gestión de notificaciones enviadas";
+  headers: string[] = [
+    "Descripción",
+    "Descargos del estudiante",
+    "Descargos del representante",
+    "Fecha",
+    "Docente",
+    "Severidad",
+    "Acción tomada",
+    "Fecha descargo estudiante",
+    "Fecha descargo representante",
+    "Cita",
   ];
-  constructor() {
-    this.headers = [
-      "Asunto",
-      "Destinatario",
-      "Fecha de envío",
-      "Estado",
-      "Respuestas",
-    ];
-    this.keys = [
-      "asunto",
-      "destinatario",
-      "fechaEnvio",
-      "estado",
-      "respuestas",
-    ];
-    this.pagination = {
-      currentPage: 1,
-      itemPerPage: 5,
-      totalPages: Math.ceil(this.mensajes.length / 5),
-      totalItems: this.mensajes.length,
-    };
-    this.actions = [];
+
+  keys: string[] = [
+    "description",
+    "studentDischarges",
+    "parentDischarges",
+    "date",
+    "teacher",
+    "severity",
+    "actionTaken",
+    "studentDischargesDate",
+    "parentDischargesDate",
+    "appointment",
+  ];
+  actions: Action[] = [];
+
+  mensajes: Notification[] = [];
+  pagination: Pagination = {
+    currentPage: 1,
+    itemPerPage: 5,
+    totalItems: 0,
+    totalPages: 0,
+  };
+
+  constructor(
+    private notificationService: NotificationService,
+    private dataService: DataService
+  ) {}
+
+  ngOnInit(): void {
+    this.getNotificaciones();
   }
 
-  ngOnInit(): void {}
+  getNotificaciones(): void {
+    const page = this.pagination.currentPage;
+    const pageSize = this.pagination.itemPerPage;
+
+    this.notificationService.getAllNotifications(page, pageSize).subscribe({
+      next: (response) => {
+        this.mensajes = response.data;
+        this.pagination = {
+          currentPage: response.pagination.currentPage,
+          itemPerPage: response.pagination.itemPerPage,
+          totalItems: response.pagination.totalItems,
+          totalPages: response.pagination.totalPages,
+        };
+      },
+      error: (err) => {
+        console.error("Error cargando notificaciones:", err);
+      },
+    });
+  }
 
   responderNotificacion(id: number): void {
-    // Lógica para abrir modal de respuesta
     console.log("Responder a notificación:", id);
   }
 
   verDetalles(id: number): void {
-    // Lógica para ver detalles
     console.log("Ver detalles de notificación:", id);
   }
 
   archivarNotificacion(id: number): void {
-    // Lógica para archivar
     console.log("Archivar notificación:", id);
   }
 }

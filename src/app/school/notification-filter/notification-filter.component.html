@@ -1,0 +1,91 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-my-cole">
+          <h4 class="card-title">Notificación de Calificación</h4>
+          <p class="card-category">Envía una notificación sobre la calificación de un curso.</p>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()" class="row ml-3 mr-3 mb-2 mt-2">
+            <div class="col-md-12">
+              <mat-form-field class="full-width">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="Description" placeholder="Descripción de la notificación" rows="3"></textarea>
+                <mat-error *ngIf="notificationForm.get('Description').hasError('required')">
+                  La descripción es requerida
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12">
+              <mat-form-field class="full-width">
+                <mat-label>ID de Usuario</mat-label>
+                <input matInput formControlName="UserId" placeholder="Ej: E31AE13B-F0BC-ED11-BA77-14CB6534A1D0">
+                <mat-error *ngIf="notificationForm.get('UserId').hasError('required')">
+                  El ID de usuario es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field class="full-width">
+                <mat-label>Severidad</mat-label>
+                <mat-select formControlName="Severity">
+                  <mat-option *ngFor="let option of severityOptions" [value]="option.value">
+                    {{option.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field class="full-width">
+                <mat-label>Acción Tomada</mat-label>
+                <mat-select formControlName="ActionTaken">
+                  <mat-option *ngFor="let option of actionOptions" [value]="option.value">
+                    {{option.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field class="full-width">
+                <mat-label>ID del Curso</mat-label>
+                <input matInput formControlName="CourseId" placeholder="Ej: 24">
+                <mat-error *ngIf="notificationForm.get('CourseId').hasError('required')">
+                  El ID del curso es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field class="full-width">
+                <mat-label>ID de Calificación</mat-label>
+                <input matInput formControlName="GradeId" placeholder="Ej: 4">
+                <mat-error *ngIf="notificationForm.get('GradeId').hasError('required')">
+                  El ID de calificación es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12 text-right">
+              <button mat-button type="button" [disabled]="isLoading" class="btn btn-default">
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                [disabled]="notificationForm.invalid || isLoading"
+                class="btn btn-primary">
+                <i class="fa fa-paper-plane" *ngIf="!isLoading"></i>
+                <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+                {{isLoading ? 'Enviando...' : 'Enviar Notificación'}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

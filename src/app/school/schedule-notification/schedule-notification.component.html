@@ -1,0 +1,187 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header card-header-my-cole">
+        <h4 class="card-title">
+          <i class="fa fa-bell mr-2"></i>
+          Programar Notificación
+        </h4>
+        <p class="card-category">
+          Configuración de notificaciones para seguimiento de estudiantes
+        </p>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="programacionForm">
+          <!-- Descripción Field -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Descripción <span class="text-danger">*</span></mat-label>
+            <textarea
+              matInput
+              id="description"
+              rows="3"
+              formControlName="description"
+              placeholder="Descripción detallada de la notificación..."
+            ></textarea>
+            <mat-error
+              *ngIf="
+                programacionForm.get('description')?.invalid &&
+                programacionForm.get('description')?.touched
+              "
+            >
+              La descripción es obligatoria (mínimo 20 caracteres)
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Severidad Field -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Severidad <span class="text-danger">*</span></mat-label>
+            <mat-select id="severity" formControlName="severity" required>
+              <mat-option value="low">Baja</mat-option>
+              <mat-option value="medium">Media</mat-option>
+              <mat-option value="high">Alta</mat-option>
+              <mat-option value="critical">Crítica</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Acción Tomada -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Acción tomada</mat-label>
+            <input
+              matInput
+              id="actionTaken"
+              formControlName="actionTaken"
+              placeholder="Describa las acciones realizadas"
+            />
+          </mat-form-field>
+
+          <!-- Fechas Importantes -->
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Fecha de alta estudiante</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="studentPicker"
+                  formControlName="studentDischargesDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="studentPicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #studentPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Fecha de alta padres</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="parentPicker"
+                  formControlName="parentDischargesDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="parentPicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #parentPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Profesor Responsable -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Profesor responsable</mat-label>
+            <mat-select id="teacher" formControlName="teacher">
+              <mat-option *ngIf="isLoadingTeachers" disabled>
+                <mat-spinner diameter="20"></mat-spinner> Cargando profesores...
+              </mat-option>
+              <mat-option *ngIf="teacherError" disabled>
+                {{ teacherError }}
+              </mat-option>
+              <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">
+                {{ teacher.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Cita/Appointment -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha de cita</mat-label>
+            <input
+              matInput
+              [matDatepicker]="appointmentPicker"
+              formControlName="appointment"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="appointmentPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #appointmentPicker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Configuración de Notificación -->
+          <mat-expansion-panel class="mt-3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <i class="fa fa-cog mr-2"></i> Configuración de notificación
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Fecha de envío</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="sendDatePicker"
+                    formControlName="sendDate"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="sendDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #sendDatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Hora de envío</mat-label>
+                  <input matInput type="time" formControlName="sendTime" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-checkbox formControlName="notifyStudent"
+              >Notificar al estudiante</mat-checkbox
+            >
+            <mat-checkbox formControlName="notifyParent" class="ml-3"
+              >Notificar a los padres</mat-checkbox
+            >
+            <mat-checkbox formControlName="notifyTeacher" class="ml-3"
+              >Notificar al profesor</mat-checkbox
+            >
+          </mat-expansion-panel>
+        </form>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-outline-secondary mr-2"
+          (click)="cancelar()"
+        >
+          <i class="fa fa-times mr-1"></i> Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="!programacionForm.valid"
+          (click)="programarNotificacion()"
+        >
+          <i class="fa fa-save mr-1"></i> Guardar Notificación
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+

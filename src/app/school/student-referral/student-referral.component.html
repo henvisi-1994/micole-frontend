@@ -14,10 +14,10 @@
           <div class="col-md-6">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Estudiante <span class="text-danger">*</span></mat-label>
-              <mat-select id="estudiante" formControlName="estudiante">
+              <mat-select id="estudiante" formControlName="estudiante" (opened)="onSelectOpened()">
                 <mat-option value="">Seleccione un estudiante</mat-option>
                 <mat-option *ngFor="let estudiante of estudiantes" [value]="estudiante.id">
-                  {{estudiante.nombre}} - {{estudiante.grado}}
+                  {{estudiante.fullName}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="remisionForm.get('estudiante')?.invalid && remisionForm.get('estudiante')?.touched">
@@ -159,5 +159,16 @@
       </button>
     </div>
   </div>
+  <app-table
+  [title]="title"
+  [subtitle]="subtitle"
+  [headers]="headers"
+  [items]="studentsReferals"
+  [itemKeys]="keys"
+  [pagination]="pagination"
+  [showSearch]="true"
+  [hasPagination]="true"
+>
+</app-table>
 </div>
 

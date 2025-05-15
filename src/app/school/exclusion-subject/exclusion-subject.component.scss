@@ -1,0 +1,37 @@
+.card-header {
+  background-color: #2C3E50 !important;
+}
+
+.btn-primary {
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+
+.btn-primary:hover {
+  background-color: #1a252f;
+  border-color: #1a252f;
+}
+
+.badge-success {
+  background-color: #2ecc71;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+
+.list-group-item {
+  transition: background-color 0.2s;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+.header-group {
+  color: #2C3E50;
+}

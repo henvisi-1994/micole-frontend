@@ -1,0 +1,118 @@
+<div class="container-fluid p-0">
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">
+        <i class="fa fa-calendar-alt me-2"></i>
+        Configuración de Períodos
+      </h5>
+      <p class="mb-0 small">Personalización de nombres de períodos para boletines</p>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info mb-4">
+        <i class="fa fa-info-circle me-2"></i>
+        Los cambios realizados en los nombres de los períodos se reflejarán en los boletines y reportes académicos.
+      </div>
+
+      <!-- Filtros -->
+      <div class="row g-3 align-items-end mb-4">
+        <div class="col-md-4">
+          <label for="anioLectivo">Año lectivo</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Año lectivo</mat-label>
+            <mat-select id="anioLectivo" [(ngModel)]="anioLectivoSeleccionado" (selectionChange)="cargarPeriodos()">
+              <mat-option *ngFor="let anio of aniosLectivos" [value]="anio.id">
+                {{ anio.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <label for="sede">Sede</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Sede</mat-label>
+            <mat-select id="sede" [(ngModel)]="sedeSeleccionada">
+              <mat-option value="todas">Todas las sedes</mat-option>
+              <mat-option *ngFor="let sede of sedes" [value]="sede.id">
+                {{ sede.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="cargarPeriodos()" aria-label="Cargar períodos">
+            <i class="fa fa-sync-alt me-1"></i>Cargar períodos
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-responsive" *ngIf="periodos.length > 0">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th style="width: 15%">Número</th>
+              <th style="width: 30%">Nombre predeterminado</th>
+              <th style="width: 30%">Nombre personalizado</th>
+              <th style="width: 15%">Fechas</th>
+              <th style="width: 10%">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let periodo of periodos; let i = index">
+              <td class="text-center">{{ periodo.numero }}</td>
+              <td>{{ periodo.nombrePredeterminado }}</td>
+              <td>
+                <input type="text"
+                  class="form-control"
+                  [(ngModel)]="periodo.nombrePersonalizado"
+                  [ngClass]="{'is-invalid': periodo.error}"
+                  (input)="validarNombrePeriodo(periodo)" />
+                <div class="invalid-feedback" *ngIf="periodo.error">
+                  {{ periodo.error }}
+                </div>
+              </td>
+              <td>{{ periodo.fechaInicio }} - {{ periodo.fechaFin | date: 'dd/MM/yyyy' }}</td>
+              <td class="text-center">
+                <button class="btn btn-outline-secondary btn-sm"
+                  (click)="restaurarNombrePredeterminado(i)"
+                  title="Restaurar nombre predeterminado"
+                  >
+                  <i class="fa fa-undo"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mensaje de tabla vacía -->
+      <div class="alert alert-warning" *ngIf="periodos.length === 0">
+        <i class="fa fa-exclamation-triangle me-2"></i>
+        No se encontraron períodos para el año lectivo seleccionado.
+      </div>
+
+      <!-- Checkbox -->
+      <div class="form-check mt-4">
+        <input type="checkbox"
+          class="form-check-input"
+          id="aplicarTodos"
+          [(ngModel)]="aplicarATodas">
+        <label class="form-check-label" for="aplicarTodos">
+          Aplicar estos cambios a todas las sedes
+        </label>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer bg-light d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="cancelar()" aria-label="Cancelar cambios">
+        <i class="fa fa-times me-1"></i> Cancelar
+      </button>
+      <button class="btn btn-primary"
+        [disabled]="!puedeGuardar()"
+        (click)="guardarCambios()" aria-label="Guardar cambios">
+        <i class="fa fa-save me-1"></i> Guardar cambios
+      </button>
+    </div>
+  </div>
+</div>

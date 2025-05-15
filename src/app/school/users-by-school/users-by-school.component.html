@@ -3,7 +3,7 @@
     <mat-card-header class="bg-secondary text-white">
       <mat-card-title>
         <mat-icon>person_add</mat-icon>
-        Registro de Estudiante
+        Registro de Usuario por Colegio
       </mat-card-title>
       <mat-card-subtitle>Formulario optimizado con campos indispensables</mat-card-subtitle>
     </mat-card-header>
@@ -16,183 +16,333 @@
           Los campos marcados con <span class="text-danger">*</span> son obligatorios.
         </mat-card-content>
       </mat-card>
-
       <form [formGroup]="estudianteForm">
-        <h5>Información básica</h5>
-        <mat-divider></mat-divider>
-
-        <div class="row">
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Tipo de documento *</mat-label>
-              <mat-select formControlName="tipoDocumento">
-                <mat-option value="">Seleccione...</mat-option>
-                <mat-option value="TI">Tarjeta de Identidad</mat-option>
-                <mat-option value="RC">Registro Civil</mat-option>
-                <mat-option value="CC">Cédula de Ciudadanía</mat-option>
-                <mat-option value="CE">Cédula de Extranjería</mat-option>
-                <mat-option value="PAS">Pasaporte</mat-option>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('firstName')}">
+              <input
+              formControlName="firstName"
+              matInput
+              type="text"
+              placeholder="Primer Nombre">
+              <mat-error *ngIf="hasError('firstName','required')">
+                El primer nombre es requerido
+              </mat-error>
+              <mat-error *ngIf="hasError('firstName','minlength')">
+                El primer nombre tiene que ser al menos 3 caracteres
+              </mat-error>
+              <mat-error *ngIf="hasError('firstName','maxlength')">
+                El primer nombre tiene que máximo 255 caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field>
+              <input
+              formControlName="secondName"
+              matInput
+              type="text"
+              placeholder="Segundo Nombre">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('surname')}">
+              <input
+              formControlName="surname"
+              matInput
+              type="text"
+              placeholder="Primer Apellido">
+            </mat-form-field>
+            <mat-error *ngIf="hasError('surname','required')">
+              El primer apellido es requerido
+            </mat-error>
+            <mat-error *ngIf="hasError('surname','minlength')">
+              El primer apellido tiene que ser al menos 3 caracteres
+            </mat-error>
+            <mat-error *ngIf="hasError('surname','maxlength')">
+              El primer apellido tiene que máximo 255 caracteres
+            </mat-error>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field>
+              <input
+              formControlName="lastname"
+              matInput
+              type="text"
+              placeholder="Segundo Apellido">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('mobile')}">
+              <input
+              formControlName="mobile"
+              matInput
+              type="text"
+              placeholder="Celular">
+            </mat-form-field>
+            <mat-error *ngIf="hasError('mobile','required')">
+              El celular es requerido
+            </mat-error>
+            <mat-error *ngIf="hasError('mobile','pattern')">
+              El celular solo puede ser numérico y máximo 10 caracteres
+            </mat-error>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('phone') && validPhone()}">
+              <input
+              formControlName="phone"
+              matInput
+              type="text"
+              placeholder="teléfono fijo">
+              <mat-error *ngIf="hasError('phone','phone')">
+                El teléfono solo puede ser numérico y máximo 7 caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('email')}">
+              <input
+              formControlName="email"
+              matInput
+              type="email"
+              placeholder="Email">
+            </mat-form-field>
+            <mat-error *ngIf="hasError('email','required')">
+              El correo electrónico es requerido
+            </mat-error>
+            <mat-error *ngIf="hasError('email','email')">
+              No es un correo electrónico valido
+            </mat-error>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field>
+              <mat-select placeholder="Rh" formControlName="rh">
+                <mat-option *ngFor="let bt of getBloadTypes()" [value]="bt">
+                  {{ bloodType[bt] }}
+                </mat-option>
               </mat-select>
-              <mat-error *ngIf="estudianteForm.get('tipoDocumento')?.invalid && estudianteForm.get('tipoDocumento')?.touched">
-                Debe seleccionar un tipo de documento.
-              </mat-error>
             </mat-form-field>
           </div>
-
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Número de documento *</mat-label>
-              <input matInput type="text" formControlName="numeroDocumento" placeholder="Número de documento">
-              <mat-error *ngIf="estudianteForm.get('numeroDocumento')?.invalid && estudianteForm.get('numeroDocumento')?.touched">
-                Debe ingresar un número de documento válido.
-              </mat-error>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <mat-form-field>
+              <mat-select placeholder="Tipo de identification" formControlName="identificationType">
+                <mat-option *ngFor="let it of getIdentificationTypes()" [value]="it">
+                  {{ identificationType[it] }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Primer Nombre *</mat-label>
-            <input matInput formControlName="primerNombre" placeholder="Primer Nombre">
-            <mat-error *ngIf="estudianteForm.get('primerNombre')?.invalid && estudianteForm.get('primerNombre')?.touched">
-              Debe ingresar el primer nombre.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Primer apellido *</mat-label>
-            <input matInput formControlName="primerApellido" placeholder="Primer apellido">
-            <mat-error *ngIf="estudianteForm.get('primerApellido')?.invalid && estudianteForm.get('primerApellido')?.touched">
-              Debe ingresar el primer apellido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Segundo apellido</mat-label>
-            <input matInput formControlName="segundoApellido" placeholder="Segundo apellido">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Género <span class="text-danger">*</span></mat-label>
-            <mat-select formControlName="genero">
-              <mat-option value="">Seleccione...</mat-option>
-              <mat-option value="M">Masculino</mat-option>
-              <mat-option value="F">Femenino</mat-option>
-              <mat-option value="O">Otro</mat-option>
-            </mat-select>
-            <mat-error *ngIf="estudianteForm.get('genero')?.invalid && estudianteForm.get('genero')?.touched">
-              Debe seleccionar un género.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Sede <span class="text-danger">*</span></mat-label>
-            <mat-select formControlName="sede">
-              <mat-option value="">Seleccione...</mat-option>
-              <mat-option *ngFor="let sede of sedes" [value]="sede.id">{{ sede.nombre }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="estudianteForm.get('sede')?.invalid && estudianteForm.get('sede')?.touched">
-              Debe seleccionar una sede.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Grado <span class="text-danger">*</span></mat-label>
-            <mat-select formControlName="grado">
-              <mat-option value="">Seleccione...</mat-option>
-              <mat-option *ngFor="let grado of grados" [value]="grado.id">{{ grado.nombre }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="estudianteForm.get('grado')?.invalid && estudianteForm.get('grado')?.touched">
-              Debe seleccionar un grado.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Grupo <span class="text-danger">*</span></mat-label>
-            <mat-select formControlName="grupo">
-              <mat-option value="">Seleccione...</mat-option>
-              <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.nombre }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="estudianteForm.get('grupo')?.invalid && estudianteForm.get('grupo')?.touched">
-              Debe seleccionar un grupo.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Jornada<span class="text-danger">*</span></mat-label>
-            <mat-select formControlName="jornada">
-              <mat-option value="">Seleccione...</mat-option>
-              <mat-option *ngFor="let jornada of jornadas" [value]="jornada.id">{{ jornada.nombre }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="estudianteForm.get('jornada')?.invalid && estudianteForm.get('jornada')?.touched">
-              Debe seleccionar un jornada.
-            </mat-error>
-          </mat-form-field>
-        </div>
-          <div class="col-md-4">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Fecha de nacimiento *</mat-label>
-              <input matInput type="date" formControlName="fechaNacimiento" placeholder="fecha de nacimiento">
-              <mat-error *ngIf="estudianteForm.get('fechaNacimiento')?.invalid && estudianteForm.get('fechaNacimiento')?.touched">
-                Debe ingresar una fecha de nacimiento válida.
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('identification')}">
+              <input
+              formControlName="identification"
+              matInput
+              type="text"
+              placeholder="Numero de identificacion">
+              <mat-error *ngIf="hasError('identification','required')">
+                El documento es requerido
+              </mat-error>
+              <mat-error *ngIf="hasError('identification','minlength')">
+                El documento debe ser mínimo 4 caracteres
               </mat-error>
             </mat-form-field>
           </div>
         </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-12" style="padding-left: 0px;">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Genero" formControlName="gender">
+                  <mat-option *ngFor="let it of getGender()" [value]="it">
+                    {{ gender[it] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-6" style="padding-left: 0px;">
+            <div class="col-12">
+              <mat-form-field>
+                <mat-select placeholder="Grupo poblacional" formControlName="populationGroup"
+                (selectionChange)="selectedPopulationGroup($event.value)">
+                  <mat-option *ngFor="let it of getPopulationGroup()" [value]="it">
+                    {{ populationGroup[it] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-12" *ngIf="showOther">
+              <mat-form-field
+                [ngClass]="{'has-success': showSuccess('populationGroupOther')}">
+                <input
+                formControlName="populationGroupOther"
+                matInput
+                type="text"
+                placeholder="Otro grupo poblacional">
+                <mat-error *ngIf="hasError('populationGroupOther','required')">
+                  El nombre es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field>
+              <mat-select placeholder="Caracteristica especial" formControlName="specialFeature"
+              >
+                <mat-option *ngFor="let it of getSpecialFeature()" [value]="it">
+                  {{ specialFeature[it] }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <mat-form-field >
+              <input matInput
+              formControlName="birthday"
+              autocomplete="off"
+              [max]="maxDate"
+              [min]="minDate" [matDatepicker]="picker" placeholder="Fecha de nacimiento" (click)="picker.open()">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker
+              ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="row mb-3">
+              <div class="col-12">
+                <mat-checkbox formControlName="sms">Activar envio de SMS ?</mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" *ngIf="showSchools || showRoles">
+          <div class="col-12 col-md-6" *ngIf="showRoles">
+            <mat-form-field>
+              <mat-select placeholder="Seleccione el role" name="role"
+              formControlName="role"
+              >
+                <mat-option *ngFor="let role of roles" [value]="role">
+                  {{ role }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="showSchools">
+            <mat-form-field>
+              <mat-select placeholder="Seleccione una escuela" name="school"
+              formControlName="school"
+              >
+                <mat-option *ngFor="let school of schools" [value]="school.id">
+                  {{ school.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-        <h5>Información de contacto</h5>
-        <mat-divider></mat-divider>
+          </div>
 
+
+        </div>
+
+        <div class="row mb-3" *ngIf="showPassword">
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('newPassword')}">
+              <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña"
+              formControlName="newPassword"
+              autocomplete="current-password"
+              />
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="hasError('newPassword','required')">
+                La contraseña es requerida
+              </mat-error>
+              <mat-error *ngIf="hasError('newPassword','minlength')">
+                La contraseña es mínimo de 8 caracteres
+              </mat-error>
+              <mat-error *ngIf="hasError('newPassword','pattern')">
+                La contraseña debe tener una mayúscula, una minúscula, un numero y un carácter especial
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field
+            [ngClass]="{'has-success': showSuccess('newPasswordConfirmation')}"
+            >
+              <input matInput [type]="hideConfirm ? 'password' : 'text'" placeholder="Confirmar contraseña"
+              formControlName="newPasswordConfirmation"
+              autocomplete="current-password"
+              [errorStateMatcher]="matcher"
+              />
+              <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="estudianteForm.hasError('confirmation')">
+                La contraseña no coincide
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <mat-form-field>
+              <textarea
+              formControlName="description"
+              matInput rows="6" placeholder="Descripción"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Correo electrónico *</mat-label>
-              <input matInput type="email" formControlName="correoElectronico" placeholder="correo@ejemplo.com">
-              <mat-error *ngIf="estudianteForm.get('correoElectronico')?.invalid && estudianteForm.get('correoElectronico')?.touched">
-                Debe ingresar un correo electrónico válido.
-              </mat-error>
+          <div class="col-12">
+            <mat-form-field>
+              <textarea
+              formControlName="diseases"
+              matInput rows="6" placeholder="Enfermedades"></textarea>
             </mat-form-field>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Teléfono de contacto *</mat-label>
-              <input matInput type="tel" formControlName="telefonoContacto" placeholder="Teléfono de contacto">
-              <mat-error *ngIf="estudianteForm.get('telefonoContacto')?.invalid && estudianteForm.get('telefonoContacto')?.touched">
-                Debe ingresar un teléfono válido.
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <h5>Información adicional</h5>
-        <mat-divider></mat-divider>
-        <mat-checkbox [(ngModel)]="mostrarCamposAdicionales" [ngModelOptions]="{standalone: true}">
-          Mostrar campos adicionales
-        </mat-checkbox>
-
-        <div *ngIf="mostrarCamposAdicionales">
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Dirección</mat-label>
-                <input matInput type="text" formControlName="direccion" placeholder="Dirección de residencia">
-              </mat-form-field>
-            </div>
-            <div class="col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>EPS</mat-label>
-                <input matInput type="text" formControlName="eps" placeholder="Entidad de salud">
-              </mat-form-field>
-            </div>
           </div>
         </div>
       </form>
+
+      <div class="mt-3">
+        <button mat-raised-button color="primary" (click)="guardarEstudiante()">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+      </div>
     </mat-card-content>
   </mat-card>
-</div>
 
+  <!-- Tabla de Estudiantes -->
+  <app-table
+    [title]="'Lista de Usuarios por Colegio'"
+    [subtitle]="'Gestiona a los usuarios registrados en el colegio'"
+    [headers]="tableHeaders"
+    [items]="estudiantes"
+    [itemKeys]="['tipoDocumento', 'numeroDocumento', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido']"
+    [hasPagination]="true"
+    [pagination]="pagination"
+    [showSearch]="true"
+    [hasActions]="true"
+    [photo]="false"
+    (onRequest)="handleRequest($event)"
+    (onAction)="handleAction($event)">
+  </app-table>
+</div>

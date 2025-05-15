@@ -143,19 +143,22 @@ import { CaseObservationModalComponent } from "./cases/case-observation-modal/ca
 import { CaseCreationComponent } from "./cases/case-creation/case-creation.component";
 import { TaskRecoveryModalComponent } from "./tasks/task-recovery-modal/task-recovery-modal.component";
 import { ContadorCaracteresComponent } from "./school/contador-caracteres/contador-caracteres.component";
-import { ExclusionMateriasComponent } from "./school/exclusion-materias/exclusion-materias.component";
-import { LlamadoListaEditableComponent } from "./school/llamado-lista-editable/llamado-lista-editable.component";
-import { NotificacionRolesComponent } from "./school/notificacion-roles/notificacion-roles.component";
-import { NotificacionesFiltroComponent } from "./school/notificaciones-filtro/notificaciones-filtro.component";
-import { ObservacionEvidenciaComponent } from "./school/observacion-evidencia/observacion-evidencia.component";
-import { ProgramarNotificacionComponent } from "./school/programar-notificacion/programar-notificacion.component";
-import { RenombrarPeriodosComponent } from "./school/renombrar-periodos/renombrar-periodos.component";
+
 import { StudentReferralComponent } from "./school/student-referral/student-referral.component";
 import { OutboxComponent } from "./school/outbox/outbox.component";
 import { FilePreviewComponent } from "./shared/file-preview/file-preview.component";
 import { StudentAttendanceComponent } from "./school/student-attendance/student-attendance.component";
 import { UsersBySchoolComponent } from "./school/users-by-school/users-by-school.component";
 import { TaskTemplateComponent } from "./school/task-template/task-template.component";
+import { ExclusionSubjectComponent } from "./school/exclusion-subject/exclusion-subject.component";
+import { ScheduleNotificationComponent } from "./school/schedule-notification/schedule-notification.component";
+import { EvidenceAttachmentDialogComponent } from "./school/evidence-attachment-dialog/evidence-attachment-dialog.component";
+import { AttendanceCorrectionDialogComponent } from "./school/attendance-correction-dialog/attendance-correction-dialog.component";
+import { EditableAttendanceListComponent } from "./school/editable-attendance-list/editable-attendance-list.component";
+import { NotificationRolsComponent } from "./school/notification-rols/notification-rols.component";
+import { NotificationFilterComponent } from "./school/notification-filter/notification-filter.component";
+import { EvidenceObservationComponent } from "./school/evidence-observation/evidence-observation.component";
+import { RenamePeriodsComponent } from "./school/rename-periods/rename-periods.component";
 
 @NgModule({
   declarations: [
@@ -184,20 +187,22 @@ import { TaskTemplateComponent } from "./school/task-template/task-template.comp
     SchoolShowComponent,
     SchoolFormComponent,
     SchoolPlanComponent,
+    EvidenceAttachmentDialogComponent,
+    AttendanceCorrectionDialogComponent,
     StudentReferralComponent,
     OutboxComponent,
     ContadorCaracteresComponent,
-    ExclusionMateriasComponent,
-    LlamadoListaEditableComponent,
-    NotificacionRolesComponent,
-    NotificacionesFiltroComponent,
-    ObservacionEvidenciaComponent,
+    ExclusionSubjectComponent,
+    EditableAttendanceListComponent,
+    NotificationRolsComponent,
+    NotificationFilterComponent,
+    EvidenceObservationComponent,
     TaskTemplateComponent,
     FilePreviewComponent,
     StudentAttendanceComponent,
     UsersBySchoolComponent,
-    ProgramarNotificacionComponent,
-    RenombrarPeriodosComponent,
+    ScheduleNotificationComponent,
+    RenamePeriodsComponent,
     HasPermissionDirective,
     UserComponent,
     UserIndexComponent,

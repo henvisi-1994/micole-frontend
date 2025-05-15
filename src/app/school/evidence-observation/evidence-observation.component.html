@@ -1,0 +1,97 @@
+<div class="container-fluid p-0">
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">
+        <i class="fa fa-comment-alt mr-2"></i>
+        Registro de Observación
+      </h5>
+      <p class="mb-0 small">Adjuntar evidencia y configurar restricciones</p>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="observacionForm">
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Estudiante</mat-label>
+              <mat-select formControlName="estudiante">
+                <mat-option value="">Seleccione un estudiante</mat-option>
+                <mat-option *ngFor="let estudiante of estudiantes" [value]="estudiante.id">
+                  {{estudiante.nombre}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="observacionForm.get('estudiante')?.invalid && observacionForm.get('estudiante')?.touched">
+                El estudiante es requerido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Tipo de observación</mat-label>
+              <mat-select formControlName="tipo">
+                <mat-option value="academica">Académica</mat-option>
+                <mat-option value="disciplinaria">Disciplinaria</mat-option>
+                <mat-option value="convivencia">Convivencia</mat-option>
+                <mat-option value="otro">Otro</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Fecha</mat-label>
+              <input matInput type="date" formControlName="fecha">
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Descripción de la observación</mat-label>
+          <textarea matInput rows="4" formControlName="descripcion" placeholder="Detalle la situación observada..."></textarea>
+          <mat-error *ngIf="observacionForm.get('descripcion')?.invalid && observacionForm.get('descripcion')?.touched">
+            La descripción es requerida y debe tener al menos 10 caracteres.
+          </mat-error>
+        </mat-form-field>
+        <div class="form-group">
+          <label>Evidencias</label>
+          <input type="file" multiple (change)="onFileSelected($event)">
+          <div class="selected-files mt-2" *ngIf="archivosSeleccionados.length > 0">
+            <mat-card class="bg-light">
+              <mat-card-content>
+                <h6>Archivos seleccionados:</h6>
+                <mat-list>
+                  <mat-list-item *ngFor="let archivo of archivosSeleccionados; let i = index">
+                    <i class="fa fa-file mr-2"></i>
+                    {{archivo.name}}
+                    <span class="badge badge-secondary ml-2">{{(archivo.size / 1024).toFixed(2)}} KB</span>
+                    <button mat-icon-button color="warn" (click)="eliminarArchivo(i)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        <mat-card class="bg-light">
+          <mat-card-content>
+            <p class="text-muted small mb-2">Seleccione quiénes pueden ver esta observación:</p>
+            <mat-checkbox formControlName="verDirectivos">Directivos</mat-checkbox>
+            <mat-checkbox formControlName="verProfesores">Profesores</mat-checkbox>
+            <mat-checkbox formControlName="verPadres">Padres de familia</mat-checkbox>
+            <mat-checkbox formControlName="verEstudiante">Estudiante</mat-checkbox>
+            <div class="invalid-feedback" *ngIf="!tienePermisosSeleccionados()">
+              <mat-icon>warning</mat-icon>
+              Debe seleccionar al menos un rol que pueda ver esta observación.
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary mr-2">
+        <i class="fa fa-times mr-1"></i> Cancelar
+      </button>
+      <button type="button" class="btn btn-primary" [disabled]="!observacionForm.valid || !tienePermisosSeleccionados()" (click)="guardarObservacion()">
+        <i class="fa fa-save mr-1"></i> Guardar observación
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,254 +1,180 @@
 import { Component, OnInit } from '@angular/core';
-import { debounceTime, distinctUntilChanged,  takeUntil } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { DateAdapter } from '@angular/material/core';
-import { StudentAttendance } from 'src/models/school/studentAttendance.model';
-import { AttendanceSummary } from 'src/models/school/attendanceSummary';
-import { Subject } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AttendanceByStudent } from 'src/models/attendance/attendanceByStudent.model';
+import { Pagination } from 'src/models/parametric/pagination.model';
+import { AttendanceService } from 'src/services/attendance/attendance.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AttendanceCorrectionDialogComponent } from '../attendance-correction-dialog/attendance-correction-dialog.component';
+import { EvidenceAttachmentDialogComponent } from '../evidence-attachment-dialog/evidence-attachment-dialog.component';
+
 @Component({
   selector: 'app-student-attendance',
   templateUrl: './student-attendance.component.html',
   styleUrls: ['./student-attendance.component.scss']
 })
 export class StudentAttendanceComponent implements OnInit {
+  // Datos para la tabla
+  mensajes: AttendanceByStudent[] = [];
+  outBoxTitle: string = 'Asistencias';
+  outBoxSubtitle: string = 'Lista de asistencias por estudiante';
+  headers = [
+    'ID Estudiante',
+    'Nombre Completo',
+    'Clases Totales',
+    'Clases Asistidas',
+    'Clases Perdidas',
+    'Porcentaje de Asistencia',
+    'Acciones'
+  ];
 
-  private destroy$ = new Subject<void>();
+  keys = [
+    'studentId',
+    'fullName',
+    'totalClasses',
+    'attendedClasses',
+    'missedClasses',
+    'attendancePercentage',
+    'actions'
+  ];
 
-  students: StudentAttendance[] = [];
-  filteredStudents: StudentAttendance[] = [];
-  attendanceSummary: AttendanceSummary = {
-    totalStudents: 0,
-    averageAttendance: 0,
-    bestAttendance: 0,
-    worstAttendance: 0
+  pagination: Pagination = {
+    currentPage: 1,
+    itemPerPage: 5,
+    totalItems: 0,
+    totalPages: 0,
   };
 
-  searchControl = new FormControl('');
-  isLoading = true;
-  errorLoading = false;
-  sortColumn: keyof StudentAttendance = 'name';
-  sortDirection: 'asc' | 'desc' = 'asc';
-
-  // Pagination
-  pageSize = 10;
-  currentPage = 0;
-  pageSizeOptions = [5, 10, 25, 100];
-
-  // Date range form
-  dateRangeForm = new FormGroup({
-    startDate: new FormControl(null),
-    endDate: new FormControl(null, [
-      Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)
-    ])
-  });
+  // Formulario de entrada
+  attendanceForm: FormGroup;
 
   constructor(
-    private http: HttpClient,
-    private snackBar: MatSnackBar,
-    private dateAdapter: DateAdapter<Date>
-  ) {
-    this.dateAdapter.setLocale('es'); // Set locale for date formatting
+    private attendanceService: AttendanceService,
+    private dialog: MatDialog
+  ) {}
+
+  ngOnInit() {
+    this.initializeForm();
   }
 
-  ngOnInit(): void {
-    this.setupSearchFilter();
-    this.fetchStudentAttendance();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  /**
-   * Sets up the search filter with debounce
-   */
-  private setupSearchFilter(): void {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    ).subscribe(value => {
-      this.currentPage = 0; // Reset to first page on search
-      this.filterStudents(value || '');
+  initializeForm() {
+    this.attendanceForm = new FormGroup({
+      school: new FormControl(''),
+      subject: new FormControl(''),
+      level: new FormControl(''),
     });
   }
 
-  /**
-   * Fetches student attendance data from the API
-   */
-  fetchStudentAttendance(): void {
-    this.isLoading = true;
-    this.errorLoading = false;
-
-    // In a real app, replace with your API endpoint
-    this.http.get<StudentAttendance[]>('api/student-attendance').subscribe({
-      next: (data) => {
-        this.students = data;
-        this.filteredStudents = [...this.students];
-        this.calculateSummary();
-        this.isLoading = false;
+  fetchAttendances(school: string, subject: string, level: string) {
+    /*const attendanceArray: AttendanceByStudent[] = [
+      {
+        studentId: 1,
+        fullName: "Juan Pérez",
+        totalClasses: 20,
+        attendedClasses: 18,
+        missedClasses: 2,
+        attendancePercentage: 90
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error fetching attendance data:', error);
-        this.errorLoading = true;
-        this.isLoading = false;
-        this.showError('Error al cargar los datos de asistencia');
+      {
+        studentId: 2,
+        fullName: "María García",
+        totalClasses: 20,
+        attendedClasses: 15,
+        missedClasses: 5,
+        attendancePercentage: 75
+      },
+      {
+        studentId: 3,
+        fullName: "Carlos López",
+        totalClasses: 20,
+        attendedClasses: 20,
+        missedClasses: 0,
+        attendancePercentage: 100
+      },
+      {
+        studentId: 4,
+        fullName: "Ana Martínez",
+        totalClasses: 20,
+        attendedClasses: 12,
+        missedClasses: 8,
+        attendancePercentage: 60
+      },
+      {
+        studentId: 5,
+        fullName: "Pedro Sánchez",
+        totalClasses: 20,
+        attendedClasses: 19,
+        missedClasses: 1,
+        attendancePercentage: 95
+      }
+    ];*/
+   /* this.mensajes = attendanceArray.map(item => ({
+      ...item,
+      actions: ''
+    }));*/
+    this.attendanceService.getAllAttendances(school, subject, level).subscribe({
+      next: (data) => {
+        this.mensajes = data;  // Asigna los datos a la variable mensajes
+      },
+      error: (err) => {
+        console.error(err);  // Maneja el error
+      },
+    });
+  }
+
+  onSubmit() {
+    if (this.attendanceForm.valid) {
+      const { school, subject, level } = this.attendanceForm.value;
+      this.fetchAttendances(school, subject, level);
+    }
+  }
+
+  onAction(event: { action: string; index: number }) {
+    const student = this.mensajes[event.index];
+
+    switch(event.action) {
+      case 'add_evidence':
+        this.openEvidenceDialog(student);
+        break;
+      case 'correct_attendance':
+        this.openCorrectionDialog(student);
+        break;
+      default:
+        console.log('Acción no reconocida:', event.action);
+    }
+  }
+
+  openEvidenceDialog(student: AttendanceByStudent) {
+    this.dialog.open(EvidenceAttachmentDialogComponent, {
+      width: '600px',
+      data: { student }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        // Lógica para guardar la evidencia
+        console.log('Evidencia guardada:', result);
       }
     });
   }
 
-  /**
-   * Filters students based on search term
-   * @param searchTerm The term to filter by
-   */
-  filterStudents(searchTerm: string): void {
-    searchTerm = searchTerm.toLowerCase();
-
-    this.filteredStudents = this.students.filter(student =>
-      student.name.toLowerCase().includes(searchTerm) ||
-      student.id.toString().includes(searchTerm)
-    );
-
-    this.calculateSummary();
-  }
-
-  /**
-   * Applies date range filter to the student list
-   */
-  applyDateFilter(): void {
-    if (this.dateRangeForm.invalid) {
-      this.showError('Por favor ingrese un rango de fechas válido');
-      return;
-    }
-
-    const { startDate, endDate } = this.dateRangeForm.value;
-
-    if (!startDate && !endDate) {
-      this.filteredStudents = [...this.students];
-      this.calculateSummary();
-      return;
-    }
-
-    this.isLoading = true;
-
-    // In a real app, you would make an API call with date parameters
-    // For demo purposes, we'll simulate the filtered data
-    setTimeout(() => {
-      // This would be replaced with actual filtered data from your API
-      this.filteredStudents = [...this.students];
-      this.calculateSummary();
-      this.isLoading = false;
-    }, 500);
-  }
-
-  /**
-   * Resets all filters to their initial state
-   */
-  resetFilters(): void {
-    this.searchControl.setValue('');
-    this.dateRangeForm.reset();
-    this.currentPage = 0;
-    this.filteredStudents = [...this.students];
-    this.calculateSummary();
-  }
-
-  /**
-   * Sorts the student data by the specified column
-   * @param column The column to sort by
-   */
-  sortData(column: keyof StudentAttendance): void {
-    if (this.sortColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortColumn = column;
-      this.sortDirection = 'asc';
-    }
-
-    this.filteredStudents.sort((a, b) => {
-      const valueA = a[column];
-      const valueB = b[column];
-
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.sortDirection === 'asc'
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return this.sortDirection === 'asc'
-          ? valueA - valueB
-          : valueB - valueA;
+  openCorrectionDialog(student: AttendanceByStudent) {
+    this.dialog.open(AttendanceCorrectionDialogComponent, {
+      width: '600px',
+      data: { student }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        // Lógica para corregir la asistencia
+        console.log('Asistencia corregida:', result);
+        // Actualizar los datos
+        this.fetchAttendances(
+          this.attendanceForm.value.school,
+          this.attendanceForm.value.subject,
+          this.attendanceForm.value.level
+        );
       }
-      return 0;
     });
   }
 
-  /**
-   * Calculates summary statistics for the attendance data
-   */
-  private calculateSummary(): void {
-    if (this.filteredStudents.length === 0) {
-      this.attendanceSummary = {
-        totalStudents: 0,
-        averageAttendance: 0,
-        bestAttendance: 0,
-        worstAttendance: 0
-      };
-      return;
-    }
-
-    const percentages = this.filteredStudents.map(s => s.attendancePercentage);
-    const sum = percentages.reduce((a, b) => a + b, 0);
-
-    this.attendanceSummary = {
-      totalStudents: this.filteredStudents.length,
-      averageAttendance: sum / this.filteredStudents.length,
-      bestAttendance: Math.max(...percentages),
-      worstAttendance: Math.min(...percentages)
-    };
+  onRequest(event: { page: number; text: string }) {
+    this.pagination.currentPage = event.page;
+    this.fetchAttendances('school123', 'subject456', 'level789');
   }
-
-  /**
-   * Gets the appropriate sort icon for a column
-   * @param column The column to get the icon for
-   * @returns The icon name
-   */
-  getSortIcon(column: string): string {
-    if (this.sortColumn !== column) return 'sort';
-    return this.sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
-  }
-
-  /**
-   * Determines the CSS class for attendance percentage visualization
-   * @param percentage The attendance percentage
-   * @returns The appropriate CSS class
-   */
-  getAttendanceClass(percentage: number): string {
-    if (percentage >= 90) return 'excellent';
-    if (percentage >= 80) return 'good';
-    if (percentage >= 70) return 'average';
-    return 'poor';
-  }
-
-  /**
-   * Shows an error message to the user
-   * @param message The error message to display
-   */
-  private showError(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 5000,
-      panelClass: ['error-snackbar']
-    });
-  }
-
-  /**
-   * Handles page change event for pagination
-   * @param event The page event
-   */
-  onPageChange(event: any): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
-  }
-
 }

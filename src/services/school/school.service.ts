@@ -12,7 +12,7 @@ import {
 } from "./../../models/school/schoolById.model";
 import { plan } from "./../../models/parametric/plan.model";
 import { map, catchError, tap, mergeMap } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { School } from "./../../models/school/school.model";
 import { Response } from "./../../models/reponse.model";
 import { DataService } from "./../data.service";
@@ -22,12 +22,15 @@ import { environment } from "src/environments/environment";
 import { CourseById } from "src/models/course/courseById.model";
 import { SCHOOL } from "src/util/constants";
 import { SchoolWithFranchises } from "src/models/school/schoolWithFranchises.model";
+import { ExcludedSubjectsUpdate } from "src/models/subject/excludedSubjectsUpdate.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class SchoolService {
   ENDPOINT = "api/Schools/";
+  ENDPOINT_SUBJECT = "api/Subjects/"
+
   constructor(private http: HttpClient, private dataService: DataService) {}
 
   getFranchises() {
@@ -546,5 +549,41 @@ export class SchoolService {
           return throwError("No se pudo actualizar el logo del colegio");
         })
       );
+  }
+   // Nuevo método para actualizar materias excluidas
+   updateExcludedSubjects(excludedSubjectIds: string[]): Observable<boolean> {
+    this.dataService.loadingScreen.next(true);
+    const payload: ExcludedSubjectsUpdate = { excludedSubjectIds };
+
+    return this.http.put<Response<boolean>>(
+      `${environment.url}${this.ENDPOINT_SUBJECT}excluded`,
+      payload
+    ).pipe(
+      map(response => {
+        this.dataService.loadingScreen.next(false);
+        return response.data;
+      }),
+      catchError(err => {
+        this.dataService.loadingScreen.next(false);
+        return throwError("No pudimos actualizar las materias excluidas");
+      })
+    );
+  }
+
+  // Método para obtener materias excluidas (opcional)
+  getExcludedSubjects(): Observable<string[]> {
+    this.dataService.loadingScreen.next(true);
+    return this.http.get<Response<string[]>>(
+      `${environment.url}${this.ENDPOINT_SUBJECT}excluded`
+    ).pipe(
+      map(response => {
+        this.dataService.loadingScreen.next(false);
+        return response.data;
+      }),
+      catchError(err => {
+        this.dataService.loadingScreen.next(false);
+        return throwError("No pudimos obtener las materias excluidas");
+      })
+    );
   }
 }

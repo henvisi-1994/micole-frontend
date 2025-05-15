@@ -6,6 +6,7 @@ import { environment } from "src/environments/environment";
 import { DataService } from "../data.service";
 import { Response } from "src/models/reponse.model";
 import { StudentReferral } from "src/models/school/studentReferral.model";
+import { Pagination } from "src/models/parametric/pagination.model";
 
 @Injectable({
   providedIn: "root",
@@ -20,7 +21,7 @@ export class StudentReferralService {
     return this.http.post(`${environment.url}${this.ENDPOINT}`, studentReferral).pipe(
       map((response) => {
         this.dataService.loadingScreen.next(false);
-        return "Hemos creado la referencia del studiante";
+        return "Hemos creado la referencia del estudiante";
       }),
       catchError((error) => {
         this.dataService.loadingScreen.next(false);
@@ -49,7 +50,7 @@ export class StudentReferralService {
   ) {
     this.dataService.loadingScreen.next(true);
 
-    const request = this.http.get<Response<any>>(`${environment.url}${this.ENDPOINT}`, {
+    const request = this.http.get<Response<any>>(`${environment.url}${this.ENDPOINT}/All`, {
       observe: "response",
       params: {
         fullName: search, // Cambia esto si tu backend usa otro campo de búsqueda
