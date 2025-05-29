@@ -42,6 +42,7 @@ export class NotificationRolsComponent implements OnInit {
   inicializarFormulario(): void {
     this.notificacionForm = this.fb.group({
       description: ["", [Validators.required, Validators.minLength(20)]],
+      userId: ["E31AE13B-F0BC-ED11-8A77-14CB6534A1D0", [Validators.required]],
       severity: ["medium", Validators.required],
       actionTaken: [""],
       rolProfesores: [false],
@@ -96,19 +97,21 @@ export class NotificationRolsComponent implements OnInit {
       const formValue = this.notificacionForm.value;
 
       const rolesMap = [
-        { key: "rolProfesores", value: "Teacher" },
-        { key: "rolPadres", value: "Parent" },
-        { key: "rolEstudiantes", value: "Student" },
+        { key: "rolProfesores", value: "TEACHER" },
+        { key: "rolPadres", value: "PARENT" },
+        { key: "rolEstudiantes", value: "STUDENT" },
       ];
 
       rolesMap.forEach((role) => {
         if (formValue[role.key]) {
           const payload = {
+
+            userId: formValue.userId,
             description: formValue.description,
             severity: formValue.severity,
             actionTaken: formValue.actionTaken,
             rol: role.value,
-            school_id: localStorage.getItem(SCHOOL),
+            school_id: 11,
           };
           this.notificacionesService.createRoleNotification(payload).subscribe({
             next: () =>

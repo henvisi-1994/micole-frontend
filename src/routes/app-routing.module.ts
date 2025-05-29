@@ -158,7 +158,7 @@ import { CaseByIdResolver } from 'src/resolvers/caseById.resolver';
 import { CaseCreationComponent } from 'src/app/cases/case-creation/case-creation.component';
 import { RecoveryGradeResolver } from 'src/resolvers/recoveryGrade.resolver';
 import { AcheivementByUserResolver } from 'src/resolvers/acheivementByUser.resolver';
-import { NotificationCampusGradeComponent } from "src/app/school/notification-campus-grade/notification-campus-grade.component";
+import { NotificationRolsComponent } from "src/app/school/notification-rols/notification-rols.component";
 
 const appRoutes: Routes = [
   {
@@ -967,10 +967,7 @@ const appRoutes: Routes = [
           },
         ],
       },
-      {
-        path: "notification-campus-grade",
-        component: NotificationCampusGradeComponent,
-      },
+      { path: "notification-rols", component: NotificationRolsComponent },
     ],
   },
   {

@@ -142,7 +142,7 @@ import { CaseObservationCardComponent } from './cases/case-observation-card/case
 import { CaseObservationModalComponent } from './cases/case-observation-modal/case-observation-modal.component';
 import { CaseCreationComponent } from './cases/case-creation/case-creation.component';
 import { TaskRecoveryModalComponent } from './tasks/task-recovery-modal/task-recovery-modal.component';
-import { NotificationCampusGradeComponent } from "./school/notification-campus-grade/notification-campus-grade.component";
+import { NotificationRolsComponent } from "./school/notification-rols/notification-rols.component";
 
 @NgModule({
   declarations: [
@@ -278,7 +278,7 @@ import { NotificationCampusGradeComponent } from "./school/notification-campus-g
     CaseObservationCardComponent,
     CaseObservationModalComponent,
     CaseCreationComponent,
-    NotificationCampusGradeComponent,
+    NotificationRolsComponent,
   ],
   imports: [
     BrowserModule,

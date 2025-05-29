@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { forkJoin, Observable } from "rxjs";
 import { SchoolService } from "./../../../services/school/school.service";
 import { DataService } from "src/services/data.service";
 import { GradeService } from "./../../../services/grade/grade.service";
@@ -13,6 +13,7 @@ import { SchoolById } from "src/models/school/schoolById.model";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import swal from "sweetalert2";
+import { values } from "lodash";
 
 declare const $: any;
 
@@ -37,7 +38,7 @@ export class SchoolCardComponent implements OnInit {
     id: string;
     name: string;
     description: string;
-    preschool?: boolean
+    preschool?: boolean;
     index: number;
   } = null;
   settingText = "Crear Configuraciónes";
@@ -126,7 +127,7 @@ export class SchoolCardComponent implements OnInit {
         request = this.gradeService.updateGrade(result.id, {
           name: result.value.name,
           description: result.value.description,
-          preschool: result.value.preschool === '1'
+          preschool: result.value.preschool === "1",
         });
       } else if (result.action === FormAction.PERIOD) {
         request = this.periodService.updatePeriod(result.id, {
@@ -154,7 +155,11 @@ export class SchoolCardComponent implements OnInit {
       );
       if (result.action === FormAction.GRADE) {
         request = this.gradeService.createGrade(
-          { name: result.value.name, description: result.value.description, preschool: result.value.preschool === '1' },
+          {
+            name: result.value.name,
+            description: result.value.description,
+            preschool: result.value.preschool === "1",
+          },
           this.school.id
         );
       } else if (result.action === FormAction.PERIOD) {
@@ -171,40 +176,67 @@ export class SchoolCardComponent implements OnInit {
           this.school.id
         );
       } else if (result.action == FormAction.NOTIFICACTION) {
-        request = this.schoolService.sendNotification(
+        const roles = [
+          "ALL",
+          "Student",
+          "Parent",
+          "Teacher",
+          "Counselor",
+          "Admin",
+        ];
+
+        const requests = result.value.role
+          .map((value, index) => {
+            if (value) {
+              return this.schoolService.sendNotification(
+                this.school.id,
+                result.value.name,
+                result.value.description,
+                roles[index],
+                result.value.file
+              );
+            }
+            return null;
+          })
+          .filter((req) => req !== null);
+
+        if (requests.length > 0) {
+          forkJoin(requests).subscribe({
+            next: (responses) => {
+              swal({
+                title: "Éxito",
+                text: "Notificaciones enviadas correctamente.",
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-success",
+                type: "success",
+              })
+                .then((result) => {
+                  if (result.value) {
+                    this.onUpdated.next(true);
+                  }
+                })
+                .catch(swal.noop);
+            },
+            error: (error) => {
+              swal({
+                title: "Error",
+                text: error,
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-danger",
+                type: "error",
+              }).catch(swal.noop);
+            },
+          });
+        }
+
+        /*request = this.schoolService.sendNotification(
           this.school.id,
           result.value.name,
           result.value.description,
           result.value.role,
           result.value.file
-        );
+        );*/
       }
     }
-    request.subscribe(
-      (data) => {
-        swal({
-          title: "Éxito",
-          text: data,
-          buttonsStyling: false,
-          confirmButtonClass: "btn btn-success",
-          type: "success",
-        })
-          .then((result) => {
-            if (result.value) {
-              this.onUpdated.next(true);
-            }
-          })
-          .catch(swal.noop);
-      },
-      (error) => {
-        swal({
-          title: "Error",
-          text: error,
-          buttonsStyling: false,
-          confirmButtonClass: "btn btn-danger",
-          type: "error",
-        }).catch(swal.noop);
-      }
-    );
   }
 }

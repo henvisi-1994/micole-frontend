@@ -2,7 +2,7 @@ import { DataService } from 'src/services/data.service';
 import { FormAction } from './../../../models/franchise/formAction.enum';
 import { rule } from './../../../models/parametric/rule.model';
 import { showSuccess, hasError } from 'src/util/validators';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 declare const $: any;
@@ -33,6 +33,7 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
     "Admin": "Cordinador"
   }
   showDownload: Boolean = false
+selectedRoles: string[] = [];
 
   constructor(private dataService: DataService) { }
 
@@ -77,7 +78,9 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
         name: new FormControl(this.currentValue?.name || '',[Validators.required, Validators.minLength(3)])
       })
       if(this.action === FormAction.NOTIFICACTION) {
-        this.modalForm.addControl("role", new FormControl('All', [Validators.required]))
+        this.modalForm.addControl('role', new FormArray([], [Validators.required]));
+        const roleFormArray = this.modalForm.get('role') as FormArray;
+        this.roleKeys().forEach(() => roleFormArray.push(new FormControl(false)));
         this.modalForm.addControl("file", new FormControl(null))
       }
       if(this.action === FormAction.GRADE) {
@@ -99,6 +102,38 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
     }
 
   }
+get roleArray(): FormArray {
+  return this.modalForm.get('role') as FormArray;
+}
+onRoleChange(event: any, roleKey: string, index: number): void {
+  const isFirstRole = roleKey === 'All'; // reemplaza 'admin' por tu primer rol real
+
+  if (event.checked) {
+    if (isFirstRole) {
+      // Deseleccionar todos excepto el primero
+      this.selectedRoles = [roleKey];
+      this.roleArray.controls.forEach((ctrl, i) => {
+        ctrl.setValue(i === index); // solo el primero en true
+      });
+    } else {
+      // Si hay 'admin', quitarlo
+      const adminIndex = this.roleKeys().indexOf('All');
+      if (this.selectedRoles.includes('All')) {
+        this.selectedRoles.splice(this.selectedRoles.indexOf('All'), 1);
+        this.roleArray.at(adminIndex).setValue(false);
+      }
+      this.selectedRoles.push(roleKey);
+      this.roleArray.at(index).setValue(true);
+    }
+  } else {
+    // Quitar del array
+    const idx = this.selectedRoles.indexOf(roleKey);
+    if (idx > -1) this.selectedRoles.splice(idx, 1);
+    this.roleArray.at(index).setValue(false);
+  }
+}
+
+
 
   openModal() {
     this.dataService.currentSchoolCardValue.next(null)
@@ -111,6 +146,7 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
     if(this.showNotification()) {
       value = {...value, file: this.fileToUpload}
     }
+
     this.onAction.emit({
       action: this.action,
       value: value,
