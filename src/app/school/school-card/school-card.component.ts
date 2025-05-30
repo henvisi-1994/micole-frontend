@@ -117,6 +117,8 @@ export class SchoolCardComponent implements OnInit {
   }
 
   onAction(result: any) {
+    console.log("***RESULT");        
+    console.log(result);
     let request: Observable<string> = null;
     if (result.isEditing) {
       request = this.settingService.updateSetting(result.id, {
@@ -140,12 +142,18 @@ export class SchoolCardComponent implements OnInit {
           description: result.value.description,
         });
       } else if (result.action == FormAction.NOTIFICACTION) {
+        console.log("***");        
+        console.log(result.value.grade);
+        
         request = this.schoolService.sendNotification(
           this.school.id,
           result.value.name,
           result.value.description,
           result.value.role,
-          result.value.file
+          result.value.file,
+          result.value.grade,
+          result.value.couse,
+          null
         );
       }
     } else {
@@ -184,6 +192,45 @@ export class SchoolCardComponent implements OnInit {
           "Counselor",
           "Admin",
         ];
+
+        if(result.value.grade || result.value.course || result.value.franchise) {
+          this.schoolService.sendNotificationParams(
+            this.school.id,
+            result.value.name,
+            result.value.description,
+            null,
+            result.value.file,
+            result.value.grade,
+            result.value.course,
+            result.value.franchise
+          ).subscribe(
+            {
+              next: (responses) => {
+                swal({
+                  title: "Éxito",
+                  text: "Notificaciones enviadas correctamente.",
+                  buttonsStyling: false,
+                  confirmButtonClass: "btn btn-success",
+                  type: "success",
+                })
+                  .then((result) => {
+                    if (result.value) {
+                      this.onUpdated.next(true);
+                    }
+                  })
+                  .catch(swal.noop);
+              },
+              error: (error) => {
+                swal({
+                  title: "Error",
+                  text: error,
+                  buttonsStyling: false,
+                  confirmButtonClass: "btn btn-danger",
+                  type: "error",
+                }).catch(swal.noop);
+              },
+            });
+        }
 
         const requests = result.value.role
           .map((value, index) => {

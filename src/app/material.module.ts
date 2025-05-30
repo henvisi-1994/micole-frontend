@@ -63,7 +63,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDatepickerModule
   ]
 })
 export class MaterialModule {}

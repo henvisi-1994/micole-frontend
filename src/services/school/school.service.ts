@@ -153,8 +153,13 @@ export class SchoolService {
     title: string,
     description: string,
     role: string,
-    fileToUpload?: File
+    fileToUpload?: File,
+    grade?: number,
+    course?: number,
+    franchise?: number
   ) {
+    console.log(grade);
+    
     const formData = new FormData()
     formData.append('title',title)
     formData.append('description',description)
@@ -162,7 +167,9 @@ export class SchoolService {
     if(fileToUpload) {
       formData.append('file',fileToUpload, fileToUpload.name)
     }
+
     this.dataService.loadingScreen.next(true);
+
     return this.http
       .post(
         `${environment.url}${this.ENDPOINT}${encodeURIComponent(
@@ -180,6 +187,48 @@ export class SchoolService {
           return throwError("No pudimos enviar la notificacion");
         })
       );
+  }
+
+  sendNotificationParams(
+    id: string,
+    title: string,
+    description: string,
+    role?: string,
+    fileToUpload?: File,
+    grade?: number,
+    course?: number,
+    franchise?: number
+  ) {
+    //if grade, course
+    if(grade || course || franchise) {
+      const formDataParams = new FormData()
+      formDataParams.append('Title',title)
+      formDataParams.append('Description',description)
+      formDataParams.append('idGrade', grade?grade.toString():'0')
+      formDataParams.append('idCourse', course?course.toString():'0')
+      formDataParams.append('idFranchise', franchise?franchise.toString():'0')
+      if(fileToUpload) {
+        formDataParams.append('file',fileToUpload, fileToUpload.name)
+      }
+      return this.http
+      .post(
+        `${environment.url}${this.ENDPOINT}${encodeURIComponent(
+          id
+        )}/NotificationsParams`,
+        formDataParams
+      )
+      .pipe(
+        map((response) => {
+          this.dataService.loadingScreen.next(false);
+          return "Hemos enviado la notifación a los usuarios";
+        }),
+        catchError((err) => {
+          this.dataService.loadingScreen.next(false);
+          return throwError("No pudimos enviar la notificacion");
+        })
+      );
+     }
+
   }
 
   getCoursesByTeacher(id: string) {

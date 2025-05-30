@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: "http://192.168.1.21:5000/",
+  url: "http://localhost:5000/",
    //url: "https://mycole.azurewebsites.net/",
 };
 

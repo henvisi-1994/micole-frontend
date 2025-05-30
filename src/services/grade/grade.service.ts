@@ -13,6 +13,8 @@ import { GradeById } from 'src/models/grade/gradeById.model';
 export class GradeService {
   ENDPOINT = "api/Grades/"
   ENDPOINT_SCHOOL = "api/Schools/"
+  ENDPOINT_COURSE = "api/Courses/"
+  ENDPOINT_FRANCHISE = "api/Franchises/"
 
   constructor(private dataService: DataService,
     private http: HttpClient) { }
@@ -75,5 +77,27 @@ export class GradeService {
       this.dataService.loadingScreen.next(false)
       return throwError("No hemos podido eliminar el grado, porque ya tiene información asociada")
     }))
+  }
+
+  getGrades(school: string) {
+    return this.http.get<Response<GradeById[]>>(`${environment.url}${this.ENDPOINT}${encodeURIComponent(school)}/Grades`)
+      .pipe(map(response => {
+        return response.data
+      }))
+  }
+
+  getCoursesByGrade(school: string, idGrade: string) {
+    return this.http.get<Response<GradeById[]>>(`${environment.url}${this.ENDPOINT_COURSE}Grade/${encodeURIComponent(idGrade)}`)
+      .pipe(map(response => {
+        return response.data
+      }))
+  }
+
+  //https://localhost:44388/api/Franchises/wJbXMLRaAJqDc68%2f2kPP9A%3d%3d/School
+  getFranchises(school: string) {
+    return this.http.get<Response<any[]>>(`${environment.url}${this.ENDPOINT_FRANCHISE}${encodeURIComponent(school)}/School`)
+      .pipe(map(response => {
+        return response.data
+      }))
   }
 }

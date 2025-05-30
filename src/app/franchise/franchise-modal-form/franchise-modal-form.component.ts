@@ -4,6 +4,8 @@ import { rule } from './../../../models/parametric/rule.model';
 import { showSuccess, hasError } from 'src/util/validators';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { GradeService } from "./../../../services/grade/grade.service";
+import { ActivatedRoute } from '@angular/router';
 
 declare const $: any;
 
@@ -33,12 +35,41 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
     "Admin": "Cordinador"
   }
   showDownload: Boolean = false
-selectedRoles: string[] = [];
+  selectedRoles: string[] = [];
 
-  constructor(private dataService: DataService) { }
+  lstGrades: any[] = [];
+  lstCourses: any[] = [];
+  lstSedes: any[] = [];
+  school: any;
+  selectedGrade: any;
+  selectedCourse: any;
+  selectedSede: any;
+  swShowDate: boolean = false;
+  //dateNotifications: Date = new Date();
+
+  constructor(private dataService: DataService, private gradeService: GradeService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.showDownload = false
+    this.showDownload = false;
+    this.school = this.route.snapshot.data["school"];
+    this.loadClasifiers();    
+  }
+
+  loadClasifiers() {
+    this.gradeService.getGrades(this.school.id).subscribe(response => {
+      this.lstGrades = response
+    })
+    this.gradeService.getFranchises(this.school.id).subscribe(response => {
+      this.lstSedes = response
+    })
+  }
+
+  onGradeChange(event: any) {
+    console.log(event);    
+    console.log(this.selectedGrade);
+    this.gradeService.getCoursesByGrade(this.school.id, this.selectedGrade.id).subscribe(response => {
+      this.lstCourses = response
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,13 +106,15 @@ selectedRoles: string[] = [];
       || this.action === FormAction.NOTIFICACTION) {
       this.modalForm = new FormGroup({
         description: new FormControl(this.currentValue?.description || ''),
-        name: new FormControl(this.currentValue?.name || '',[Validators.required, Validators.minLength(3)])
+        name: new FormControl(this.currentValue?.name || '',[Validators.required, Validators.minLength(3)]),
+        //dateNotification: new FormControl(new Date()),
+        //this.modalForm.addControl('dateNotification', new FormControl(null))  //new Date()
       })
       if(this.action === FormAction.NOTIFICACTION) {
         this.modalForm.addControl('role', new FormArray([], [Validators.required]));
         const roleFormArray = this.modalForm.get('role') as FormArray;
         this.roleKeys().forEach(() => roleFormArray.push(new FormControl(false)));
-        this.modalForm.addControl("file", new FormControl(null))
+        this.modalForm.addControl("file", new FormControl(null))        
       }
       if(this.action === FormAction.GRADE) {
         this.modalForm.addControl("preschool", new FormControl(this.currentValue?.preschool ? "1": "0", [Validators.required]))
@@ -144,7 +177,7 @@ onRoleChange(event: any, roleKey: string, index: number): void {
     $('#formFranchiseModal' + this.index).modal('hide')
     let value: any = this.modalForm.value
     if(this.showNotification()) {
-      value = {...value, file: this.fileToUpload}
+      value = {...value, file: this.fileToUpload, grade: this.selectedGrade.idGrade, course: this.selectedCourse, franchise: null}
     }
 
     this.onAction.emit({
@@ -189,5 +222,9 @@ onRoleChange(event: any, roleKey: string, index: number): void {
     $('#formFranchiseModal' + this.index).modal("hide");
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open');
+  }
+
+  sendNotification() {
+    console.log('Notif');    
   }
 }

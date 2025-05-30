@@ -98,6 +98,15 @@
               </mat-form-field>
             </div>
           </div>
+          
+          <div  class="col-12" *ngIf="swShowDate">            
+            <input matInput [matDatepicker]="picker" >
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+
+
           <div class="row mb-3" *ngIf="isGrade()">
             <label>El grado es pre escolar ?</label>
             <div class="col-12" *ngIf="isGrade()">
@@ -149,8 +158,10 @@
             </div>
           </div>
           <div class="row mb-3" *ngIf="showNotification()">
-            <label>Seleccione el rol a notificar</label>
-            <div class="col-12">
+            
+            <div class="row">
+            <div class="col-6">
+              <label>Seleccione el rol a notificar</label>
               <div formArrayName="role">
                 <div *ngFor="let key of roleKeys(); let i = index">
                   <mat-checkbox
@@ -161,6 +172,34 @@
                   </mat-checkbox>
                 </div>
               </div>
+            </div>
+            <div class="col-6">
+              <label>Seleccione el grado, curso o sede</label>
+              <mat-form-field>
+                <mat-label>Grado</mat-label>
+                <mat-select [(ngModel)]="selectedGrade" (selectionChange)="onGradeChange($event)" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let grade of lstGrades" [value]="grade">
+                    {{ grade.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Curso</mat-label>
+                <mat-select [(ngModel)]="selectedCourse" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let course of lstCourses" [value]="course.idCourse">
+                    {{ course.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Sede</mat-label>
+                <mat-select [(ngModel)]="selectedSede" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let sede of lstSedes" [value]="sede.idFranchise">
+                    {{ sede.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             </div>
           </div>
           <div class="row mb-3" *ngIf="showNotification()">
@@ -181,7 +220,17 @@
                 class="btn btn-info btn-round"
               >
                 <ng-template [ngIf]="currentValue">Actualizar</ng-template>
-                <ng-template [ngIf]="!currentValue">Crear</ng-template>
+                <ng-template [ngIf]="!currentValue">Enviar</ng-template>                
+              </button>
+              </div>
+              <div class="col-md-6 ml-auto mr-auto text-center">
+              <button
+                [disabled]="!modalForm.valid"
+                type="button"
+                class="btn btn-warning btn-round"
+                (click)="swShowDate=!swShowDate"
+              >
+                <ng-template ngIf="true">Programar</ng-template>                
               </button>
             </div>
           </div>
