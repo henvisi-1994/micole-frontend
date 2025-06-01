@@ -100,7 +100,7 @@
           </div>
           
           <div  class="col-12" *ngIf="swShowDate">            
-            <input matInput [matDatepicker]="picker" >
+            <input matInput [matDatepicker]="picker" placeholder="Fecha">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -186,7 +186,7 @@
               <mat-form-field>
                 <mat-label>Curso</mat-label>
                 <mat-select [(ngModel)]="selectedCourse" [ngModelOptions]="{standalone: true}">
-                  <mat-option *ngFor="let course of lstCourses" [value]="course.idCourse">
+                  <mat-option *ngFor="let course of lstCourses" [value]="course">
                     {{ course.name }}
                   </mat-option>
                 </mat-select>
@@ -194,7 +194,7 @@
               <mat-form-field>
                 <mat-label>Sede</mat-label>
                 <mat-select [(ngModel)]="selectedSede" [ngModelOptions]="{standalone: true}">
-                  <mat-option *ngFor="let sede of lstSedes" [value]="sede.idFranchise">
+                  <mat-option *ngFor="let sede of lstSedes" [value]="sede">
                     {{ sede.name }}
                   </mat-option>
                 </mat-select>

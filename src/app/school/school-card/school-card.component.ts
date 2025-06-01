@@ -142,18 +142,12 @@ export class SchoolCardComponent implements OnInit {
           description: result.value.description,
         });
       } else if (result.action == FormAction.NOTIFICACTION) {
-        console.log("***");        
-        console.log(result.value.grade);
-        
         request = this.schoolService.sendNotification(
           this.school.id,
           result.value.name,
           result.value.description,
           result.value.role,
-          result.value.file,
-          result.value.grade,
-          result.value.couse,
-          null
+          result.value.file
         );
       }
     } else {

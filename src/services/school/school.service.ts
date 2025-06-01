@@ -154,11 +154,9 @@ export class SchoolService {
     description: string,
     role: string,
     fileToUpload?: File,
-    grade?: number,
-    course?: number,
-    franchise?: number
+    
   ) {
-    console.log(grade);
+    //console.log(grade);
     
     const formData = new FormData()
     formData.append('title',title)
@@ -195,9 +193,9 @@ export class SchoolService {
     description: string,
     role?: string,
     fileToUpload?: File,
-    grade?: number,
-    course?: number,
-    franchise?: number
+    grade?: string,
+    course?: string,
+    franchise?: string
   ) {
     //if grade, course
     if(grade || course || franchise) {

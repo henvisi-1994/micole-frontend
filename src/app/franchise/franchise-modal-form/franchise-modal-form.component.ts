@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { GradeService } from "./../../../services/grade/grade.service";
 import { ActivatedRoute } from '@angular/router';
+import { DateAdapter } from '@angular/material/core';
 
 declare const $: any;
 
@@ -47,7 +48,11 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
   swShowDate: boolean = false;
   //dateNotifications: Date = new Date();
 
-  constructor(private dataService: DataService, private gradeService: GradeService, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private gradeService: GradeService, private route: ActivatedRoute,
+    private dateAdapter: DateAdapter<Date>
+  ) { 
+    this.dateAdapter.setLocale('es-CO');
+  }
 
   ngOnInit(): void {
     this.showDownload = false;
@@ -177,7 +182,7 @@ onRoleChange(event: any, roleKey: string, index: number): void {
     $('#formFranchiseModal' + this.index).modal('hide')
     let value: any = this.modalForm.value
     if(this.showNotification()) {
-      value = {...value, file: this.fileToUpload, grade: this.selectedGrade.idGrade, course: this.selectedCourse, franchise: null}
+      value = {...value, file: this.fileToUpload, grade: this.selectedGrade?this.selectedGrade.idGrade:null, course: this.selectedCourse?this.selectedCourse.idCourse:null, franchise: this.selectedSede?this.selectedSede.idFranchise:null}
     }
 
     this.onAction.emit({
