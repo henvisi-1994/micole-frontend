@@ -7,13 +7,14 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { GradeService } from "./../../../services/grade/grade.service";
 import { ActivatedRoute } from '@angular/router';
 import { DateAdapter } from '@angular/material/core';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 declare const $: any;
 
 @Component({
   selector: 'app-franchise-modal-form',
   templateUrl: './franchise-modal-form.component.html',
-  styleUrls: ['./franchise-modal-form.component.sass']
+  styleUrls: ['./franchise-modal-form.component.sass'],  
 })
 export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy {
   fileToUpload?: File
@@ -47,6 +48,52 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
   selectedSede: any;
   swShowDate: boolean = false;
   //dateNotifications: Date = new Date();
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: '120px',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: false,
+      placeholder: 'Descripción',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    //upload: (file: File) => { ... }
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
 
   constructor(private dataService: DataService, private gradeService: GradeService, private route: ActivatedRoute,
     private dateAdapter: DateAdapter<Date>
@@ -180,6 +227,7 @@ onRoleChange(event: any, roleKey: string, index: number): void {
 
   onSubmit() {
     $('#formFranchiseModal' + this.index).modal('hide')
+    this.modalForm.value.role = this.selectedRoles;
     let value: any = this.modalForm.value
     if(this.showNotification()) {
       value = {...value, file: this.fileToUpload, grade: this.selectedGrade?this.selectedGrade.idGrade:null, course: this.selectedCourse?this.selectedCourse.idCourse:null, franchise: this.selectedSede?this.selectedSede.idFranchise:null}

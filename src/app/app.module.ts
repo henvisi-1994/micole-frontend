@@ -143,6 +143,7 @@ import { CaseObservationModalComponent } from './cases/case-observation-modal/ca
 import { CaseCreationComponent } from './cases/case-creation/case-creation.component';
 import { TaskRecoveryModalComponent } from './tasks/task-recovery-modal/task-recovery-modal.component';
 import { NotificationRolsComponent } from "./school/notification-rols/notification-rols.component";
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -290,6 +291,7 @@ import { NotificationRolsComponent } from "./school/notification-rols/notificati
     HttpClientModule,
     ChartsModule,
     NgxMaterialTimepickerModule.setLocale("es"),
+    AngularEditorModule,
   ],
   providers: [
     {
