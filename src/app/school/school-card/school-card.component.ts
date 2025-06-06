@@ -226,7 +226,47 @@ export class SchoolCardComponent implements OnInit {
             });
         }
 
-        const requests = result.value.role
+        let rolesAux = "";
+        result.value.role.forEach(element => {
+          rolesAux += element +",";
+        });
+
+        rolesAux = rolesAux.slice(0, -1);//quitamos la ultima coma
+
+        this.schoolService.sendNotification(
+          this.school.id,
+          result.value.name,
+          result.value.description,
+          rolesAux,
+          result.value.file
+        ).subscribe({
+          next: (response) => {
+            swal({
+              title: "Éxito",
+              text: "Notificaciones enviadas correctamente.",
+              buttonsStyling: false,
+              confirmButtonClass: "btn btn-success",
+              type: "success",
+            })
+              .then((result) => {
+                if (result.value) {
+                  this.onUpdated.next(true);
+                }
+              })
+              .catch(swal.noop);
+          },
+          error: (error) => {
+            swal({
+              title: "Error",
+              text: error,
+              buttonsStyling: false,
+              confirmButtonClass: "btn btn-danger",
+              type: "error",
+            }).catch(swal.noop);
+          },
+        });
+
+        /*const requests = result.value.role
           .map((value, index) => {
             if (value) {
               return this.schoolService.sendNotification(
@@ -239,9 +279,9 @@ export class SchoolCardComponent implements OnInit {
             }
             return null;
           })
-          .filter((req) => req !== null);
+          .filter((req) => req !== null);*/
 
-        if (requests.length > 0) {
+        /*if (requests.length > 0) {
           forkJoin(requests).subscribe({
             next: (responses) => {
               swal({
@@ -268,7 +308,7 @@ export class SchoolCardComponent implements OnInit {
               }).catch(swal.noop);
             },
           });
-        }
+        }*/
 
         /*request = this.schoolService.sendNotification(
           this.school.id,

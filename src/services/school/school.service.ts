@@ -172,7 +172,7 @@ export class SchoolService {
       .post(
         `${environment.url}${this.ENDPOINT}${encodeURIComponent(
           id
-        )}/Notifications`,
+        )}/NotificationsRoles`,
         formData
       )
       .pipe(

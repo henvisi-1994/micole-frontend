@@ -96,6 +96,7 @@
                   placeholder="Descripción"
                 ></textarea>
               </mat-form-field>
+              <span>{{3000 - modalForm.get('description').value.length}} / 3000</span>
             </div>
           </div>
           
@@ -163,7 +164,7 @@
             <div class="col-6">
               <label>Seleccione el rol a notificar</label>
               <div formArrayName="role">
-                <div *ngFor="let key of roleKeys(); let i = index">
+                <div *ngFor="let key of roleKeys(); let i = index" class="roles-notifications">
                   <mat-checkbox
                     [formControlName]="i"
                     (change)="onRoleChange($event, key,i)"
