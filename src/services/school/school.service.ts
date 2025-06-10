@@ -611,9 +611,9 @@ export class SchoolService {
     const formData: FormData = new FormData();
     formData.append("Title", title);
     formData.append("Description", description);
-    formData.append("GradeId", grade);
-    formData.append("CourseId", course);
-    formData.append("FranchiseId", franchise);    
+    formData.append("GradeId", grade?grade.toString():"0");
+    formData.append("CourseId", course?course.toString():"0");
+    formData.append("FranchiseId", franchise?franchise.toString():"0");    
     formData.append("Schedule", schedule.toISOString());
     formData.append("role", role);
     
