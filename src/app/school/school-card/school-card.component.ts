@@ -117,8 +117,6 @@ export class SchoolCardComponent implements OnInit {
   }
 
   onAction(result: any) {
-    console.log("***RESULT");        
-    console.log(result);
     let request: Observable<string> = null;
     if (result.isEditing) {
       request = this.settingService.updateSetting(result.id, {
@@ -178,6 +176,7 @@ export class SchoolCardComponent implements OnInit {
           this.school.id
         );
       } else if (result.action == FormAction.NOTIFICACTION) {
+        
         const roles = [
           "ALL",
           "Student",
@@ -186,8 +185,8 @@ export class SchoolCardComponent implements OnInit {
           "Counselor",
           "Admin",
         ];
-
-        if(result.value.grade || result.value.course || result.value.franchise) {
+        console.log("&&&&&&&&", result.value)
+        if(!result.value.swShowDate && (result.value.grade || result.value.course || result.value.franchise)) {
           this.schoolService.sendNotificationParams(
             this.school.id,
             result.value.name,
@@ -233,39 +232,78 @@ export class SchoolCardComponent implements OnInit {
 
         rolesAux = rolesAux.slice(0, -1);//quitamos la ultima coma
 
-        this.schoolService.sendNotification(
-          this.school.id,
-          result.value.name,
-          result.value.description,
-          rolesAux,
-          result.value.file
-        ).subscribe({
-          next: (response) => {
-            swal({
-              title: "Éxito",
-              text: "Notificaciones enviadas correctamente.",
-              buttonsStyling: false,
-              confirmButtonClass: "btn btn-success",
-              type: "success",
-            })
-              .then((result) => {
-                if (result.value) {
-                  this.onUpdated.next(true);
-                }
+        if(!result.value.swShowDate && rolesAux.length>0) {
+          this.schoolService.sendNotification(
+            this.school.id,
+            result.value.name,
+            result.value.description,
+            rolesAux,
+            result.value.file
+          ).subscribe({
+            next: (response) => {
+              swal({
+                title: "Éxito",
+                text: "Notificaciones enviadas correctamente.",
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-success",
+                type: "success",
               })
-              .catch(swal.noop);
-          },
-          error: (error) => {
-            swal({
-              title: "Error",
-              text: error,
-              buttonsStyling: false,
-              confirmButtonClass: "btn btn-danger",
-              type: "error",
-            }).catch(swal.noop);
-          },
-        });
+                .then((result) => {
+                  if (result.value) {
+                    this.onUpdated.next(true);
+                  }
+                })
+                .catch(swal.noop);
+            },
+            error: (error) => {
+              swal({
+                title: "Error",
+                text: error,
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-danger",
+                type: "error",
+              }).catch(swal.noop);
+            },
+          });
+        }
 
+        if(result.value.swShowDate) {
+          this.schoolService.createScheduleNotification(
+            result.value.name,
+            result.value.description,
+            result.value.schedule,
+            result.value.grade,
+            result.value.course,
+            result.value.franchise,
+            result.value.file,
+            rolesAux
+          ).subscribe({
+            next: (response) => {
+              swal({
+                title: "Éxito",
+                text: "Notificación programada correctamente.",
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-success",
+                type: "success",
+              })
+                .then((result) => {
+                  if (result.value) {
+                    this.onUpdated.next(true);
+                  }
+                })
+                .catch(swal.noop);
+            },
+            error: (error) => {
+              swal({
+                title: "Error",
+                text: error,
+                buttonsStyling: false,
+                confirmButtonClass: "btn btn-danger",
+                type: "error",
+              }).catch(swal.noop);
+            },
+          });
+        }
         /*const requests = result.value.role
           .map((value, index) => {
             if (value) {

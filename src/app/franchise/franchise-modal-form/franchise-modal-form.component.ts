@@ -58,7 +58,7 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
       minWidth: '0',
       translate: 'yes',
       enableToolbar: true,
-      showToolbar: false,
+      showToolbar: true,
       placeholder: 'Descripción',
       defaultParagraphSeparator: '',
       defaultFontName: '',
@@ -90,8 +90,13 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
+      ['italic', 'subscript', 'superscript', 'underline', 'strikethrough'],
+      ['justifyLeft', 'justifyCenter', 'justifyRight', ],
+      ['fontSize', 'fontName'],
+      ['insertUnorderedList', 'insertOrderedList', 'heading'],
+      ['insertImage', 'insertVideo', 'insertHorizontalRule'],
+      ['removeFormat', 'toggleEditorMode', 'clear','link', 'undo', 'redo'],
+
     ]
 };
 
@@ -166,7 +171,8 @@ export class FranchiseModalFormComponent implements OnInit, OnChanges, OnDestroy
         this.modalForm.addControl('role', new FormArray([], [Validators.required]));
         const roleFormArray = this.modalForm.get('role') as FormArray;
         this.roleKeys().forEach(() => roleFormArray.push(new FormControl(false)));
-        this.modalForm.addControl("file", new FormControl(null))        
+        this.modalForm.addControl("file", new FormControl(null))
+        this.modalForm.addControl("schedule", new FormControl(new Date()))        
       }
       if(this.action === FormAction.GRADE) {
         this.modalForm.addControl("preschool", new FormControl(this.currentValue?.preschool ? "1": "0", [Validators.required]))
@@ -230,7 +236,10 @@ onRoleChange(event: any, roleKey: string, index: number): void {
     this.modalForm.value.role = this.selectedRoles;
     let value: any = this.modalForm.value
     if(this.showNotification()) {
-      value = {...value, file: this.fileToUpload, grade: this.selectedGrade?this.selectedGrade.idGrade:null, course: this.selectedCourse?this.selectedCourse.idCourse:null, franchise: this.selectedSede?this.selectedSede.idFranchise:null}
+      value = {...value, file: this.fileToUpload, grade: this.selectedGrade?this.selectedGrade.idGrade:null, course: this.selectedCourse?this.selectedCourse.idCourse:null, franchise: this.selectedSede?this.selectedSede.idFranchise:null, swShowDate: this.swShowDate}
+    }
+    if(this.swShowDate) {
+      value = {...value, schedule: this.modalForm.value.schedule}
     }
 
     this.onAction.emit({

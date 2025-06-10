@@ -20,7 +20,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { CourseById } from "src/models/course/courseById.model";
-import { SCHOOL } from "src/util/constants";
+import { SCHOOL, USER } from "src/util/constants";
 import { SchoolWithFranchises } from "src/models/school/schoolWithFranchises.model";
 
 @Injectable({
@@ -591,6 +591,45 @@ export class SchoolService {
         catchError((err) => {
           this.dataService.loadingScreen.next(false);
           return throwError("No se pudo actualizar el logo del colegio");
+        })
+      );
+  }
+
+  //        [HttpPost("{id}/ScheduleNotification/{userId}")]
+  createScheduleNotification(
+    title: string, 
+    description: string, 
+    schedule: Date, 
+    grade?: string, 
+    course?: string, 
+    franchise?: string, 
+    fileToUpload?: File, 
+    role?: string) {
+    const idUser = localStorage.getItem(USER);
+    const school = localStorage.getItem(SCHOOL);
+    //encodeURIComponent(id)
+    const formData: FormData = new FormData();
+    formData.append("Title", title);
+    formData.append("Description", description);
+    formData.append("GradeId", grade);
+    formData.append("CourseId", course);
+    formData.append("FranchiseId", franchise);    
+    formData.append("Schedule", schedule.toISOString());
+    formData.append("role", role);
+    
+    if(fileToUpload) {
+      formData.append("File",fileToUpload, fileToUpload.name)
+    }
+
+    return this.http
+      .post(
+        `${environment.url}${this.ENDPOINT}${encodeURIComponent(school)}/ScheduleNotification/${encodeURIComponent(idUser)}`,
+        formData
+      )
+      .pipe(
+        catchError((err) => {
+          this.dataService.loadingScreen.next(false);
+          return throwError("No se pudo guardar la notificacion programada colegio");
         })
       );
   }
